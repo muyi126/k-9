@@ -7,8 +7,8 @@ dependencies {
     api "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
     api "androidx.activity:activity:${versions.androidxActivity}"
     api "com.google.android.material:material:${versions.materialComponents}"
-    api "androidx.navigation:navigation-fragment-ktx:${versions.androidxNavigation}"
-    api "androidx.navigation:navigation-ui-ktx:${versions.androidxNavigation}"
+    api "androidx.navigation:navigation-fragment:${versions.androidxNavigation}"
+    api "androidx.navigation:navigation-ui:${versions.androidxNavigation}"
     api "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidxLifecycle}"
 
     implementation "androidx.core:core-ktx:${versions.androidxCore}"
@@ -18,25 +18,5 @@ dependencies {
 }
 
 android {
-    compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
-
-    defaultConfig {
-        minSdkVersion buildConfig.minSdk
-        targetSdkVersion buildConfig.robolectricSdk
-    }
-
-    lintOptions {
-        abortOnError false
-        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
-    }
-
-    compileOptions {
-        sourceCompatibility javaVersion
-        targetCompatibility javaVersion
-    }
-
-    kotlinOptions {
-        jvmTarget = kotlinJvmVersion
-    }
+    namespace 'com.fsck.k9.ui.base'
 }

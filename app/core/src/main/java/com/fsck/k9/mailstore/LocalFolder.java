@@ -117,10 +117,6 @@ public class LocalFolder {
         return lastChecked;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
     public long getDatabaseId() {
         return databaseId;
     }
@@ -295,11 +291,6 @@ public class LocalFolder {
         if (growVisibleLimit || (shrinkVisibleLimit && !moreMessagesWereAvailable)) {
             setMoreMessages(MoreMessages.UNKNOWN);
         }
-    }
-
-    public void setStatus(final String status) throws MessagingException {
-        this.status = status;
-        updateFolderColumn("status", status);
     }
 
     private void updateFolderColumn(final String column, final Object value) throws MessagingException {
@@ -576,17 +567,16 @@ public class LocalFolder {
         });
     }
 
-    public List<LocalMessage> getMessages(MessageRetrievalListener<LocalMessage> listener) throws MessagingException {
-        return getMessages(listener, true);
+    public List<LocalMessage> getMessages() throws MessagingException {
+        return getMessages(true);
     }
 
-    public List<LocalMessage> getMessages(final MessageRetrievalListener<LocalMessage> listener,
-            final boolean includeDeleted) throws MessagingException {
+    public List<LocalMessage> getMessages(final boolean includeDeleted) throws MessagingException {
         return localStore.getDatabase().execute(false, new DbCallback<List<LocalMessage>>() {
             @Override
             public List<LocalMessage> doDbWork(final SQLiteDatabase db) throws MessagingException {
                 open();
-                return LocalFolder.this.localStore.getMessages(listener, LocalFolder.this,
+                return LocalFolder.this.localStore.getMessages(LocalFolder.this,
                         "SELECT " + LocalStore.GET_MESSAGES_COLS +
                         "FROM messages " +
                         "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
@@ -898,7 +888,7 @@ public class LocalFolder {
     public void setFlags(final Set<Flag> flags, boolean value)
     throws MessagingException {
         open();
-        for (LocalMessage message : getMessages(null)) {
+        for (LocalMessage message : getMessages()) {
             message.setFlags(flags, value);
         }
     }
@@ -926,6 +916,7 @@ public class LocalFolder {
                 db.execSQL("DELETE FROM threads WHERE message_id IN " +
                         "(SELECT id FROM messages WHERE folder_id = ?)", folderIdArg);
                 db.execSQL("DELETE FROM messages WHERE folder_id = ?", folderIdArg);
+                db.execSQL("DELETE FROM folder_extra_values WHERE folder_id = ?", folderIdArg);
 
                 setMoreMessages(MoreMessages.UNKNOWN);
                 resetLastChecked(db);

@@ -15,7 +15,6 @@ import com.fsck.k9.Account.ShowPictures
 import com.fsck.k9.Account.SortType
 import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.helper.Utility
-import com.fsck.k9.mail.NetworkType
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
@@ -37,6 +36,7 @@ class AccountPreferenceSerializer(
             outgoingServerSettings = serverSettingsSerializer.deserialize(
                 storage.getString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", "")
             )
+            oAuthState = storage.getString("$accountUuid.oAuthState", null)
             localStorageProviderId = storage.getString("$accountUuid.localStorageProvider", storageManager.defaultProviderId)
             name = storage.getString("$accountUuid.description", null)
             alwaysBcc = storage.getString("$accountUuid.alwaysBcc", alwaysBcc)
@@ -120,10 +120,7 @@ class AccountPreferenceSerializer(
             isDefaultQuotedTextShown = storage.getBoolean("$accountUuid.defaultQuotedTextShown", DEFAULT_QUOTED_TEXT_SHOWN)
             isReplyAfterQuote = storage.getBoolean("$accountUuid.replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE)
             isStripSignature = storage.getBoolean("$accountUuid.stripSignature", DEFAULT_STRIP_SIGNATURE)
-            for (type in NetworkType.values()) {
-                val useCompression = storage.getBoolean("$accountUuid.useCompression.$type", true)
-                setCompression(type, useCompression)
-            }
+            useCompression = storage.getBoolean("$accountUuid.useCompression", true)
 
             importedAutoExpandFolder = storage.getString("$accountUuid.autoExpandFolderName", null)
 
@@ -142,9 +139,11 @@ class AccountPreferenceSerializer(
                     isRingEnabled = storage.getBoolean("$accountUuid.ring", true),
                     ringtone = storage.getString("$accountUuid.ringtone", DEFAULT_RINGTONE_URI),
                     light = getEnumStringPref(storage, "$accountUuid.notificationLight", NotificationLight.Disabled),
-                    isVibrateEnabled = storage.getBoolean("$accountUuid.vibrate", false),
-                    vibratePattern = VibratePattern.deserialize(storage.getInt("$accountUuid.vibratePattern", 0)),
-                    vibrateTimes = storage.getInt("$accountUuid.vibrateTimes", 5)
+                    vibration = NotificationVibration(
+                        isEnabled = storage.getBoolean("$accountUuid.vibrate", false),
+                        pattern = VibratePattern.deserialize(storage.getInt("$accountUuid.vibratePattern", 0)),
+                        repeatCount = storage.getInt("$accountUuid.vibrateTimes", 5)
+                    )
                 )
             }
 
@@ -176,6 +175,9 @@ class AccountPreferenceSerializer(
             isAlwaysShowCcBcc = storage.getBoolean("$accountUuid.alwaysShowCcBcc", false)
             lastSyncTime = storage.getLong("$accountUuid.lastSyncTime", 0L)
             lastFolderListRefreshTime = storage.getLong("$accountUuid.lastFolderListRefreshTime", 0L)
+
+            shouldMigrateToOAuth = storage.getBoolean("$accountUuid.migrateToOAuth", false)
+
             val isFinishedSetup = storage.getBoolean("$accountUuid.isFinishedSetup", true)
             if (isFinishedSetup) markSetupFinished()
 
@@ -242,6 +244,7 @@ class AccountPreferenceSerializer(
         with(account) {
             editor.putString("$accountUuid.$INCOMING_SERVER_SETTINGS_KEY", serverSettingsSerializer.serialize(incomingServerSettings))
             editor.putString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", serverSettingsSerializer.serialize(outgoingServerSettings))
+            editor.putString("$accountUuid.oAuthState", oAuthState)
             editor.putString("$accountUuid.localStorageProvider", localStorageProviderId)
             editor.putString("$accountUuid.description", name)
             editor.putString("$accountUuid.alwaysBcc", alwaysBcc)
@@ -322,23 +325,17 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.markMessageAsReadOnDelete", isMarkMessageAsReadOnDelete)
             editor.putBoolean("$accountUuid.alwaysShowCcBcc", isAlwaysShowCcBcc)
 
-            editor.putBoolean("$accountUuid.vibrate", notificationSettings.isVibrateEnabled)
-            editor.putInt("$accountUuid.vibratePattern", notificationSettings.vibratePattern.serialize())
-            editor.putInt("$accountUuid.vibrateTimes", notificationSettings.vibrateTimes)
+            editor.putBoolean("$accountUuid.vibrate", notificationSettings.vibration.isEnabled)
+            editor.putInt("$accountUuid.vibratePattern", notificationSettings.vibration.pattern.serialize())
+            editor.putInt("$accountUuid.vibrateTimes", notificationSettings.vibration.repeatCount)
             editor.putBoolean("$accountUuid.ring", notificationSettings.isRingEnabled)
             editor.putString("$accountUuid.ringtone", notificationSettings.ringtone)
             editor.putString("$accountUuid.notificationLight", notificationSettings.light.name)
             editor.putLong("$accountUuid.lastSyncTime", lastSyncTime)
             editor.putLong("$accountUuid.lastFolderListRefreshTime", lastFolderListRefreshTime)
             editor.putBoolean("$accountUuid.isFinishedSetup", isFinishedSetup)
-
-            val compressionMap = getCompressionMap()
-            for (type in NetworkType.values()) {
-                val useCompression = compressionMap[type]
-                if (useCompression != null) {
-                    editor.putBoolean("$accountUuid.useCompression.$type", useCompression)
-                }
-            }
+            editor.putBoolean("$accountUuid.useCompression", useCompression)
+            editor.putBoolean("$accountUuid.migrateToOAuth", shouldMigrateToOAuth)
         }
 
         saveIdentities(account, storage, editor)
@@ -367,6 +364,7 @@ class AccountPreferenceSerializer(
 
         editor.remove("$accountUuid.$INCOMING_SERVER_SETTINGS_KEY")
         editor.remove("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY")
+        editor.remove("$accountUuid.oAuthState")
         editor.remove("$accountUuid.description")
         editor.remove("$accountUuid.name")
         editor.remove("$accountUuid.email")
@@ -454,10 +452,9 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.lastSyncTime")
         editor.remove("$accountUuid.lastFolderListRefreshTime")
         editor.remove("$accountUuid.isFinishedSetup")
+        editor.remove("$accountUuid.useCompression")
+        editor.remove("$accountUuid.migrateToOAuth")
 
-        for (type in NetworkType.values()) {
-            editor.remove("$accountUuid.useCompression." + type.name)
-        }
         deleteIdentities(account, storage, editor)
         // TODO: Remove preference settings that may exist for individual folders in the account.
     }
@@ -524,11 +521,11 @@ class AccountPreferenceSerializer(
             defaultEnum
         } else {
             try {
-                java.lang.Enum.valueOf<T>(defaultEnum.declaringClass, stringPref)
+                java.lang.Enum.valueOf<T>(defaultEnum.declaringJavaClass, stringPref)
             } catch (ex: IllegalArgumentException) {
                 Timber.w(
                     ex, "Unable to convert preference key [%s] value [%s] to enum of type %s",
-                    key, stringPref, defaultEnum.declaringClass
+                    key, stringPref, defaultEnum.declaringJavaClass
                 )
 
                 defaultEnum
@@ -607,9 +604,7 @@ class AccountPreferenceSerializer(
                     isRingEnabled = true,
                     ringtone = DEFAULT_RINGTONE_URI,
                     light = NotificationLight.Disabled,
-                    isVibrateEnabled = false,
-                    vibratePattern = VibratePattern.Default,
-                    vibrateTimes = 5
+                    vibration = NotificationVibration.DEFAULT
                 )
             }
 

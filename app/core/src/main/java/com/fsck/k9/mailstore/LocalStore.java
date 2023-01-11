@@ -18,12 +18,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -43,7 +41,6 @@ import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.FolderType;
-import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
@@ -52,8 +49,6 @@ import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.mailstore.StorageManager.InternalStorageProvider;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
-import com.fsck.k9.provider.EmailProvider;
-import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchField;
@@ -167,7 +162,6 @@ public class LocalStore {
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
     private final Context context;
-    private final ContentResolver contentResolver;
     private final PendingCommandSerializer pendingCommandSerializer;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
 
@@ -185,7 +179,6 @@ public class LocalStore {
      */
     private LocalStore(final Account account, final Context context) throws MessagingException {
         this.context = context;
-        this.contentResolver = context.getContentResolver();
 
         pendingCommandSerializer = PendingCommandSerializer.getInstance();
         attachmentInfoExtractor = DI.get(AttachmentInfoExtractor.class);
@@ -228,7 +221,7 @@ public class LocalStore {
     }
 
     protected Preferences getPreferences() {
-        return Preferences.getPreferences(context);
+        return Preferences.getPreferences();
     }
 
     public OutboxStateRepository getOutboxStateRepository() {
@@ -359,9 +352,7 @@ public class LocalStore {
         });
     }
 
-    public List<LocalMessage> searchForMessages(MessageRetrievalListener<LocalMessage> retrievalListener,
-                                        LocalSearch search) throws MessagingException {
-
+    public List<LocalMessage> searchForMessages(LocalSearch search) throws MessagingException {
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<>();
         SqlQueryBuilder.buildWhereClause(account, search.getConditions(), query, queryArgs);
@@ -382,24 +373,20 @@ public class LocalStore {
 
         Timber.d("Query = %s", sqlQuery);
 
-        return getMessages(retrievalListener, null, sqlQuery, selectionArgs);
+        return getMessages(null, sqlQuery, selectionArgs);
     }
 
     /*
      * Given a query string, actually do the query for the messages and
      * call the MessageRetrievalListener for each one
      */
-    List<LocalMessage> getMessages(
-        final MessageRetrievalListener<LocalMessage> listener,
-        final LocalFolder folder,
-        final String queryString, final String[] placeHolders
-    ) throws MessagingException {
+    List<LocalMessage> getMessages(LocalFolder folder, String queryString, String[] placeHolders)
+            throws MessagingException {
         final List<LocalMessage> messages = new ArrayList<>();
-        final int j = database.execute(false, new DbCallback<Integer>() {
+        database.execute(false, new DbCallback<Void>() {
             @Override
-            public Integer doDbWork(final SQLiteDatabase db) {
+            public Void doDbWork(final SQLiteDatabase db) {
                 Cursor cursor = null;
-                int i = 0;
                 try {
                     cursor = db.rawQuery(queryString + " LIMIT 10", placeHolders);
 
@@ -408,10 +395,6 @@ public class LocalStore {
                         message.populateFromGetMessageCursor(cursor);
 
                         messages.add(message);
-                        if (listener != null) {
-                            listener.messageFinished(message, i, -1);
-                        }
-                        i++;
                     }
                     cursor.close();
                     cursor = db.rawQuery(queryString + " LIMIT -1 OFFSET 10", placeHolders);
@@ -421,22 +404,16 @@ public class LocalStore {
                         message.populateFromGetMessageCursor(cursor);
 
                         messages.add(message);
-                        if (listener != null) {
-                            listener.messageFinished(message, i, -1);
-                        }
-                        i++;
                     }
                 } catch (Exception e) {
                     Timber.d(e, "Got an exception");
                 } finally {
                     Utility.closeQuietly(cursor);
                 }
-                return i;
+
+                return null;
             }
         });
-        if (listener != null) {
-            listener.messagesFinished(j);
-        }
 
         return Collections.unmodifiableList(messages);
 
@@ -448,7 +425,7 @@ public class LocalStore {
         LocalSearch search = new LocalSearch();
         search.and(SearchField.THREAD_ID, rootIdString, Attribute.EQUALS);
 
-        return searchForMessages(null, search);
+        return searchForMessages(search);
     }
 
     public AttachmentInfo getAttachmentInfo(final String attachmentId) throws MessagingException {
@@ -743,8 +720,8 @@ public class LocalStore {
     }
 
     public void notifyChange() {
-        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + account.getUuid() + "/messages");
-        contentResolver.notifyChange(uri, null);
+        MessageListRepository messageListRepository = DI.get(MessageListRepository.class);
+        messageListRepository.notifyMessageListChanged(account.getUuid());
     }
 
     /**

@@ -1,16 +1,10 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
+    namespace 'org.openintents.openpgp'
 
-    defaultConfig {
-        minSdkVersion buildConfig.minSdk
-    }
-
-    // Do not abort build if lint finds errors
-    lintOptions {
-        abortOnError false
+    buildFeatures {
+        aidl true
     }
 }
 

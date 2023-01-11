@@ -148,7 +148,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> ново съобщение</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> нови съобщения</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Непрочетени (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Непрочетени (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> в <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Отговори</string>
   <string name="notification_action_mark_as_read">Маркирай като прочетено</string>
@@ -163,7 +163,9 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="notification_certificate_error_text">Проверете настройките на сървара</string>
   <string name="notification_authentication_error_title">Неуспешна идентификация</string>
   <string name="notification_authentication_error_text">Идентификацията за <xliff:g id="account">%s</xliff:g> е неуспешна. Обновете сървърните настройки.</string>
-  <string name="notification_bg_sync_ticker">Проверка на поща: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_bg_sync_ticker">Проверка на поща: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Проверка на поща</string>
   <string name="notification_bg_send_ticker">Изпраща писмо: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Изпраща писмо</string>
@@ -207,7 +209,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="message_compose_description_delete_quoted_text">Премахни цитираният текст</string>
   <string name="message_compose_description_edit_quoted_text">Редактирай цитираният текст</string>
   <string name="remove_attachment_action">Премахни прикачени файлове</string>
-  <string name="message_view_from_format">От: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">От: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">До:</string>
   <string name="message_view_cc_label">Копие:</string>
   <string name="message_view_bcc_label">Bcc:</string>
@@ -247,6 +249,22 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="global_settings_confirm_menu_discard">Изтрийте съобщението</string>
   <string name="global_settings_confirm_menu_mark_all_read">Отбелязване на всички съобщения като прочетени</string>
   <string name="global_settings_confirm_action_delete_notif">Изтрийте (от лентата с известия)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Никой</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Архивирайте</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Изтрий</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Спам</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Премести</string>
   <string name="global_settings_privacy_hide_useragent">Скриване на имейл програмата</string>
   <string name="global_settings_privacy_hide_useragent_detail">Премахване на K-9 хедъра за потребителски агент</string>
   <string name="global_settings_privacy_hide_timezone">Скриване на времевата зона</string>
@@ -269,6 +287,8 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_basics_title">Настрой нов профил</string>
   <string name="account_setup_basics_email_hint">Пощенски адрес</string>
   <string name="account_setup_basics_password_hint">Парола</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Ръчни настройки</string>
   <string name="account_setup_check_settings_title"/>
@@ -307,10 +327,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_incoming_delete_policy_never_label">Не изтривай от сървъра</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Изтривай от сървъра</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Маркирай като прочетено на сървъра</string>
-  <string name="account_setup_incoming_compression_label">Използвай компресия по мрежата:</string>
-  <string name="account_setup_incoming_mobile_label">Мобилна</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Друга</string>
   <string name="account_setup_expunge_policy_label">Премахни изтритите от сървъра съобщения</string>
   <string name="account_setup_expunge_policy_immediately">Веднага</string>
   <string name="account_setup_expunge_policy_on_poll">При проверка</string>
@@ -576,8 +592,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_failed_dlg_invalid_certificate_title">Неразпознат сертификат</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Приеми ключа</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Отхвърли ключа</string>
-  <string name="message_view_help_key">Del (or D) - Изтриване\nR - Отговор\nA - Отговор на всички\nC - Създаване\nF - Препращане\nM - Премесване\nV - Архивиране\nY - Копиране\nZ - Отбелязване като (не)прочетно\nG - Звезда\nO - Сортиране\nI - Приоритет на сортиране\nQ - Обратно към папките\nS - Отбелязване/премахване на отбелязване\nJ или P - Предно съобщение\nK или N - Следващо съобщение</string>
-  <string name="message_list_help_key">Del (or D) - Изтриване\nC - Създаване\nM - Премесване\nV - Архивиране\nC - Копиране\nZ - Отбелязване като (не)прочетно\nG - Звезда\nO - Сортиране\nI - Приоритет на сортиране\nQ - Обратно към папките\nS - Отбелязване/премахване на отбелязване</string>
   <string name="folder_list_filter_hint">Името на папката съдържа</string>
   <string name="folder_list_display_mode_label">Покажи папките…</string>
   <string name="folder_list_display_mode_all">Всички папки</string>
@@ -625,9 +639,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_push_limit_1000">1000 папки</string>
   <string name="animations_title">Анимация</string>
   <string name="animations_summary">Изплозване на ярки виулани ефекти</string>
-  <string name="volume_navigation_title">Навигация с клавиш за звука</string>
-  <string name="volume_navigation_message">В преглед на съобщението</string>
-  <string name="volume_navigation_list">В списъка със съобщения</string>
   <string name="show_unified_inbox_title">Покажи унифицирана папка Входящи</string>
   <string name="integrated_inbox_title">Обща входяща кутия</string>
   <string name="integrated_inbox_detail">Всички съобщения в общата входяща кутия</string>
@@ -641,12 +652,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_automatic_special_folder">Автоматично (%s)</string>
   <string name="font_size_settings_title">Размер на шрифта</string>
   <string name="font_size_settings_description">Настройване размер на шрифта</string>
-  <string name="font_size_account_list">Списък с профили</string>
-  <string name="font_size_account_name">Име на профила</string>
-  <string name="font_size_account_description">Описание на профила</string>
-  <string name="font_size_folder_list">Списък с папки</string>
-  <string name="font_size_folder_name">Име на папката</string>
-  <string name="font_size_folder_status">Състояние на папката</string>
   <string name="font_size_message_list">Списъци със съобщения</string>
   <string name="font_size_message_list_subject">Тема</string>
   <string name="font_size_message_list_sender">Изпращач</string>
@@ -678,7 +683,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="save_or_discard_draft_message_changes">Запази или Откажи промените?</string>
   <string name="confirm_discard_draft_message_title">Изтриване на съобщението?</string>
   <string name="confirm_discard_draft_message">Сигурен ли сте, че желаете да изтрието това съобщение?</string>
-  <string name="select_text_now">Изберете текст за копиране.</string>
   <string name="dialog_confirm_clear_local_folder_title">Изчисти локалните съобщения?</string>
   <string name="dialog_confirm_clear_local_folder_message">Това ще премахне всички локални съобщения от папката. Няма да бъдат изтрити съобщения от сървара.</string>
   <string name="dialog_confirm_clear_local_folder_action">Изчисти съобщения</string>
@@ -718,12 +722,16 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="settings_import_pick_document_button">Избери файл</string>
   <string name="settings_import_button">Внасяне</string>
   <string name="settings_import_success_generic">Успешно импортирани настройки</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Моля, въведете пароли</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Импортирането на настройките не бе успешно</string>
   <string name="settings_import_read_failure">Файлът за настройки не бе прочетен</string>
   <string name="settings_import_partial_failure">Импортирането на някои настройки не бе успешно</string>
   <string name="settings_import_status_success">Успешно импортиране</string>
   <string name="settings_import_status_password_required">Изисква се парола</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Не се импортира</string>
   <string name="settings_import_status_error">Неуспешно импортиране</string>
   <string name="settings_import_later_button">По късно</string>
@@ -913,19 +921,14 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_crypto_hide_sign_only_off">Всички подписи ще бъдат показвани</string>
   <string name="error_sign_only_no_encryption">Криптирането не е възможно, когато се използва режима само подпис! </string>
   <string name="unsigned_text_divider_label">Неподписан текст</string>
-  <string name="apg_deprecated_title">APG предупреждение за премахване</string>
-  <string name="apg_deprecated_1">APG вече не се поддържа!</string>
-  <string name="apg_deprecated_2">Поради това, поддръжката на APG е премахната от К-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Разработването бе преустановено в началото на 2014</string>
-  <string name="apg_deprecated_bullet_2">Съдържа неоправени проблеми по сигурността</string>
-  <string name="apg_learn_more">Може да <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">натиснете тук</a>, за да научите повече.</string>
-  <string name="apg_deprecated_ok">Ясно!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Имейлът е криптиран</string>
   <string name="crypto_no_provider_message">Този имейл е криптиран използвайки OpenPGP.\nЗа да го прочетете, трябва да инсталирате и настроите OpenPGP приложението.</string>
   <string name="crypto_no_provider_button">Към настройки</string>
   <string name="mail_list_widget_text">K-9 списък със собщения</string>
-  <string name="mail_list_widget_loading">Зареждане на съобщения…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Зареждане…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Зареждане…</string>
   <string name="openpgp_enabled_error_title">Криптирането е невъзможно</string>
   <string name="openpgp_enabled_error_msg">Някои от избраните получатели не поддържат тази функция!</string>
   <string name="enable_encryption">Включване на криптирането</string>
@@ -941,7 +944,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="dialog_autocrypt_mutual_title">Взаимен режим на Autocrypt</string>
   <string name="dialog_autocrypt_mutual_description_1">Обикновено съобщенията ще бъдат криптирано ако това е изрично зададено или ако се отговаря на криптирано съобщение.</string>
   <string name="dialog_autocrypt_mutual_description_2">Ако както изпращача така и получателите активират взаимния режим, криптирането ще бъде активирано по подразбиране.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Може да <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">натиснете тук</a>, за да научете повече.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Може да <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">натиснете тук</a>, за да научете повече.</string>
   <string name="general_settings_title">Общи настройки</string>
   <string name="dialog_openkeychain_info_title">Няма инсталирано OpenPGP приложение</string>
   <string name="dialog_openkeychain_info_install">Инсталирване</string>
@@ -987,4 +990,22 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="push_info_configure_notification_action">Конфигурирайте известия</string>
   <string name="push_info_disable_push_text">Ако нямате нужда от мигновени известия, трябва да деактивирате Push и да използвате Polling. Polling проверява за нови писма на регулярни интервали и не се нуждае от известия.</string>
   <string name="push_info_disable_push_action">Изключи Push</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Избери</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Отмени Избор</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Маркирай като непрочетено</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Добави звезда</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Премахни звезда</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Архивирайте</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Изтрий</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Спам</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

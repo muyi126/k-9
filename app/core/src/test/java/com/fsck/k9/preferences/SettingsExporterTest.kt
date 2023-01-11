@@ -11,10 +11,11 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
 import org.koin.core.component.inject
+import org.mockito.kotlin.mock
 import org.robolectric.RuntimeEnvironment
 
 class SettingsExporterTest : K9RobolectricTest() {
-    private val contentResolver = RuntimeEnvironment.application.contentResolver
+    private val contentResolver = RuntimeEnvironment.getApplication().contentResolver
     private val preferences: Preferences by inject()
     private val folderSettingsProvider: FolderSettingsProvider by inject()
     private val folderRepository: FolderRepository by inject()
@@ -22,7 +23,8 @@ class SettingsExporterTest : K9RobolectricTest() {
         contentResolver,
         preferences,
         folderSettingsProvider,
-        folderRepository
+        folderRepository,
+        notificationSettingsUpdater = mock()
     )
 
     @Test

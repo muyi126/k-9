@@ -10,9 +10,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -20,10 +18,10 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import org.apache.commons.io.input.BoundedInputStream;
-import timber.log.Timber;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
-import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
 import static com.fsck.k9.mail.internet.Viewable.Html;
@@ -77,7 +75,7 @@ public class MessageExtractor {
         /*
          * We've got a text part, so let's see if it needs to be processed further.
          */
-        String charset = getHeaderParameter(part.getContentType(), "charset");
+        String charset = PartExtensions.getCharset(part);
         /*
          * determine the charset from HTML message.
          */
@@ -408,7 +406,7 @@ public class MessageExtractor {
      *         A list that will receive the parts that are considered attachments.
      */
     private static void findAttachments(Multipart multipart, Set<Part> knownTextParts,
-            @NonNull List<Part> attachments) {
+            @NotNull List<Part> attachments) {
         for (Part part : multipart.getBodyParts()) {
             Body body = part.getBody();
             if (body instanceof Multipart) {

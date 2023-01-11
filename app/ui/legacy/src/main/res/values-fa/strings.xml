@@ -12,6 +12,8 @@
   <string name="app_license">مجوز آپاچی، نسخهٔ ۲٫۰</string>
   <string name="about_project_title">پروژهٔ متن‌باز</string>
   <string name="about_website_title">وبگاه</string>
+  <string name="user_manual_title">راهنمای کاربر</string>
+  <string name="get_help_title">کمک گرفتن</string>
   <string name="user_forum_title">انجمن کاربری</string>
   <string name="about_fediverse_title">فِدیوِرس</string>
   <string name="about_twitter_title">توئیتر</string>
@@ -24,7 +26,7 @@
   <string name="changelog_show_recent_changes">هنگامی که برنامه روزآمد شد تغییرات تازه را نشان بده</string>
   <string name="changelog_snackbar_text">از تازه‌های این نسخه باخبر شوید</string>
   <!--Welcome message-->
-  <string name="welcome_message_title">به «کِی‌ناین میل» خوش آمدید</string>
+  <string name="welcome_message_title">به «K-9 Mail» خوش آمدید</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
 ‏K-9 Mail برنامه‌ای رایگان برای مدیریت رایانامه در اندروید است.
@@ -104,6 +106,7 @@
   <string name="search_action">جستجو</string>
   <string name="search_everywhere_action">جستجو در همه پوشه‌ها</string>
   <string name="search_results">نتایج جستجو</string>
+  <string name="new_messages_title">پیام‌های جدید</string>
   <string name="preferences_action">تنظیمات</string>
   <string name="folders_action">مدیریت پوشه‌ها</string>
   <string name="account_settings_action">تنظیمات حساب</string>
@@ -114,6 +117,7 @@
   <string name="flag_action">افزودن ستاره</string>
   <string name="unflag_action">حذف ستاره</string>
   <string name="copy_action">کپی</string>
+  <string name="unsubscribe_action">لغو اشتراک</string>
   <string name="show_headers_action">نمایش سرایندها</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">نشانی‌ها در بریده‌دان کپی شد</item>
@@ -149,7 +153,7 @@
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> نامهٔ جدید</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> پیام جدید</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> نخوانده (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> نخوانده (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> تای دیگر در <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">پاسخ</string>
   <string name="notification_action_mark_as_read">خوانده شد</string>
@@ -159,11 +163,16 @@
   <string name="notification_action_archive">بایگانی</string>
   <string name="notification_action_archive_all">بایگانی همه</string>
   <string name="notification_action_spam">هرزنامه</string>
+  <string name="notification_certificate_error_public">خطای گواهی</string>
   <string name="notification_certificate_error_title">خطای گواهی برای <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">تنظیمات کارساز خود را بررسی کنید</string>
   <string name="notification_authentication_error_title">احراز هویت ناموفق بود</string>
   <string name="notification_authentication_error_text">اعتبارسنجی <xliff:g id="account">%s</xliff:g> ناموفق بود. تنظیمات کارساز خود را به‌روز کنید.</string>
-  <string name="notification_bg_sync_ticker">به‌روزآوری رایانامه‌ها: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">خطای اعلانها</string>
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">هنگام ساخت هشدار برای پیام جدید سامانه خطایی رخ داد. اغلب خطا به علت عدم وجود آهنگ هشدارها است.  \n\n برای بازکردن تنظیمات اعلانات، بزنید. </string>
+  <string name="notification_bg_sync_ticker">به‌روزآوری رایانامه‌ها: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">به‌روزآوری رایانامه‌ها</string>
   <string name="notification_bg_send_ticker">ارسال رایانامه: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">ارسال رایانامه</string>
@@ -185,6 +194,9 @@
   <string name="debug_enable_debug_logging_summary">ثبت اطلاعات عیب‌یابی بیشتر</string>
   <string name="debug_enable_sensitive_logging_title">ثبت اطلاعات حساس</string>
   <string name="debug_enable_sensitive_logging_summary">شاید گذرواژه‌ها در گزارش بیاید.</string>
+  <string name="debug_export_logs_title">گزارش‌های برون‌برد</string>
+  <string name="debug_export_logs_success">برون‌برد باموفقیت انجام شد. گزارش‌ها ممکن است حاوی اطلاعات حساس باشند. مراقب باشید آن‌ها را برای چه کسی ارسال می‌کنید.</string>
+  <string name="debug_export_logs_failure">برون‌برد انجام نشد.</string>
   <string name="message_list_load_more_messages_action">بارگیری پیام‌های بیشتر</string>
   <string name="message_to_fmt">به:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">موضوع</string>
@@ -207,7 +219,7 @@
   <string name="message_compose_description_delete_quoted_text">حذف نقل‌قول</string>
   <string name="message_compose_description_edit_quoted_text">ویرایش نقل‌قول</string>
   <string name="remove_attachment_action">حذف پیوست</string>
-  <string name="message_view_from_format">از: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">از: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">به:</string>
   <string name="message_view_cc_label">رونوشت به:</string>
   <string name="message_view_bcc_label">مخفیانه به:</string>
@@ -231,6 +243,7 @@
   <string name="global_settings_show_contact_name_summary">در صورت وجود، نام گیرنده را از لیست مخاطبان نمایش بده</string>
   <string name="global_settings_registered_name_color_label">رنگی‌کردن مخاطبان</string>
   <string name="global_settings_registered_name_color_changed">نام‌های موجود در لیست مخاطبان رنگی شود</string>
+  <string name="general_settings_contact_name_color_label">رنگ نام مخاطب</string>
   <string name="global_settings_messageview_fixedwidth_label">قلم‌های تک‌عرض</string>
   <string name="global_settings_messageview_fixedwidth_summary">هنگام نمایش پیام‌های متنی از قلم تک‌عرض استفاده کن</string>
   <string name="global_settings_messageview_autofit_width_label">جاگیری خودکار پیام‌ها</string>
@@ -247,6 +260,22 @@
   <string name="global_settings_confirm_menu_discard">دورانداختن پیام</string>
   <string name="global_settings_confirm_menu_mark_all_read">همهٔ پیام‌ها خوانده شد</string>
   <string name="global_settings_confirm_action_delete_notif">حذف (از اعلان)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">هیچ‌کدام</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">بایگانی</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">حذف</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">هرزنامه</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">انتقال</string>
   <string name="global_settings_privacy_hide_useragent">کارخواه رایانامه را مخفی کن</string>
   <string name="global_settings_privacy_hide_useragent_detail">شناسهٔ K-9 User-Agent را از سرایند رایانامه‌ها بردار</string>
   <string name="global_settings_privacy_hide_timezone">منطقهٔ زمانی را مخفی کن</string>
@@ -270,6 +299,11 @@
   <string name="account_setup_basics_title">راه‌اندازی حساب کاربری جدید</string>
   <string name="account_setup_basics_email_hint">نشانی رایانامه </string>
   <string name="account_setup_basics_password_hint">گذرواژه</string>
+  <string name="account_setup_oauth_description">جهت استفاده‌ این حساب کاربری از K-9 Mail، نیاز است که وارد حساب کاربری خود شوید و اجازه دسترسی اپلیکیشن به ایمیل‌ها را صادر کنید.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">ورود</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">ورود با حساب گوگل</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">برای دیدن گذرواژه‌تان در این قسمت، قفل صفحه در این دستگاه را فعال کنید.</string>
   <string name="account_setup_basics_show_password_biometrics_title">هویت‌تان را تایید کنید</string>
@@ -293,6 +327,7 @@
   <string name="account_setup_auth_type_insecure_password">گذرواژه، به‌شکل ناامن ارسال شد</string>
   <string name="account_setup_auth_type_encrypted_password">گذرواژهٔ رمزنگاری‌شده</string>
   <string name="account_setup_auth_type_tls_client_certificate">گواهی کارخواه</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">تنظیمات کارساز ورودی</string>
   <string name="account_setup_incoming_username_label">نام کاربری</string>
   <string name="account_setup_incoming_password_label">گذرواژه</string>
@@ -311,10 +346,7 @@
   <string name="account_setup_incoming_delete_policy_never_label">در کارساز پاک نشود</string>
   <string name="account_setup_incoming_delete_policy_delete_label">در کارساز نیز پاک شود</string>
   <string name="account_setup_incoming_delete_policy_markread_label">در کارساز نشان بزن که خواندم</string>
-  <string name="account_setup_incoming_compression_label">روی این شبکه‌ها از فشرده‌سازی استفاده کن:</string>
-  <string name="account_setup_incoming_mobile_label">دادهٔ همراه</string>
-  <string name="account_setup_incoming_wifi_label">وای‌فای</string>
-  <string name="account_setup_incoming_other_label">سایر</string>
+  <string name="account_setup_incoming_use_compression">استفاده از فشرده سازی</string>
   <string name="account_setup_expunge_policy_label">پیام‌های حذف‌شده را در کارساز پاک کن</string>
   <string name="account_setup_expunge_policy_immediately">فوراً</string>
   <string name="account_setup_expunge_policy_on_poll">در زمان سرکشی</string>
@@ -379,6 +411,10 @@
   <string name="account_setup_failed_dlg_auth_message_fmt">نام کاربری یا گذرواژه اشتباه است.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">کارساز یک گواهی SSL نامعتبر ارائه داده است. گاهی این مسئله به‌سبب پیکربندی نادرست کارساز است. گاهی اوقات علت آن است که فردی تلاش می‌کند به شما یا کارساز رایانامه حمله کند. اگر اطلاعات کافی ندارید، ردکردن را انتخاب کنید و با پشتیبانی رایانامهٔ خود تماس بگیرید.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">اتصال به کارساز ناموفق بود.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">مجوزدهی لغو شد</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">مجوزدهی به علت این خطا ناتمام ماند: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 فعلا توسط این ارائه دهنده پشتیبانی نمی شود</string>
+  <string name="account_setup_failed_dlg_browser_not_found">برنامه نمی تواند مرورگری را پیدا کند تا دسترسی به حسابتان را بگیرد</string>
   <string name="account_setup_failed_dlg_edit_details_action">ویرایش جزئیات</string>
   <string name="account_setup_failed_dlg_continue_action">ادامه</string>
   <string name="account_settings_push_advanced_title">پیشرفته</string>
@@ -533,11 +569,29 @@
   <string name="account_settings_description_label">نام حساب</string>
   <string name="account_settings_name_label">نام شما</string>
   <string name="notifications_title">اعلان‌ها</string>
+  <string name="account_settings_vibration">لرزش</string>
   <string name="account_settings_vibrate_enable">لرزش</string>
+  <string name="account_settings_vibrate_pattern_label">الگوی لرزش</string>
   <string name="account_settings_vibrate_pattern_default">پیش‌فرض</string>
+  <string name="account_settings_vibrate_pattern_1">الگوی 1</string>
+  <string name="account_settings_vibrate_pattern_2">الگوی 2</string>
+  <string name="account_settings_vibrate_pattern_3">الگوی 3</string>
+  <string name="account_settings_vibrate_pattern_4">الگوی 4</string>
+  <string name="account_settings_vibrate_pattern_5">الگوی 5</string>
   <string name="account_settings_vibrate_times">تکرار لرزش</string>
+  <string name="account_settings_vibrate_summary_disabled">غیرفعال</string>
   <string name="account_settings_ringtone">زنگ رایانامهٔ جدید</string>
+  <string name="account_settings_notification_light_label">چراغ اعلان</string>
+  <string name="account_settings_notification_light_disabled">غیرفعال</string>
   <string name="account_settings_notification_light_account_color">رنگ حساب کاربری</string>
+  <string name="account_settings_notification_light_default_color">رنگ پیش‌فرض سیستم</string>
+  <string name="account_settings_notification_light_white">سفید</string>
+  <string name="account_settings_notification_light_red">قرمز</string>
+  <string name="account_settings_notification_light_green">سبز</string>
+  <string name="account_settings_notification_light_blue">آبی</string>
+  <string name="account_settings_notification_light_yellow">زرد</string>
+  <string name="account_settings_notification_light_cyan">فیروزه‌ای</string>
+  <string name="account_settings_notification_light_magenta">ارغوانی</string>
   <string name="account_settings_composition_title">گزینه‌های نوشتن پیام</string>
   <string name="account_settings_composition_label">پیش‌فرض‌های نوشتن</string>
   <string name="account_settings_composition_summary">پیش‌فرض‌های خودتان را برای «از»، «مخفیانه به» و «امضا» تنظیم کنید</string>
@@ -595,8 +649,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">گواهی ناشناس</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">پذیرش کلید</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">ردکردن کلید</string>
-  <string name="message_view_help_key">Del (یا D) - حذف\nR - پاسخ\nA - پاسخ به همه\nC - نوشتن\nF - هدایت\nM - انتقال\nV - بایگانی\nY - کپی\nZ - نشان بزن که (نـ)خواندم\nG - ستاره\nO - نوع ترتیب\nI - ترتیب\nQ - بازگشت به پوشه‌ها\nS - انتخاب (نـ)کردن\nJ یا P - پیام قبلی\nK یا N - پیام بعدی</string>
-  <string name="message_list_help_key">Del (یا D) - حذف\nC - نوشتن\nM - انتقال\nV - بایگانی\nY - کپی\nZ - نشان بزن که (نـ)خواندم\nG - ستاره\nO - نوع ترتیب\nI - ترتیب\nQ - بازگشت به پوشه‌ها\nS - انتخاب (نـ)کردن</string>
   <string name="folder_list_filter_hint">بخشی از نام پوشه</string>
   <string name="folder_list_display_mode_label">نمایش کدام پوشه‌ها…</string>
   <string name="folder_list_display_mode_all">همهٔ پوشه‌ها</string>
@@ -644,9 +696,6 @@
   <string name="account_setup_push_limit_1000">۱۰۰۰ پوشه</string>
   <string name="animations_title">پویانمایی</string>
   <string name="animations_summary">استفاده از جلوه‌های پُرزرق‌وبرق</string>
-  <string name="volume_navigation_title">جابه‌جایی با کلیدهای تنظیم صدا</string>
-  <string name="volume_navigation_message">در نماهای پیام</string>
-  <string name="volume_navigation_list">در نماهای لیستی</string>
   <string name="show_unified_inbox_title">نمایش صندوق یکپارچه</string>
   <string name="show_starred_count_title">نمایش تعداد ستاره‌دارها</string>
   <string name="integrated_inbox_title">صندوق ورودی یکپارچه</string>
@@ -661,12 +710,6 @@
   <string name="account_settings_automatic_special_folder">خودکار (%s)</string>
   <string name="font_size_settings_title">اندازهٔ قلم</string>
   <string name="font_size_settings_description">پیکربندی اندازهٔ قلم</string>
-  <string name="font_size_account_list">لیست حساب</string>
-  <string name="font_size_account_name">نام حساب</string>
-  <string name="font_size_account_description">توصیف حساب</string>
-  <string name="font_size_folder_list">لیست‌های پوشه</string>
-  <string name="font_size_folder_name">نام پوشه</string>
-  <string name="font_size_folder_status">وضعیت پوشه</string>
   <string name="font_size_message_list">لیست‌های پیام</string>
   <string name="font_size_message_list_subject">موضوع</string>
   <string name="font_size_message_list_sender">فرستنده</string>
@@ -698,7 +741,6 @@
   <string name="save_or_discard_draft_message_changes">تغییرات حفظ شود یا دور ریخته شود؟</string>
   <string name="confirm_discard_draft_message_title">پیام از بین برود؟</string>
   <string name="confirm_discard_draft_message">آیا از دورانداختن این پیام مطمئن هستید؟</string>
-  <string name="select_text_now">متن را انتخاب کنید تا کپی شود.</string>
   <string name="dialog_confirm_clear_local_folder_title">پیام‌ها از روی دستگاه پاک شود؟</string>
   <string name="dialog_confirm_clear_local_folder_message">این کار همهٔ پیام‌ها را از پوشهٔ روی دستگاه پاک می‌کند. هیچ پیامی از روی کارساز پاک نمی‌شود.</string>
   <string name="dialog_confirm_clear_local_folder_action">پاک‌کردن پیام‌ها</string>
@@ -738,12 +780,19 @@
   <string name="settings_import_pick_document_button">انتخاب پرونده</string>
   <string name="settings_import_button">درون‌برد</string>
   <string name="settings_import_success_generic">درون‌برد تنظیمات موفقیت‌آمیز بود</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">لطفاً گذرواژه‌ها را وارد کنید</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">لطفا وارد شوید</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">لطفا وارد شوید و رمز را وارد کنید</string>
   <string name="settings_import_failure">درون‌برد تنظیمات ناموفق بود</string>
   <string name="settings_import_read_failure">خواندن پروندهٔ تنظیمات ناموفق بود</string>
   <string name="settings_import_partial_failure">درون‌برد برخی تنظیمات ناموفق بود</string>
   <string name="settings_import_status_success">درون‌برد موفقیت‌آمیز بود</string>
   <string name="settings_import_status_password_required">گذرواژه لازم است</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">ورود نیاز است</string>
   <string name="settings_import_status_not_imported">درون‌برد نشده</string>
   <string name="settings_import_status_error">شکست درون‌برد</string>
   <string name="settings_import_later_button">بعداً</string>
@@ -934,19 +983,14 @@
   <string name="account_settings_crypto_hide_sign_only_off">همهٔ امضاها نشان داده می‌شود</string>
   <string name="error_sign_only_no_encryption">در حالت فقط-امضا (sign-only) رمزنگاری امکان‌پذیر نیست!</string>
   <string name="unsigned_text_divider_label">متن امضانشده</string>
-  <string name="apg_deprecated_title">هشدار وَرافتادگی APG</string>
-  <string name="apg_deprecated_1">دیگر کسی APG را توسعه نمی‌دهد!</string>
-  <string name="apg_deprecated_2">بر این اساس، K-9 Mail به پشتیبانی از APG پایان داده است.</string>
-  <string name="apg_deprecated_bullet_1">توسعهٔ آن در اوایل سال ۲۰۱۴ متوقف شد</string>
-  <string name="apg_deprecated_bullet_2">مشکلات امنتی حل‌نشده‌ای دارد</string>
-  <string name="apg_learn_more">برای اطلاعات بیشتر <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">اینجا کلیک کنید</a>.</string>
-  <string name="apg_deprecated_ok">فهمیدم!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">این رایانامه رمزنگاری شده است</string>
   <string name="crypto_no_provider_message">این رایانامه با OpenPGP رمزنگاری شده است.\nبرای خواندن آن، باید برنامه‌ای سازگار با OpenPGP را نصب و پیکربندی کنید.</string>
   <string name="crypto_no_provider_button">برو به تنظیمات</string>
   <string name="mail_list_widget_text">لیست پیام K-9</string>
-  <string name="mail_list_widget_loading">بارگیری پیام‌ها…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">بارگیری…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">بارگیری…</string>
   <string name="openpgp_enabled_error_title">رمزنگاری ممکن نیست</string>
   <string name="openpgp_enabled_error_msg">بعضی از گیرندگان انتخابی از این ویژگی پشتیبانی نمی‌کنند!</string>
   <string name="enable_encryption">فعال‌سازی رمزنگاری</string>
@@ -962,7 +1006,7 @@
   <string name="dialog_autocrypt_mutual_title">حالت رمزنگاری خودکار دوسره</string>
   <string name="dialog_autocrypt_mutual_description_1">پیام‌ها معمولاً یا به‌انتخاب رمزنگاری می‌شوند یا زمانی که در پاسخ به پیام رمزنگاری‌شده‌ای ارسال شوند.</string>
   <string name="dialog_autocrypt_mutual_description_2">اگر هم فرستنده و هم گیرنده حالت دوسره را فعال کنند، رمزنگاری به‌طور پیش‌فرض فعال خواهد شد.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">برای اطلاعات بیشتر <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">اینجا کلیک کنید</a>.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">برای اطلاعات بیشتر <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">اینجا کلیک کنید</a>.</string>
   <string name="general_settings_title">تنظیمات کلی</string>
   <string name="dialog_openkeychain_info_title">برنامه‌ای برای OpenPGP نصب نیست</string>
   <string name="dialog_openkeychain_info_install">نصب</string>
@@ -1008,4 +1052,21 @@
   <string name="push_info_configure_notification_action">پیکربندی اعلان</string>
   <string name="push_info_disable_push_text">اگر برای پیام‌های جدید نیاز به اعلان آنی ندارید، بهتر است پیشرانی را غیرفعال کنید و سرکشی را به کار ببرید. روش سرکشی در فواصل زمانی منظم آمدن نامه‌های جدید را بررسی می‌کند و به آن اعلان نیاز ندارد.</string>
   <string name="push_info_disable_push_action">غیرفعال‌سازی پیشرانی</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">بی‌انتخاب</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">خوانده نشد</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">افزودن ستاره</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">حذف ستاره</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">بایگانی</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">حذف</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">هرزنامه</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

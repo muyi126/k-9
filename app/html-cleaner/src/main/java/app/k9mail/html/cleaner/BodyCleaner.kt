@@ -2,7 +2,7 @@ package app.k9mail.html.cleaner
 
 import org.jsoup.nodes.Document
 import org.jsoup.safety.Cleaner
-import org.jsoup.safety.Whitelist as AllowList
+import org.jsoup.safety.Safelist
 
 internal class BodyCleaner {
     private val cleaner: Cleaner
@@ -12,9 +12,11 @@ internal class BodyCleaner {
     )
 
     init {
-        val allowList = AllowList.relaxed()
-            .addTags("font", "hr", "ins", "del", "center", "map", "area", "title")
+        val allowList = Safelist.relaxed()
+            .addTags("font", "hr", "ins", "del", "center", "map", "area", "title", "tt", "kbd", "samp", "var")
             .addAttributes("font", "color", "face", "size")
+            .addAttributes("a", "name")
+            .addAttributes("div", "align")
             .addAttributes(
                 "table", "align", "background", "bgcolor", "border", "cellpadding", "cellspacing",
                 "width"
@@ -36,7 +38,8 @@ internal class BodyCleaner {
             .addAttributes("img", "usemap")
             .addAttributes(":all", "class", "style", "id", "dir")
             .addProtocols("img", "src", "http", "https", "cid", "data")
-            .addProtocols("a", "href", "tel", "sip", "bitcoin", "ethereum", "rtsp")
+            // Allow all URI schemes in links
+            .removeProtocols("a", "href", "ftp", "http", "https", "mailto")
 
         cleaner = Cleaner(allowList)
     }

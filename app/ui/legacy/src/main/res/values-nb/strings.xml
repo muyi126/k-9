@@ -141,7 +141,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> ny melding</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nye meldinger</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ulest(e) (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Ulest(e) (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> flere på <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Svar</string>
   <string name="notification_action_mark_as_read">Merk som lest</string>
@@ -155,7 +155,9 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="notification_certificate_error_text">Sjekk dine tjenerinnstillinger</string>
   <string name="notification_authentication_error_title">Autentisering feilet</string>
   <string name="notification_authentication_error_text">Autentisering feilet for <xliff:g id="account">%s</xliff:g>. Oppdater serverinnstillingene dine.</string>
-  <string name="notification_bg_sync_ticker">Sjekker e-post: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_bg_sync_ticker">Sjekker e-post: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Sjekker e-post</string>
   <string name="notification_bg_send_ticker">Sender e-post: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Sender e-post</string>
@@ -197,7 +199,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="message_compose_description_delete_quoted_text">Fjern sitert tekst</string>
   <string name="message_compose_description_edit_quoted_text">Rediger sitert tekst</string>
   <string name="remove_attachment_action">Fjern vedlegg</string>
-  <string name="message_view_from_format">Fra: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Fra: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Til:</string>
   <string name="message_view_cc_label">Kopi:</string>
   <string name="message_view_bcc_label">Blindkopi:</string>
@@ -237,6 +239,22 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="global_settings_confirm_menu_discard">Forkast melding</string>
   <string name="global_settings_confirm_menu_mark_all_read">Merk alle meldinger som lest</string>
   <string name="global_settings_confirm_action_delete_notif">Slett (fra varsel)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Ingen</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arkiver</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Slett</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Søppelpost</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Flytt</string>
   <string name="global_settings_privacy_hide_useragent">Skjul e-postklient</string>
   <string name="global_settings_privacy_hide_useragent_detail">Fjern K-9 -brukeragent fra meldingshoder</string>
   <string name="global_settings_privacy_hide_timezone">Skjul tidssone</string>
@@ -259,6 +277,8 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="account_setup_basics_title">Sett opp en ny konto</string>
   <string name="account_setup_basics_email_hint">E-postadresse</string>
   <string name="account_setup_basics_password_hint">Passord</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Manuelt oppsett</string>
   <string name="account_setup_check_settings_title"/>
@@ -297,10 +317,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="account_setup_incoming_delete_policy_never_label">Ikke slett på tjener</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Slett fra tjener</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Merk som lest på tjener</string>
-  <string name="account_setup_incoming_compression_label">Bruk kompresjon på nettverk:</string>
-  <string name="account_setup_incoming_mobile_label">Mobil</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Annet</string>
   <string name="account_setup_expunge_policy_label">Fjern slettede meldinger på tjener</string>
   <string name="account_setup_expunge_policy_immediately">Umiddelbart</string>
   <string name="account_setup_expunge_policy_on_poll">I forbindelse med sjekking av e-post</string>
@@ -574,8 +590,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ukjent sertifikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Godta nøkkel</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Avvis nøkkel</string>
-  <string name="message_view_help_key">Del (eller D) - Slett\nR - Svar\nA - Svar alle\nC - Skriv\nF - Videresend\nM - Flytt\nV - Arkiver\nY - Kopier\nZ - Marker (U)leste\nG - Stjerne\nO - Sorteringstype\nI - Sorteringsrekkefølge\nQ - Tilbake til mapper\nS - Velg/fjern valg\nJ eller P - Forrige melding\nK eller N - Neste melding</string>
-  <string name="message_list_help_key">Del (eller D) - Slett\nR - Skriv\nM - Flytt\nV - Arkiver\nY - Kopier\nZ - Marker (U)leste\nG - Stjerne\nO - Sorteringstype\nI - Sorteringsrekkefølge\nQ - Tilbake til mapper\nS - Velg/fjern valg</string>
   <string name="folder_list_filter_hint">Mappenavn inneholder</string>
   <string name="folder_list_display_mode_label">Vis mapper …</string>
   <string name="folder_list_display_mode_all">Alle mapper</string>
@@ -623,9 +637,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="account_setup_push_limit_1000">1000 mapper</string>
   <string name="animations_title">Animering</string>
   <string name="animations_summary">Bruk glorete visuelle effekter</string>
-  <string name="volume_navigation_title">Navigering med lydstyrkeknapp</string>
-  <string name="volume_navigation_message">I meldingsvisninger</string>
-  <string name="volume_navigation_list">I listevisninger</string>
   <string name="integrated_inbox_title">Samlet innboks</string>
   <string name="integrated_inbox_detail">Alle meldinger i samlede mapper</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Samle</string>
@@ -638,12 +649,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="account_settings_automatic_special_folder">Automatisk (%s)</string>
   <string name="font_size_settings_title">Skriftstørrelse</string>
   <string name="font_size_settings_description">Angi skriftstørrelse</string>
-  <string name="font_size_account_list">Kontoliste</string>
-  <string name="font_size_account_name">Kontonavn</string>
-  <string name="font_size_account_description">Kontobeskrivelse</string>
-  <string name="font_size_folder_list">Mappeliste</string>
-  <string name="font_size_folder_name">Mappenavn</string>
-  <string name="font_size_folder_status">Mappestatus</string>
   <string name="font_size_message_list">Meldingsliste</string>
   <string name="font_size_message_list_subject">Emne</string>
   <string name="font_size_message_list_sender">Avsender</string>
@@ -674,7 +679,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Lagre eller Forkast denne meldingen?</string>
   <string name="confirm_discard_draft_message_title">Forkast melding?</string>
   <string name="confirm_discard_draft_message">Er du sikker på at du vil forkaste denne meldingen?</string>
-  <string name="select_text_now">Velg teksten du vil kopiere.</string>
   <string name="dialog_confirm_clear_local_folder_title">Fjern lokale meldinger?</string>
   <string name="dialog_confirm_clear_local_folder_message">Dette vil fjerne alle lokale meldinger fra mappen. Ingen meldinger vil bli slettet fra tjener.</string>
   <string name="dialog_confirm_clear_local_folder_action">Fjern meldinger</string>
@@ -714,12 +718,16 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="settings_import_pick_document_button">Velg fil</string>
   <string name="settings_import_button">Importer</string>
   <string name="settings_import_success_generic">Innstillinger importert med hell</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Vennligst skriv inn passord</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Import av innstillinger mislyktes</string>
   <string name="settings_import_read_failure">Klarte ikke avlese innstillingsfil</string>
   <string name="settings_import_partial_failure">Klarte ikke importere noen innstillinger</string>
   <string name="settings_import_status_success">Importert med hell</string>
   <string name="settings_import_status_password_required">Passord er påkrevd</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import">Importer innstillinger</string>
   <string name="settings_importing">Importerer innstillinger …</string>
   <string name="server_name_format">Tjenernavn: <xliff:g id="hostname">%s</xliff:g></string>
@@ -895,19 +903,14 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="account_settings_crypto_hide_sign_only_off">Alle signaturer vil bli vist</string>
   <string name="error_sign_only_no_encryption">Kryptering utilgjengelig i Bare-signer -modus!</string>
   <string name="unsigned_text_divider_label">Usignert tekst</string>
-  <string name="apg_deprecated_title">APG-foreldelsesadvarsel</string>
-  <string name="apg_deprecated_1">APG vedlikeholdes ikke lenger</string>
-  <string name="apg_deprecated_2">På grunn av dette, har støtten for APG blitt fjernet fra K-9.</string>
-  <string name="apg_deprecated_bullet_1">Utviklingen stoppet tidlig i 2014</string>
-  <string name="apg_deprecated_bullet_2">Inneholder sikkerhetsfeil som ikke er rettet</string>
-  <string name="apg_learn_more">Du kan <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klikke her for å</a> lære mer.</string>
-  <string name="apg_deprecated_ok">Skjønner!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Denne e-posten er kryptert</string>
   <string name="crypto_no_provider_message">Denne e-posten har blitt kryptert med OpenPGP.\nFor å lese den, må du installere og sette opp et kompatibelt OpenPGP-program.</string>
   <string name="crypto_no_provider_button">Gå til \"Innstillinger\"</string>
   <string name="mail_list_widget_text">K-9 meldingsliste</string>
-  <string name="mail_list_widget_loading">Laster inn meldinger…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Laster…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Laster…</string>
   <string name="openpgp_enabled_error_title">Kryptering er ikke mulig</string>
   <string name="openpgp_enabled_error_msg">Noen av de valgte mottakerne støtter ikke denne funksjonen!</string>
   <string name="enable_encryption">Skru på kryptering</string>
@@ -923,7 +926,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="dialog_autocrypt_mutual_title">Gjensidig Autocrypt-modus</string>
   <string name="dialog_autocrypt_mutual_description_1">Meldinger vil normalt bli kryptert når valgt, eller ved besvaring av kryptert melding.</string>
   <string name="dialog_autocrypt_mutual_description_2">Hvis både avsender og mottakere skrur på gjensidig modus, vil kryptering være påslått som forvalg.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Du kan <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klikke her</a> for å lære mer.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Du kan <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klikke her</a> for å lære mer.</string>
   <string name="general_settings_title">Generelle innstillinger</string>
   <string name="dialog_openkeychain_info_title">Inget OpenPGP-program installert</string>
   <string name="dialog_openkeychain_info_install">Installer</string>
@@ -941,4 +944,22 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="switch_on">På</string>
   <string name="switch_off">Av</string>
   <!--permissions-->
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Velg</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Fjern valg</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Merk uleste</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Legg til stjerne</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Fjern stjerne</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Arkiver</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Slett</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Søppelpost</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

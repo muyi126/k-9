@@ -12,6 +12,8 @@
   <string name="app_license">Licencia Apache, versión 2.0</string>
   <string name="about_project_title">Proyecto de código abierto</string>
   <string name="about_website_title">Sitio web</string>
+  <string name="user_manual_title">Manual de uso</string>
+  <string name="get_help_title">Ayuda</string>
   <string name="user_forum_title">Foro de usuarios</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -114,9 +116,11 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="flag_action">Destacar el mensaje</string>
   <string name="unflag_action">No marcar como destacado</string>
   <string name="copy_action">Copiar</string>
+  <string name="unsubscribe_action">Cancelar suscripción</string>
   <string name="show_headers_action">Mostrar cabeceras</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Se ha copiado la dirección al portapapeles</item>
+    <item quantity="many">Se han copiado las direcciones al portapapeles</item>
     <item quantity="other">Se han copiado las direcciones al portapapeles</item>
   </plurals>
   <string name="copy_subject_to_clipboard">Texto copiado en el portapapeles</string>
@@ -146,9 +150,10 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="notification_new_title">Correo nuevo</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> mensaje nuevo</item>
+    <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> mensajes nuevos</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> mensajes nuevos</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Sin leer (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Sin leer (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> más en <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
   <string name="notification_action_mark_as_read">Marcar como leído</string>
@@ -163,7 +168,11 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="notification_certificate_error_text">Comprueba los ajustes del servidor</string>
   <string name="notification_authentication_error_title">Fallo de autenticación</string>
   <string name="notification_authentication_error_text">Fallo de autenticación en <xliff:g id="account">%s</xliff:g>. Actualiza y revisa los ajustes del servidor.</string>
-  <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Notificación fallida</string>
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Ha ocurrido un problema al intentar crear una notificación del sistema alertando de un correo nuevo. Seguramente sea por no tener un sonido de alerta puesto.\n\nToca para ver los ajustes de notificaciones.</string>
+  <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Comprobando correo</string>
   <string name="notification_bg_send_ticker">Enviando correo: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Enviando correo</string>
@@ -210,7 +219,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="message_compose_description_delete_quoted_text">No incluir el mensaje original</string>
   <string name="message_compose_description_edit_quoted_text">Editar el mensaje original</string>
   <string name="remove_attachment_action">Eliminar adjunto</string>
-  <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">De: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Para:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Cco:</string>
@@ -251,6 +260,28 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="global_settings_confirm_menu_discard">Descartar mensaje</string>
   <string name="global_settings_confirm_menu_mark_all_read">Marcar todos los mensajes como leídos</string>
   <string name="global_settings_confirm_action_delete_notif">Borrar (de notificaciones)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Acciones al deslizar el dedo</string>
+  <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Al deslizar a la derecha</string>
+  <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Al deslizar a la izquierda</string>
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Ninguno</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">De/seleccionar</string>
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Marcar como leído/sin leer</string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Marcar como destacado o no</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Archivo</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Borrar</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Mover</string>
   <string name="global_settings_privacy_hide_useragent">Ocultar cliente de correo</string>
   <string name="global_settings_privacy_hide_useragent_detail">Eliminar la marca con el «agente de usuario» de K-9 de las cabeceras del mensaje, el destinatario no verá qué programa de correo usas</string>
   <string name="global_settings_privacy_hide_timezone">Ocultar zona horaria</string>
@@ -274,6 +305,11 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_setup_basics_title">Configurar nueva cuenta</string>
   <string name="account_setup_basics_email_hint">Dirección de correo</string>
   <string name="account_setup_basics_password_hint">Contraseña</string>
+  <string name="account_setup_oauth_description">Para poder utilizar esta cuenta de correo con K-9 Mail es necesario que inicies sesión y propones los permisos necesarios de acceso.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Iniciar sesión</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Iniciar sesión con Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Para ver tu contraseña, activa la pantalla de bloqueo en tu dispositivo.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Verifica tu identidad</string>
@@ -297,6 +333,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_setup_auth_type_insecure_password">Contraseña, transmitida de manera no segura</string>
   <string name="account_setup_auth_type_encrypted_password">Contraseña cifrada</string>
   <string name="account_setup_auth_type_tls_client_certificate">Certificado de cliente</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Configuración del servidor de entrada</string>
   <string name="account_setup_incoming_username_label">Usuario</string>
   <string name="account_setup_incoming_password_label">Contraseña</string>
@@ -315,10 +352,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_setup_incoming_delete_policy_never_label">No borrar del servidor</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Borrar del servidor</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marcar como leído en servidor</string>
-  <string name="account_setup_incoming_compression_label">Utilizar compresión en la red:</string>
-  <string name="account_setup_incoming_mobile_label">Móvil</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Otras</string>
+  <string name="account_setup_incoming_use_compression">Con compresión</string>
   <string name="account_setup_expunge_policy_label">Eliminar mensajes borrados en el servidor</string>
   <string name="account_setup_expunge_policy_immediately">Inmediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante comprobación</string>
@@ -383,6 +417,10 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_setup_failed_dlg_auth_message_fmt">Usuario o contraseña incorrectos.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">El servidor ha enviado un certificado SSL incorrecto. Esto puede deberse a un problema de configuración en el propio servidor, o bien porque alguien está intentando interceptar tus comunicaciones o atacar el servidor de correo. Si no estás seguro, pulsa en «Rechazar» y contacta con quien gestiona tu servidor de correo.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">No se pudo conectar con el servidor.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">See ha cancelado la autorización</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">La autorización ha fallado con el error: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">El servidor no parece que sea compatible con OAuth 2.0.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">La aplicación no ha encontrado ningún navegador que se pueda utilizar para iniciar sesión en tu cuenta.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Editar detalles</string>
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avanzado</string>
@@ -617,8 +655,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado desconocido</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceptar clave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rechazar clave</string>
-  <string name="message_view_help_key">Supr (o D) - Borrar\nR - Responder\nA - Responder a todos\nC - Redactar\nF - Reenviar\nM - Mover\nV - Archivar\nY - Copiar\nZ - Marcar como (no) leído\nG - Destacar\nO - Tipo de ordenación\nI - Invertir orden\nQ - Volver a las carpetas\nS - Des/marcar\nJ o P - Mensaje anterior\nK o N - Siguiente mensaje</string>
-  <string name="message_list_help_key">Supr (o D) - Borrar\nC - Redactar\nM - Mover\nV - Archivar\nY - Copiar\nZ - Marcar como (no) leído\nG - Destacar\nO - Tipo de ordenación\nI - Invertir orden\nQ - Volver a las carpetas\nS - Des/marcar</string>
   <string name="folder_list_filter_hint">El nombre de la carpeta contiene</string>
   <string name="folder_list_display_mode_label">Mostrar carpetas…</string>
   <string name="folder_list_display_mode_all">Ver todas las carpetas</string>
@@ -666,9 +702,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_setup_push_limit_1000">1000 carpetas</string>
   <string name="animations_title">Animaciones</string>
   <string name="animations_summary">Utilizar animaciones</string>
-  <string name="volume_navigation_title">Navegación con teclas de volumen</string>
-  <string name="volume_navigation_message">Vista de mensaje</string>
-  <string name="volume_navigation_list">Listas de mensajes</string>
+  <string name="volume_navigation_title">Navegar con las teclas de volumen al leer el correo</string>
   <string name="show_unified_inbox_title">Mostrar bandeja de entrada unificada</string>
   <string name="show_starred_count_title">Mostrar número de mensajes destacados</string>
   <string name="integrated_inbox_title">Entrada unificada</string>
@@ -683,12 +717,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_settings_automatic_special_folder">Automático (%s)</string>
   <string name="font_size_settings_title">Tamaño de letra</string>
   <string name="font_size_settings_description">Configurar el tamaño de letra</string>
-  <string name="font_size_account_list">Lista de cuentas</string>
-  <string name="font_size_account_name">Nombre de la cuenta</string>
-  <string name="font_size_account_description">Descripción de la cuenta</string>
-  <string name="font_size_folder_list">Lista de carpetas</string>
-  <string name="font_size_folder_name">Nombre de la carpeta</string>
-  <string name="font_size_folder_status">Estado de la carpeta</string>
   <string name="font_size_message_list">Lista de mensajes</string>
   <string name="font_size_message_list_subject">Asunto</string>
   <string name="font_size_message_list_sender">Remitente</string>
@@ -720,7 +748,6 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="save_or_discard_draft_message_changes">¿Guardar o descartar cambios?</string>
   <string name="confirm_discard_draft_message_title">¿Descartar mensaje?</string>
   <string name="confirm_discard_draft_message">¿Seguro que quieres descartar este mensaje?</string>
-  <string name="select_text_now">Selecciona el texto a copiar.</string>
   <string name="dialog_confirm_clear_local_folder_title">¿Limpiar mensajes locales?</string>
   <string name="dialog_confirm_clear_local_folder_message">Esto borrará todos los mensajes locales de la carpeta. No se eliminará ningún mensaje en el servidor.</string>
   <string name="dialog_confirm_clear_local_folder_action">Limpiar mensajes</string>
@@ -728,6 +755,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="dialog_confirm_delete_message">¿Seguro que quieres borrar este mensaje?</string>
   <plurals name="dialog_confirm_delete_messages">
     <item quantity="one">¿Seguro que quieres borrar este mensaje?</item>
+    <item quantity="many">¿Seguro que quieres borrar <xliff:g id="message_count">%1$d</xliff:g> mensajes?</item>
     <item quantity="other">¿Seguro que quieres borrar <xliff:g id="message_count">%1$d</xliff:g> mensajes?</item>
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Sí</string>
@@ -741,6 +769,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="dialog_confirm_spam_title">Mover a la carpeta de spam</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">¿Seguro que quieres mover este mensaje a la carpeta de Spam?</item>
+    <item quantity="many">¿Seguro que quieres mover <xliff:g id="message_count">%1$d</xliff:g> mensajes a la carpeta de Spam?</item>
     <item quantity="other">¿Seguro que quieres mover <xliff:g id="message_count">%1$d</xliff:g> mensajes a la carpeta de Spam?</item>
   </plurals>
   <string name="dialog_confirm_spam_confirm_button">Sí</string>
@@ -760,12 +789,19 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="settings_import_pick_document_button">Seleccionar archivo</string>
   <string name="settings_import_button">Importar</string>
   <string name="settings_import_success_generic">Los ajustes se han importado correctamente</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Introduce tus contraseñas</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Iniciar sesión</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Inicia sesión escribiendo tu contraseña</string>
   <string name="settings_import_failure">La importación de ajustes ha fallado</string>
   <string name="settings_import_read_failure">Fallo al leer el archivo de ajustes</string>
   <string name="settings_import_partial_failure">La importación de algunos ajustes ha fallado</string>
   <string name="settings_import_status_success">Importado correctamente</string>
   <string name="settings_import_status_password_required">Se necesita una contraseña</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Es necesario iniciar sesión</string>
   <string name="settings_import_status_not_imported">No importado</string>
   <string name="settings_import_status_error">La importación ha fallado</string>
   <string name="settings_import_later_button">Más tarde</string>
@@ -773,6 +809,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="settings_importing">Importando ajustes…</string>
   <plurals name="settings_import_password_prompt">
     <item quantity="one">Para poder usar la cuenta \"<xliff:g id="account">%s</xliff:g>\" es necesario proporcionar la contraseña del servidor.</item>
+    <item quantity="many">Para poder usar la cuenta \"<xliff:g id="account">%s</xliff:g>\" es necesario proporcionar las contraseñas del servidor.</item>
     <item quantity="other">Para poder usar la cuenta \"<xliff:g id="account">%s</xliff:g>\" es necesario proporcionar las contraseñas del servidor.</item>
   </plurals>
   <string name="settings_import_incoming_server_password_hint">Contraseña del servidor de correo entrante</string>
@@ -824,10 +861,12 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="remote_search_sending_query">Haciendo petición al servidor</string>
   <plurals name="remote_search_downloading">
     <item quantity="one">Obteniendo %d elemento</item>
+    <item quantity="many">Obteniendo %d elementos</item>
     <item quantity="other">Obteniendo %d elementos</item>
   </plurals>
   <plurals name="remote_search_downloading_limited">
     <item quantity="one">Obteniendo elemento %1$d de %2$d</item>
+    <item quantity="many">Obteniendo elemento %1$d de %2$d</item>
     <item quantity="other">Obteniendo elemento %1$d de %2$d</item>
   </plurals>
   <string name="remote_search_error">Ha fallado la búsqueda remota</string>
@@ -956,19 +995,14 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="account_settings_crypto_hide_sign_only_off">Se mostrarán todas las firmas</string>
   <string name="error_sign_only_no_encryption">El cifrado no está disponible en el modo de solo-firma.</string>
   <string name="unsigned_text_divider_label">Texto sin firmar</string>
-  <string name="apg_deprecated_title">Aviso sobre el desuso y obsolescencia de APG</string>
-  <string name="apg_deprecated_1">APG está obsoleto y ya no recibe actualizaciones</string>
-  <string name="apg_deprecated_2">Y por ello la funcionalidad APG se ha eliminado de K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">El desarrollo se detuvo a principios de 2014</string>
-  <string name="apg_deprecated_bullet_2">Contiene problemas de seguridad sin arreglar</string>
-  <string name="apg_learn_more">Puedes <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">pulsar aquí</a> para leer más sobre el tema (en inglés).</string>
-  <string name="apg_deprecated_ok">Vale, entendido</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Este correo está cifrado</string>
   <string name="crypto_no_provider_message">Este correo ha sido cifrado con OpenPGP.\nPara leerlo es necesario instalar y configurar una aplicación compatible con OpenPGP.</string>
   <string name="crypto_no_provider_button">Ir a los ajustes</string>
   <string name="mail_list_widget_text">Lista de mensajes de K-9</string>
-  <string name="mail_list_widget_loading">Cargando mensajes…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Cargando…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Cargando…</string>
   <string name="openpgp_enabled_error_title">No es posible cifrar</string>
   <string name="openpgp_enabled_error_msg">Algunos de los remitentes marcados no entienden esta característica</string>
   <string name="enable_encryption">Activar cifrado</string>
@@ -984,7 +1018,7 @@ Puedes informar de fallos, contribuir con su desarrollo y hacer preguntas en <a 
   <string name="dialog_autocrypt_mutual_title">Autocifrar el modo mutuo</string>
   <string name="dialog_autocrypt_mutual_description_1">Normalmente, los mensajes se cifran por elección o cuando se responde a un mensaje cifrado.</string>
   <string name="dialog_autocrypt_mutual_description_2">Si tanto el remitente como los destinatarios activan el modo mutuo, el cifrado se activará de forma predefinida.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Puedes <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">pulsar aquí</a> para leer más sobre el tema.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Puedes <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">pulsar aquí</a> para leer más sobre el tema.</string>
   <string name="general_settings_title">Ajustes generales</string>
   <string name="dialog_openkeychain_info_title">Sin aplicación OpenPGP instalada</string>
   <string name="dialog_openkeychain_info_install">Instalar</string>
@@ -1030,4 +1064,24 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
   <string name="push_info_configure_notification_action">Configurar la apariencia de la notificación</string>
   <string name="push_info_disable_push_text">En caso de no necesitar notificaciones instantáneas de mensajes nuevos puedes desactivar las comprobaciones rápidas («push», o IDLE) y seguir utilizando comprobaciones normales («poll»); esta opción clásica pregunta al servidor de vez en cuando, conectándose de forma esporádica a intervalos regulares y no necesita mantener una conexión permanente ni mantener un servicio y notificación constante en segundo plano. Gastando menos batería.</string>
   <string name="push_info_disable_push_action">Desactivar sincronización rápida («push»)</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Seleccionar</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Deseleccionar</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Marcar como leído</string>
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Marcar como no leído</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Destacar el mensaje</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">No marcar como destacado</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Archivo</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Borrar</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Mover…</string>
 </resources>

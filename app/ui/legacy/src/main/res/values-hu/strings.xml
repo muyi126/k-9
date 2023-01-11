@@ -12,6 +12,8 @@
   <string name="app_license">Apache licenc, 2.0-s verzió</string>
   <string name="about_project_title">Nyílt forráskódú projekt</string>
   <string name="about_website_title">Weboldal</string>
+  <string name="user_manual_title">Felhasználói kézikönyv</string>
+  <string name="get_help_title">Segítségkérés</string>
   <string name="user_forum_title">Felhasználói fórum</string>
   <string name="about_fediverse_title">Födiverzum</string>
   <string name="about_twitter_title">Twitter</string>
@@ -103,6 +105,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="search_action">Keresés</string>
   <string name="search_everywhere_action">Keresés mindenhol</string>
   <string name="search_results">Keresési eredmények</string>
+  <string name="new_messages_title">Új üzenetek</string>
   <string name="preferences_action">Beállítások</string>
   <string name="folders_action">Mappák kezelése</string>
   <string name="account_settings_action">Fiók beállításai</string>
@@ -113,6 +116,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="flag_action">Csillag hozzáadása</string>
   <string name="unflag_action">Csillag eltávolítása</string>
   <string name="copy_action">Másolás</string>
+  <string name="unsubscribe_action">Leiratkozás</string>
   <string name="show_headers_action">Fejlécek megjelenítése</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Cím a vágólapra másolva</item>
@@ -147,7 +151,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> új üzenet</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> új üzenet</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Olvasatlan (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Olvasatlan (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> további: <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Válasz</string>
   <string name="notification_action_mark_as_read">Megjelölés olvasottként</string>
@@ -157,11 +161,16 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="notification_action_archive">Archiválás</string>
   <string name="notification_action_archive_all">Összes archiválása</string>
   <string name="notification_action_spam">Levélszemét</string>
+  <string name="notification_certificate_error_public">Tanúsítványhiba</string>
   <string name="notification_certificate_error_title">Tanúsítványhiba: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Ellenőrizze a kiszolgálóbeállításokat.</string>
   <string name="notification_authentication_error_title">A hitelesítés sikertelen.</string>
   <string name="notification_authentication_error_text">A hitelesítés sikertelen: <xliff:g id="account">%s</xliff:g>. Frissítse a kiszolgálóbeállításokat.</string>
-  <string name="notification_bg_sync_ticker">Levelek ellenőrzése: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Értesítési hiba</string>
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Hiba történt egy új üzenethez tartozó rendszerértesítés létrehozásának kísérletekor. Az ok valószínűleg egy hiányzó értesítési hang.\n\nKoppintson az értesítési beállítások megnyitásához.</string>
+  <string name="notification_bg_sync_ticker">Levelek ellenőrzése: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Levelek ellenőrzése</string>
   <string name="notification_bg_send_ticker">Levél küldése: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Levél küldése</string>
@@ -183,6 +192,9 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="debug_enable_debug_logging_summary">További diagnosztikai információk naplózása</string>
   <string name="debug_enable_sensitive_logging_title">Érzékeny információk naplózása</string>
   <string name="debug_enable_sensitive_logging_summary">A jelszavak láthatóak lehetnek a naplókban.</string>
+  <string name="debug_export_logs_title">Naplók exportálása</string>
+  <string name="debug_export_logs_success">Az exportálás sikerült. A naplók érzékeny információkat tartalmazhatnak. Legyen óvatos, hogy kinek küldi el azokat.</string>
+  <string name="debug_export_logs_failure">Az exportálás sikertelen.</string>
   <string name="message_list_load_more_messages_action">További üzenetek betöltése</string>
   <string name="message_to_fmt">Címzett:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Tárgy</string>
@@ -205,7 +217,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="message_compose_description_delete_quoted_text">Idézett szöveg eltávolítása</string>
   <string name="message_compose_description_edit_quoted_text">Idézett szöveg szerkesztése</string>
   <string name="remove_attachment_action">Melléklet eltávolítása</string>
-  <string name="message_view_from_format">Feladó: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Feladó: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Címzett:</string>
   <string name="message_view_cc_label">Másolat:</string>
   <string name="message_view_bcc_label">Titkos másolat:</string>
@@ -229,6 +241,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="global_settings_show_contact_name_summary">Címzettek neveinek használata a címjegyzékből, ha elérhető</string>
   <string name="global_settings_registered_name_color_label">Partnerek színezése</string>
   <string name="global_settings_registered_name_color_changed">Nevek színezése a partnerlistában</string>
+  <string name="general_settings_contact_name_color_label">Partner nevének színe</string>
   <string name="global_settings_messageview_fixedwidth_label">Rögzített szélességű betűk</string>
   <string name="global_settings_messageview_fixedwidth_summary">Rögzített szélességű betű használata az egyszerű szöveges üzeneteknél</string>
   <string name="global_settings_messageview_autofit_width_label">Üzenetek automatikus méretezése</string>
@@ -245,6 +258,22 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="global_settings_confirm_menu_discard">Üzenet elvetése</string>
   <string name="global_settings_confirm_menu_mark_all_read">Összes üzenet megjelölése olvasottként</string>
   <string name="global_settings_confirm_action_delete_notif">Törlés (az értesítésekből)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Nincs</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Archívum</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Törlés</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Levélszemét</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Áthelyezés</string>
   <string name="global_settings_privacy_hide_useragent">Levelező alkalmazás elrejtése</string>
   <string name="global_settings_privacy_hide_useragent_detail">A K-9 azonosító eltávolítása a levél fejlécéből</string>
   <string name="global_settings_privacy_hide_timezone">Időzóna elrejtése</string>
@@ -268,6 +297,11 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_basics_title">Új fiók beállítása</string>
   <string name="account_setup_basics_email_hint">E-mail-cím</string>
   <string name="account_setup_basics_password_hint">Jelszó</string>
+  <string name="account_setup_oauth_description">Ezen e-mail-fiók K-9 Maillel történő használatához be kell jelentkeznie, és hozzáférést kell adnia az alkalmazásnak az e-mailjeihez.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Bejelentkezés</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Bejelentkezés Google használatával</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Ha itt szeretné megtekinteni jelszavát, engedélyezze a képernyőzárat ezen az eszközön.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Személyazonosság ellenőrzése</string>
@@ -291,6 +325,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_auth_type_insecure_password">Nem biztonságosan átküldött jelszó</string>
   <string name="account_setup_auth_type_encrypted_password">Titkosított jelszó</string>
   <string name="account_setup_auth_type_tls_client_certificate">Ügyféltanúsítvány</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Bejövő kiszolgáló beállításai</string>
   <string name="account_setup_incoming_username_label">Felhasználónév</string>
   <string name="account_setup_incoming_password_label">Jelszó</string>
@@ -309,10 +344,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_incoming_delete_policy_never_label">Nincs törlés a kiszolgálóról</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Törlés a kiszolgálóról</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Olvasottnak jelölés a kiszolgálón</string>
-  <string name="account_setup_incoming_compression_label">Tömörítés használata a hálózaton:</string>
-  <string name="account_setup_incoming_mobile_label">Mobil</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Egyéb</string>
+  <string name="account_setup_incoming_use_compression">Tömörítés használata</string>
   <string name="account_setup_expunge_policy_label">Törölt üzenetek végleges törlése a kiszolgálóról</string>
   <string name="account_setup_expunge_policy_immediately">Azonnal</string>
   <string name="account_setup_expunge_policy_on_poll">Lekérdezéskor</string>
@@ -377,6 +409,10 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_failed_dlg_auth_message_fmt">A felhasználónév vagy a jelszó hibás.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">A kiszolgáló érvénytelen SSL-tanúsítványt mutatott be. Néha ez a kiszolgáló hibás beállításából ered. Néha azért, mert valaki támadást hajtott végre Ön vagy a levelezőkiszolgálója ellen. Ha nem biztos abban, hogy mi történt, akkor kattintson az Elutasítás gombra, és vegye fel a kapcsolatot a levelezőkiszolgáló üzemeltetőivel.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Nem lehet kapcsolódni a kiszolgálóhoz.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">A felhatalmazás megszakítva</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">A felhatalmazás meghiúsult a következő hibával: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">Az OAuth 2.0 jelenleg nem támogatott ezzel a szolgáltatóval.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Az alkalmazás nem talált böngészőt a fiókhoz történő hozzáférés megadásához való használathoz.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Részletek szerkesztése</string>
   <string name="account_setup_failed_dlg_continue_action">Folytatás</string>
   <string name="account_settings_push_advanced_title">Bővített</string>
@@ -531,11 +567,29 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_settings_description_label">Fióknév</string>
   <string name="account_settings_name_label">Saját név</string>
   <string name="notifications_title">Értesítések</string>
+  <string name="account_settings_vibration">Rezgés</string>
   <string name="account_settings_vibrate_enable">Rezgés</string>
+  <string name="account_settings_vibrate_pattern_label">Rezgés mintája</string>
   <string name="account_settings_vibrate_pattern_default">Alapértelmezett</string>
+  <string name="account_settings_vibrate_pattern_1">1. minta</string>
+  <string name="account_settings_vibrate_pattern_2">2. minta</string>
+  <string name="account_settings_vibrate_pattern_3">3. minta</string>
+  <string name="account_settings_vibrate_pattern_4">4. minta</string>
+  <string name="account_settings_vibrate_pattern_5">5. minta</string>
   <string name="account_settings_vibrate_times">Rezgés ismétlése</string>
+  <string name="account_settings_vibrate_summary_disabled">Letiltva</string>
   <string name="account_settings_ringtone">Új levél csengőhangja</string>
+  <string name="account_settings_notification_light_label">Értesítési fény</string>
+  <string name="account_settings_notification_light_disabled">Letiltva</string>
   <string name="account_settings_notification_light_account_color">Fiókszín</string>
+  <string name="account_settings_notification_light_default_color">Rendszer alapértelmezett színe</string>
+  <string name="account_settings_notification_light_white">Fehér</string>
+  <string name="account_settings_notification_light_red">Piros</string>
+  <string name="account_settings_notification_light_green">Zöld</string>
+  <string name="account_settings_notification_light_blue">Kék</string>
+  <string name="account_settings_notification_light_yellow">Sárga</string>
+  <string name="account_settings_notification_light_cyan">Ciánkék</string>
+  <string name="account_settings_notification_light_magenta">Bíbor</string>
   <string name="account_settings_composition_title">Üzenet írásának beállításai</string>
   <string name="account_settings_composition_label">Írási alapbeállítások</string>
   <string name="account_settings_composition_summary">Alapértelmezett feladó, titkos másolat és aláírás beállítása</string>
@@ -593,8 +647,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_failed_dlg_invalid_certificate_title">Felismerhetetlen tanúsítvány</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Kulcs elfogadása</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Kulcs visszautasítása</string>
-  <string name="message_view_help_key">Del (vagy D) – Törlés\nR – Válasz\nA – Válasz mindenkinek\nC – Írás\nF – Továbbítás\nM – Áthelyezés\nV – Archiválás\nY – Másolás\nZ – Megjelölés olvasottként/olvasatlanként\nG – Csillagozás\nO – Rendezés típusa\nI – Rendezési sorrend\nQ – Visszatérés a mappákhoz\nS – Kijelölés/Kijelölés megszüntetése\nJ vagy P – Előző üzenet\nK vagy N – Következő üzenet</string>
-  <string name="message_list_help_key">Del (vagy D) – Törlés\nC – Írás\nM – Áthelyezés\nV – Archiválás\nY – Másolás\nZ – Megjelölés olvasottként/olvasatlanként\nG – Csillagozás\nO – Rendezés típusa\nI – Rendezési sorrend\nQ – Visszatérés a mappákhoz\nS – Kijelölés/Kijelölés megszüntetése</string>
   <string name="folder_list_filter_hint">Mappa neve tartalmazza</string>
   <string name="folder_list_display_mode_label">Mappák megjelenítése…</string>
   <string name="folder_list_display_mode_all">Összes mappa</string>
@@ -642,9 +694,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_push_limit_1000">1000 mappa</string>
   <string name="animations_title">Animációk</string>
   <string name="animations_summary">Rikító látható hatások használata</string>
-  <string name="volume_navigation_title">Hangerő gomb navigáció</string>
-  <string name="volume_navigation_message">Üzenetnézetekben</string>
-  <string name="volume_navigation_list">Listanézetekben</string>
   <string name="show_unified_inbox_title">Egységes beérkezett üzenetek megjelenítése</string>
   <string name="show_starred_count_title">Csillagszámláló megjelenítése</string>
   <string name="integrated_inbox_title">Egységes beérkezett üzenetek</string>
@@ -659,12 +708,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_settings_automatic_special_folder">Automatikus (%s)</string>
   <string name="font_size_settings_title">Betűméret</string>
   <string name="font_size_settings_description">Betűméret beállítása</string>
-  <string name="font_size_account_list">Fióklista</string>
-  <string name="font_size_account_name">Fiók neve</string>
-  <string name="font_size_account_description">Fiók leírása</string>
-  <string name="font_size_folder_list">Mappalisták</string>
-  <string name="font_size_folder_name">Mappa neve</string>
-  <string name="font_size_folder_status">Mappa állapota</string>
   <string name="font_size_message_list">Üzenetlisták</string>
   <string name="font_size_message_list_subject">Tárgy</string>
   <string name="font_size_message_list_sender">Feladó</string>
@@ -696,7 +739,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="save_or_discard_draft_message_changes">Menti vagy elveti a változtatásokat?</string>
   <string name="confirm_discard_draft_message_title">Elveti az üzenet?</string>
   <string name="confirm_discard_draft_message">Biztosan el szeretné vetni ezt az üzenetet?</string>
-  <string name="select_text_now">Szöveg kijelölése a másoláshoz.</string>
   <string name="dialog_confirm_clear_local_folder_title">Helyi üzenetek kiürítése</string>
   <string name="dialog_confirm_clear_local_folder_message">Ez eltávolítja az összes helyi üzenetet mappából.  Az üzenetek nem kerülnek törlésre a szerverről.</string>
   <string name="dialog_confirm_clear_local_folder_action">Üzenetek kiürítése</string>
@@ -736,12 +778,19 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="settings_import_pick_document_button">Fájl kiválasztása</string>
   <string name="settings_import_button">Importálás</string>
   <string name="settings_import_success_generic">A beállítások sikeresen importálva</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Adja meg a jelszavakat</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Jelentkezzen be</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Jelentkezzen be, és adja meg a jelszavakat</string>
   <string name="settings_import_failure">Nem sikerült importálni a beállításokat</string>
   <string name="settings_import_read_failure">Nem sikerült beolvasni a beállítások fájlt</string>
   <string name="settings_import_partial_failure">Nem sikerült importálni néhány beállítást</string>
   <string name="settings_import_status_success">Sikeresen importálva</string>
   <string name="settings_import_status_password_required">Jelszó szükséges</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Bejelentkezés szükséges</string>
   <string name="settings_import_status_not_imported">Nincs importálva</string>
   <string name="settings_import_status_error">Importálási hiba</string>
   <string name="settings_import_later_button">Később</string>
@@ -932,19 +981,14 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_settings_crypto_hide_sign_only_off">Az összes aláírás meg lesz jelenítve</string>
   <string name="error_sign_only_no_encryption">A titkosítás nem érhető el csak aláíró módban!</string>
   <string name="unsigned_text_divider_label">Aláíratlan szöveg</string>
-  <string name="apg_deprecated_title">APG elavultsági figyelmeztetés</string>
-  <string name="apg_deprecated_1">Az APG többé nincs karbantartva!</string>
-  <string name="apg_deprecated_2">Emiatt az APG támogatás eltávolításra került a K-9 Mail alkalmazásból.</string>
-  <string name="apg_deprecated_bullet_1">A fejlesztés 2014 elején leállt</string>
-  <string name="apg_deprecated_bullet_2">Javítatlan biztonsági hibákat tartalmaz</string>
-  <string name="apg_learn_more"><a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">Kattintson ide</a>, ha többet szeretne megtudni.</string>
-  <string name="apg_deprecated_ok">Értem!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Ez az e-mail titkosított</string>
   <string name="crypto_no_provider_message">Az e-mail titkosítva lett OpenPGP használatával.\nAz elolvasásához egy megfelelő OpenPGP alkalmazást kell telepítenie és beállítania.</string>
   <string name="crypto_no_provider_button">Ugrás a beállításokhoz</string>
   <string name="mail_list_widget_text">K-9 üzenetlista</string>
-  <string name="mail_list_widget_loading">Üzenetek betöltése…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Betöltés…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Betöltés…</string>
   <string name="openpgp_enabled_error_title">A titkosítás nem lehetséges</string>
   <string name="openpgp_enabled_error_msg">Néhány kiválasztott címzett nem támogatja ezt a funkciót!</string>
   <string name="enable_encryption">Titkosítás engedélyezése</string>
@@ -960,7 +1004,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="dialog_autocrypt_mutual_title">Autocrypt kölcsönös mód</string>
   <string name="dialog_autocrypt_mutual_description_1">Az üzenetek normál esetben választás alapján lesznek titkosítva, vagy ha egy titkosított üzenetre válaszol.</string>
   <string name="dialog_autocrypt_mutual_description_2">Ha mind a feladó, mind a címzettek támogatják a kölcsönös módot, akkor a titkosítás alapértelmezetten engedélyezve lesz.</string>
-  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Kattintson ide</a>, ha többet szeretne megtudni.</string>
+  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Kattintson ide</a>, ha többet szeretne megtudni.</string>
   <string name="general_settings_title">Általános beállítások</string>
   <string name="dialog_openkeychain_info_title">Nincs OpenPGP alkalmazás telepítve</string>
   <string name="dialog_openkeychain_info_install">Telepítés</string>
@@ -1006,4 +1050,22 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
   <string name="push_info_configure_notification_action">Értesítés beállítása</string>
   <string name="push_info_disable_push_text">Ha nincs szüksége azonnali értesítésekre az új levelekről, akkor letilthatja a leküldést, és használhat lekérést. A lekérés rendszeres időközönként ellenőrzi, hogy vannak-e új levelek, és nincs szüksége értesítés megjelenítésére.</string>
   <string name="push_info_disable_push_action">Leküldés letiltása</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Kijelölés</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Kijelölés törlése</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Megjelölés olvasatlanként</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Csillag hozzáadása</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Csillag eltávolítása</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Archívum</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Törlés</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Levélszemét</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

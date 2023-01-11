@@ -12,7 +12,6 @@ import android.view.Menu
 import androidx.core.content.ContextCompat
 import androidx.loader.app.LoaderManager
 import com.fsck.k9.Account
-import com.fsck.k9.Identity
 import com.fsck.k9.K9
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState
@@ -323,7 +322,7 @@ class RecipientPresenter(
         openPgpApiManager.setOpenPgpProvider(openPgpProvider, openPgpCallback)
     }
 
-    fun onSwitchIdentity(identity: Identity) {
+    fun onSwitchIdentity() {
         // TODO decide what actually to do on identity switch?
         asyncUpdateCryptoStatus()
     }
@@ -347,14 +346,14 @@ class RecipientPresenter(
     }
 
     private fun hideEmptyExtendedRecipientFields() {
-        if (recipientMvpView.ccAddresses.isEmpty()) {
+        if (recipientMvpView.ccAddresses.isEmpty() && recipientMvpView.isCcTextEmpty) {
             recipientMvpView.setCcVisibility(false)
             if (lastFocusedType == RecipientType.CC) {
                 lastFocusedType = RecipientType.TO
             }
         }
 
-        if (recipientMvpView.bccAddresses.isEmpty()) {
+        if (recipientMvpView.bccAddresses.isEmpty() && recipientMvpView.isBccTextEmpty) {
             recipientMvpView.setBccVisibility(false)
             if (lastFocusedType == RecipientType.BCC) {
                 lastFocusedType = RecipientType.TO
@@ -623,14 +622,12 @@ class RecipientPresenter(
             SendErrorState.ENABLED_ERROR -> recipientMvpView.showOpenPgpEnabledErrorDialog(false)
             SendErrorState.PROVIDER_ERROR -> recipientMvpView.showErrorOpenPgpConnection()
             SendErrorState.KEY_CONFIG_ERROR -> recipientMvpView.showErrorNoKeyConfigured()
-            else -> throw AssertionError("not all error states handled, this is a bug!")
         }
     }
 
     fun showPgpAttachError(attachErrorState: AttachErrorState) {
         when (attachErrorState) {
             AttachErrorState.IS_INLINE -> recipientMvpView.showErrorInlineAttach()
-            else -> throw AssertionError("not all error states handled, this is a bug!")
         }
     }
 

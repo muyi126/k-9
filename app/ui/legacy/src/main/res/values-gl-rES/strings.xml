@@ -77,7 +77,7 @@
   <string name="load_more_messages_fmt">Cargar
      <xliff:g id="messages_to_load">%d</xliff:g> máis</string>
   <string name="notification_new_title">Correo novo</string>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> sen ler (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> sen ler (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> máis en <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
   <string name="notification_action_mark_as_read">Marcar como lida</string>
@@ -89,7 +89,9 @@
   <string name="notification_action_spam">Lixo</string>
   <string name="notification_certificate_error_title">Erro de certificado para <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Comproba a configuración do servidor</string>
-  <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Comprobando correo</string>
   <string name="notification_bg_send_ticker">Enviando correo: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Enviando correo</string>
@@ -124,7 +126,7 @@
   <string name="message_compose_attachments_skipped_toast">Algúns anexos non poden reenviarse porque non foron descargados previamente.</string>
   <string name="message_compose_description_delete_quoted_text">Eliminar texto citado</string>
   <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>
-  <string name="message_view_from_format">Desde: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Desde: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Para:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_show_pictures_action">Mostrar imaxes</string>
@@ -159,6 +161,22 @@
   <string name="global_settings_confirm_action_spam">Lixo</string>
   <string name="global_settings_confirm_menu_discard">Desbotar mensaxe</string>
   <string name="global_settings_confirm_action_delete_notif">Eliminar (das notificacións)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Ningún</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arquivar</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Eliminar</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Lixo</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Mover</string>
   <string name="global_settings_privacy_hide_useragent_detail">Quitar o User-Agent K-9 das cabeceiras do correo</string>
   <string name="global_settings_notification_quick_delete_title">Mostrar botón \'Eliminar\'</string>
   <string name="global_settings_notification_quick_delete_never">Nunca</string>
@@ -178,6 +196,8 @@
   <string name="account_setup_basics_title">Configurar unha nova conta</string>
   <string name="account_setup_basics_email_hint">Enderezo electrónico</string>
   <string name="account_setup_basics_password_hint">Contrasinal</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Configuración manual</string>
   <string name="account_setup_check_settings_title"/>
@@ -215,10 +235,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">Non eliminar do servidor</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Eliminar do servidor</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marcar como lida no servidor</string>
-  <string name="account_setup_incoming_compression_label">Usar comprensión de rede:</string>
-  <string name="account_setup_incoming_mobile_label">Móbil</string>
-  <string name="account_setup_incoming_wifi_label">Wifi</string>
-  <string name="account_setup_incoming_other_label">Outras</string>
   <string name="account_setup_expunge_policy_label">Eliminar mensaxes borradas no servidor</string>
   <string name="account_setup_expunge_policy_immediately">Inmediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante a comprobación</string>
@@ -496,9 +512,6 @@
   <string name="account_setup_push_limit_1000">1000 cartafoles</string>
   <string name="animations_title">Animación</string>
   <string name="animations_summary">Utilizar animacións</string>
-  <string name="volume_navigation_title">Navegación coas teclas de volume</string>
-  <string name="volume_navigation_message">Na vista de mensaxes</string>
-  <string name="volume_navigation_list">Nas listaxes</string>
   <string name="integrated_inbox_title">Caixa de entrada unificada</string>
   <string name="integrated_inbox_detail">Todas as mensaxes en cartafoles unificados</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>
@@ -510,12 +523,6 @@
   <string name="account_settings_no_folder_selected">Ningún</string>
   <string name="font_size_settings_title">Tamaño da fonte</string>
   <string name="font_size_settings_description">Configurar o tamaño da fonte</string>
-  <string name="font_size_account_list">Listaxe de contas</string>
-  <string name="font_size_account_name">Nome da conta</string>
-  <string name="font_size_account_description">Descrición da conta</string>
-  <string name="font_size_folder_list">Listaxes de cartafoles</string>
-  <string name="font_size_folder_name">Nome do cartafol</string>
-  <string name="font_size_folder_status">Estado do cartafol</string>
   <string name="font_size_message_list">Listaxes de mensaxes</string>
   <string name="font_size_message_list_subject">Asunto</string>
   <string name="font_size_message_list_sender">Remitente</string>
@@ -545,7 +552,6 @@
   <string name="save_or_discard_draft_message_instructions_fmt">Gardar ou descartar esta mensaxe?</string>
   <string name="confirm_discard_draft_message_title">Descartar mensaxe?</string>
   <string name="confirm_discard_draft_message">Tes a certeza de querer descartar esta mensaxe?</string>
-  <string name="select_text_now">Seleccionar texto para copiar.</string>
   <string name="dialog_confirm_delete_title">Confirmar borrado</string>
   <string name="dialog_confirm_delete_message">Queres eliminar esta mensaxe?</string>
   <plurals name="dialog_confirm_delete_messages">
@@ -573,6 +579,10 @@
   <string name="settings_export_failure">Erro ao exportar os axustes</string>
   <string name="settings_import_title">Importar axustes</string>
   <string name="settings_import_button">Importar</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import">Importar axustes</string>
   <string name="settings_importing">A importar os axustes…</string>
   <string name="unread_widget_select_account">Mostrar contador de mensaxes non lidas para…</string>
@@ -634,7 +644,29 @@
   <string name="address_type_mobile">Móbil</string>
   <string name="crypto_info_ok">Aceptar</string>
   <string name="message_progress_text">A cargar…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">A cargar…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">A cargar…</string>
   <string name="openpgp_enabled_error_back">Volver</string>
   <string name="general_settings_title">Axustes xerais</string>
   <!--permissions-->
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Seleccionar</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Deseleccionar</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Marcar como non lida</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Engadir estrela</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Eliminar estrela</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Arquivar</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Eliminar</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Lixo</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

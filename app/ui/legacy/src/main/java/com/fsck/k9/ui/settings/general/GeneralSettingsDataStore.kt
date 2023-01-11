@@ -2,6 +2,7 @@ package com.fsck.k9.ui.settings.general
 
 import androidx.preference.PreferenceDataStore
 import com.fsck.k9.K9
+import com.fsck.k9.SwipeAction
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.preferences.AppTheme
 import com.fsck.k9.preferences.GeneralSettingsManager
@@ -30,6 +31,7 @@ class GeneralSettingsDataStore(
             "messagelist_show_contact_picture" -> K9.isShowContactPicture
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures
             "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator
+            "show_compose_button" -> K9.isShowComposeButtonOnMessageList
             "threaded_view" -> K9.isThreadedViewEnabled
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont
             "messageview_autofit_width" -> K9.isAutoFitWidth
@@ -41,6 +43,7 @@ class GeneralSettingsDataStore(
             "privacy_hide_timezone" -> K9.isHideTimeZone
             "debug_logging" -> K9.isDebugLoggingEnabled
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled
+            "volume_navigation" -> K9.isUseVolumeKeysForNavigation
             else -> defValue
         }
     }
@@ -59,6 +62,7 @@ class GeneralSettingsDataStore(
             "messagelist_show_contact_picture" -> K9.isShowContactPicture = value
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures = value
             "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator = value
+            "show_compose_button" -> K9.isShowComposeButtonOnMessageList = value
             "threaded_view" -> K9.isThreadedViewEnabled = value
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont = value
             "messageview_autofit_width" -> K9.isAutoFitWidth = value
@@ -70,6 +74,7 @@ class GeneralSettingsDataStore(
             "privacy_hide_timezone" -> K9.isHideTimeZone = value
             "debug_logging" -> K9.isDebugLoggingEnabled = value
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
+            "volume_navigation" -> K9.isUseVolumeKeysForNavigation = value
             else -> return
         }
 
@@ -107,10 +112,6 @@ class GeneralSettingsDataStore(
             "background_ops" -> K9.backgroundOps.name
             "quiet_time_starts" -> K9.quietTimeStarts
             "quiet_time_ends" -> K9.quietTimeEnds
-            "account_name_font" -> K9.fontSizes.accountName.toString()
-            "account_description_font" -> K9.fontSizes.accountDescription.toString()
-            "folder_name_font" -> K9.fontSizes.folderName.toString()
-            "folder_status_font" -> K9.fontSizes.folderStatus.toString()
             "message_list_subject_font" -> K9.fontSizes.messageListSubject.toString()
             "message_list_sender_font" -> K9.fontSizes.messageListSender.toString()
             "message_list_date_font" -> K9.fontSizes.messageListDate.toString()
@@ -123,6 +124,8 @@ class GeneralSettingsDataStore(
             "message_view_date_font" -> K9.fontSizes.messageViewDate.toString()
             "message_view_additional_headers_font" -> K9.fontSizes.messageViewAdditionalHeaders.toString()
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput.toString()
+            "swipe_action_right" -> swipeActionToString(K9.swipeRightAction)
+            "swipe_action_left" -> swipeActionToString(K9.swipeLeftAction)
             else -> defValue
         }
     }
@@ -146,10 +149,6 @@ class GeneralSettingsDataStore(
             "background_ops" -> setBackgroundOps(value)
             "quiet_time_starts" -> K9.quietTimeStarts = value
             "quiet_time_ends" -> K9.quietTimeEnds = value
-            "account_name_font" -> K9.fontSizes.accountName = value.toInt()
-            "account_description_font" -> K9.fontSizes.accountDescription = value.toInt()
-            "folder_name_font" -> K9.fontSizes.folderName = value.toInt()
-            "folder_status_font" -> K9.fontSizes.folderStatus = value.toInt()
             "message_list_subject_font" -> K9.fontSizes.messageListSubject = value.toInt()
             "message_list_sender_font" -> K9.fontSizes.messageListSender = value.toInt()
             "message_list_date_font" -> K9.fontSizes.messageListDate = value.toInt()
@@ -162,6 +161,8 @@ class GeneralSettingsDataStore(
             "message_view_date_font" -> K9.fontSizes.messageViewDate = value.toInt()
             "message_view_additional_headers_font" -> K9.fontSizes.messageViewAdditionalHeaders = value.toInt()
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput = value.toInt()
+            "swipe_action_right" -> K9.swipeRightAction = stringToSwipeAction(value)
+            "swipe_action_left" -> K9.swipeLeftAction = stringToSwipeAction(value)
             else -> return
         }
 
@@ -189,12 +190,6 @@ class GeneralSettingsDataStore(
                     if (K9.isMessageViewSpamActionVisible) add("spam")
                 }
             }
-            "volume_navigation" -> {
-                mutableSetOf<String>().apply {
-                    if (K9.isUseVolumeKeysForNavigation) add("message")
-                    if (K9.isUseVolumeKeysForListNavigation) add("list")
-                }
-            }
             else -> defValues
         }
     }
@@ -216,10 +211,6 @@ class GeneralSettingsDataStore(
                 K9.isMessageViewMoveActionVisible = "move" in checkedValues
                 K9.isMessageViewCopyActionVisible = "copy" in checkedValues
                 K9.isMessageViewSpamActionVisible = "spam" in checkedValues
-            }
-            "volume_navigation" -> {
-                K9.isUseVolumeKeysForNavigation = "message" in checkedValues
-                K9.isUseVolumeKeysForListNavigation = "list" in checkedValues
             }
             else -> return
         }
@@ -287,5 +278,28 @@ class GeneralSettingsDataStore(
             K9.backgroundOps = newBackgroundOps
             jobManager.scheduleAllMailJobs()
         }
+    }
+
+    private fun swipeActionToString(action: SwipeAction) = when (action) {
+        SwipeAction.None -> "none"
+        SwipeAction.ToggleSelection -> "toggle_selection"
+        SwipeAction.ToggleRead -> "toggle_read"
+        SwipeAction.ToggleStar -> "toggle_star"
+        SwipeAction.Archive -> "archive"
+        SwipeAction.Delete -> "delete"
+        SwipeAction.Spam -> "spam"
+        SwipeAction.Move -> "move"
+    }
+
+    private fun stringToSwipeAction(action: String) = when (action) {
+        "none" -> SwipeAction.None
+        "toggle_selection" -> SwipeAction.ToggleSelection
+        "toggle_read" -> SwipeAction.ToggleRead
+        "toggle_star" -> SwipeAction.ToggleStar
+        "archive" -> SwipeAction.Archive
+        "delete" -> SwipeAction.Delete
+        "spam" -> SwipeAction.Spam
+        "move" -> SwipeAction.Move
+        else -> throw AssertionError()
     }
 }

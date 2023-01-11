@@ -150,7 +150,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g>nyt brev</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nye meddelelser</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> ulæst(e) (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> ulæst(e) (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> mere på <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Svar</string>
   <string name="notification_action_mark_as_read">Markér som læst</string>
@@ -160,11 +160,14 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="notification_action_archive">Arkivere</string>
   <string name="notification_action_archive_all">Arkivér alle</string>
   <string name="notification_action_spam">Spam</string>
+  <string name="notification_certificate_error_public">Certifikat fejl</string>
   <string name="notification_certificate_error_title">Certifikat fejl for <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Kontroller dine serverindstillinger</string>
   <string name="notification_authentication_error_title">Godkendelse mislykkedes</string>
   <string name="notification_authentication_error_text">Godkendelse mislykkedes for <xliff:g id="account">%s</xliff:g>. Opdater dine serverindstillinger.</string>
-  <string name="notification_bg_sync_ticker">Synkroniserer mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_bg_sync_ticker">Synkroniserer mail: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrollere post</string>
   <string name="notification_bg_send_ticker">Sender mail: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Sender post</string>
@@ -210,7 +213,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="message_compose_description_delete_quoted_text">Fjerne citeret tekst</string>
   <string name="message_compose_description_edit_quoted_text">Redigere citeret tekst</string>
   <string name="remove_attachment_action">Fjern vedhæftning</string>
-  <string name="message_view_from_format">Fra: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Fra: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Til:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
@@ -250,6 +253,22 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="global_settings_confirm_menu_discard">Kassér meddelelse</string>
   <string name="global_settings_confirm_menu_mark_all_read">Marker alle meddelelser som læst</string>
   <string name="global_settings_confirm_action_delete_notif">Slet (fra beskedbjælke)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Ingen</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arkivere</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Slet</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Flyt</string>
   <string name="global_settings_privacy_hide_useragent">Skjul mail klient</string>
   <string name="global_settings_privacy_hide_useragent_detail">Fjern K-9 Bruger-Agent fra mail headers</string>
   <string name="global_settings_privacy_hide_timezone">Skjul tidszone</string>
@@ -272,7 +291,10 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_basics_title">Opsætning af ny konto</string>
   <string name="account_setup_basics_email_hint">Mail addresse</string>
   <string name="account_setup_basics_password_hint">Password</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_biometrics_title">Verificer din identitet</string>
   <string name="account_setup_basics_manual_setup_action">Manuel opsætning</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Henter konto-information\u2026</string>
@@ -310,10 +332,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_incoming_delete_policy_never_label">Undlad at slette på server</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Slet på server</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marker som læst på server</string>
-  <string name="account_setup_incoming_compression_label">Anvend kompression på netværket:</string>
-  <string name="account_setup_incoming_mobile_label">Mobilt netværk</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Andet</string>
   <string name="account_setup_expunge_policy_label">Ryd slettede mails</string>
   <string name="account_setup_expunge_policy_immediately">Umiddelbart efter sletning</string>
   <string name="account_setup_expunge_policy_on_poll">I forbindelse med hentning af mails</string>
@@ -527,11 +545,25 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_description_label">Kontonavn</string>
   <string name="account_settings_name_label">Dit navn</string>
   <string name="notifications_title">Beskeder</string>
+  <string name="account_settings_vibration">Vibration</string>
   <string name="account_settings_vibrate_enable">Vibrer</string>
+  <string name="account_settings_vibrate_pattern_label">Vibrations mønster</string>
   <string name="account_settings_vibrate_pattern_default">Standard</string>
+  <string name="account_settings_vibrate_pattern_1">Mønster 1</string>
+  <string name="account_settings_vibrate_pattern_2">Mønster 2</string>
+  <string name="account_settings_vibrate_pattern_3">Mønster 3</string>
+  <string name="account_settings_vibrate_pattern_4">Mønster 4</string>
+  <string name="account_settings_vibrate_pattern_5">Mønster 5</string>
   <string name="account_settings_vibrate_times">Gentag vibration</string>
   <string name="account_settings_ringtone">Ringetone ved ny mail</string>
   <string name="account_settings_notification_light_account_color">Kontofarve</string>
+  <string name="account_settings_notification_light_white">Hvid</string>
+  <string name="account_settings_notification_light_red">Rød</string>
+  <string name="account_settings_notification_light_green">Grøn</string>
+  <string name="account_settings_notification_light_blue">Blå</string>
+  <string name="account_settings_notification_light_yellow">Gul</string>
+  <string name="account_settings_notification_light_cyan">Cyan</string>
+  <string name="account_settings_notification_light_magenta">Magenta</string>
   <string name="account_settings_composition_title">Indstillinger for skrivning af mail</string>
   <string name="account_settings_composition_label">Standardindstillinger</string>
   <string name="account_settings_composition_summary">Standardindstilling for afsender, Bcc og signatur</string>
@@ -589,8 +621,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ukendt certificat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptér nøgle</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Afvis nøgle</string>
-  <string name="message_view_help_key">Del (or D) - Slet\nR - Svar\nA - Svar alle\nC - Skriv besked\nF - Videresend\nM - Flyt\nV - Arkiver\nY - Kopier\nZ - Marker (U)læst\nG - Stjernemarker\nO - Sorteringstype\nI - Sortering\nQ - Tilbage til Mapper\nS - Marker/afmarker\nJ or P - Forrige meddelelse\nK or N - Næste Meddelelse</string>
-  <string name="message_list_help_key">Del (or D) - Slet\nC - Skriv besked\nM - Flyt\nV - Arkiver\nY - Kopier\nZ - Marker (U)læst\nG - Stjernemarker\nO - Sorteringstype\nI - Sorteringsorden\nQ - Tilbage til mapper\nS - Marker/afmaker</string>
   <string name="folder_list_filter_hint">Mappenavn indeholder</string>
   <string name="folder_list_display_mode_label">Mapper</string>
   <string name="folder_list_display_mode_all">Vis alle mapper</string>
@@ -638,9 +668,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_push_limit_1000">1000 mapper</string>
   <string name="animations_title">Animation</string>
   <string name="animations_summary">Anvend visuelle effekter</string>
-  <string name="volume_navigation_title">Volume-knap navigation</string>
-  <string name="volume_navigation_message">Mail-visning</string>
-  <string name="volume_navigation_list">Diverse listevisninger</string>
   <string name="show_unified_inbox_title">Vis Fælles Indbakke</string>
   <string name="integrated_inbox_title">Fælles indbakke</string>
   <string name="integrated_inbox_detail">Alle mails i fælles mapper</string>
@@ -654,12 +681,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_automatic_special_folder">Automatisk (%s)</string>
   <string name="font_size_settings_title">Skriftstørrelse</string>
   <string name="font_size_settings_description">Konfigurer skriftstørrelse</string>
-  <string name="font_size_account_list">Kontoliste</string>
-  <string name="font_size_account_name">Kontonavn</string>
-  <string name="font_size_account_description">Kontobeskrivelse</string>
-  <string name="font_size_folder_list">Mappeliste</string>
-  <string name="font_size_folder_name">Mappenavn</string>
-  <string name="font_size_folder_status">Mappestatus</string>
   <string name="font_size_message_list">Mailliste</string>
   <string name="font_size_message_list_subject">Emne</string>
   <string name="font_size_message_list_sender">Afsender</string>
@@ -691,7 +712,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="save_or_discard_draft_message_changes">Gem eller Kassér ændringer?</string>
   <string name="confirm_discard_draft_message_title">Annuller meddelelse?</string>
   <string name="confirm_discard_draft_message">Er du sikker på at du ønsker at annullere denne meddelelse?</string>
-  <string name="select_text_now">Vælg tekst som skal kopieres.</string>
   <string name="dialog_confirm_clear_local_folder_title">Ryd lokale beskeder</string>
   <string name="dialog_confirm_clear_local_folder_message">Dette vil slette alle lokale beskeder fra mappen. Ingen beskeder slettes fra serveren.</string>
   <string name="dialog_confirm_clear_local_folder_action">Rens beskeder</string>
@@ -731,12 +751,16 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="settings_import_pick_document_button">Vælg fil</string>
   <string name="settings_import_button">Importer</string>
   <string name="settings_import_success_generic">Importerede indstillinger</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Indtast venligst kodeord</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Importen af indstillinger fejlede</string>
   <string name="settings_import_read_failure">Indlæsning af fil med indstillinger mislykkedes</string>
   <string name="settings_import_partial_failure">Import af nogle indstillinger fejlede</string>
   <string name="settings_import_status_success">Importeret korrrekt</string>
   <string name="settings_import_status_password_required">Kodeord påkrævet</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Ikke importeret</string>
   <string name="settings_import_status_error">Import fejlede</string>
   <string name="settings_import_later_button">Senere</string>
@@ -926,19 +950,14 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_crypto_hide_sign_only_off">Alle signaturer vises</string>
   <string name="error_sign_only_no_encryption">Kryptering er ikke tilgængelig i \"Signer-Kun\"-tilstand!</string>
   <string name="unsigned_text_divider_label">Ikke-signeret tekst</string>
-  <string name="apg_deprecated_title">APG udfasningsadvarsel</string>
-  <string name="apg_deprecated_1">APG er ikke længere vedligeholdt!</string>
-  <string name="apg_deprecated_2">Grundet dette, understøttelse af APG er blevet fjernet fra K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Udviklingen stoppede tidlig 2014</string>
-  <string name="apg_deprecated_bullet_2">Indeholder ikke-rettede sikkerhedsfejl</string>
-  <string name="apg_learn_more">Du kan <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klikke her</a> for at lære mere.</string>
-  <string name="apg_deprecated_ok">Fint!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Denne email er krypteret</string>
   <string name="crypto_no_provider_message">Denne email er krypteret med OpenPGP.\nFor at læse den skal du installere en kompatibel OpenPGP applikation.</string>
   <string name="crypto_no_provider_button">Gå til opsætning</string>
   <string name="mail_list_widget_text">K-9 Meddelelsesliste</string>
-  <string name="mail_list_widget_loading">Indlæser meddelelser…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Indlæser…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Indlæser…</string>
   <string name="openpgp_enabled_error_title">Kryptering var ikke mulig</string>
   <string name="openpgp_enabled_error_msg">Nogle af de valgte modtagere understøtter ikke denne funktion!</string>
   <string name="enable_encryption">Aktivér kryptering</string>
@@ -954,7 +973,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="dialog_autocrypt_mutual_title">Autokrypter gensidig tilstand</string>
   <string name="dialog_autocrypt_mutual_description_1">Meddelelser bliver normalt krypteret efter eget valg, eller når der besvares en krypteret meddelelse.</string>
   <string name="dialog_autocrypt_mutual_description_2">Hvis både afsender og modtagere aktiverer gensidig tilstand, vil kryptering som standard blive aktiveret.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Du kan <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klikke her</a> for at lære mere.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Du kan <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klikke her</a> for at lære mere.</string>
   <string name="general_settings_title">Generelt</string>
   <string name="dialog_openkeychain_info_title">Intet OpenPGP program installeret</string>
   <string name="dialog_openkeychain_info_install">Installere</string>
@@ -1000,4 +1019,22 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
   <string name="push_info_configure_notification_action">Indstille påmindelse</string>
   <string name="push_info_disable_push_text">Hvis der ikke er brug for hurtig påmindelse om nye beskeder, skal skub handling deaktiveres og test bruges. Test kontrollerer regelmæssigt efter ny post og har ikke brug for påmindelsen.</string>
   <string name="push_info_disable_push_action">Deaktivere skub handling </string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Vælg</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Fravælg</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Marker som ulæst</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Tilføj stjernemarkering</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Fjern stjernemarkering</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Arkivere</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Slet</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

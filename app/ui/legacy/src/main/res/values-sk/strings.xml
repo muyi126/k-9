@@ -146,7 +146,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nových správ</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nových správ</item>
   </plurals>
-  <string name="notification_new_one_account_fmt">Počet neprečítaných správ: <xliff:g id="unread_message_count">%d</xliff:g> v <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_new_one_account_fmt">Počet neprečítaných správ: <xliff:g id="unread_message_count">%1$d</xliff:g> v <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> ďalších v <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Odpovedať</string>
   <string name="notification_action_mark_as_read">Označiť ako prečítané</string>
@@ -160,7 +160,9 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="notification_certificate_error_text">Skontrolujte nastavenia servera</string>
   <string name="notification_authentication_error_title">Overenie zlyhalo</string>
   <string name="notification_authentication_error_text">Overenie pre <xliff:g id="account">%s</xliff:g> zlyhalo. Aktualizujte nastavenia servera.</string>
-  <string name="notification_bg_sync_ticker">Kontrolovanie pošty: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_bg_sync_ticker">Kontrolovanie pošty: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrolovanie pošty</string>
   <string name="notification_bg_send_ticker">Odosielanie pošty: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Odosielanie pošty</string>
@@ -202,7 +204,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="message_compose_description_delete_quoted_text">Odstrániť citovaný text</string>
   <string name="message_compose_description_edit_quoted_text">Upraviť citovaný text</string>
   <string name="remove_attachment_action">Odstrániť prílohu</string>
-  <string name="message_view_from_format">Od: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Od: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Komu:</string>
   <string name="message_view_cc_label">Kópia:</string>
   <string name="message_view_bcc_label">Skrytá kópia (Bcc):</string>
@@ -242,6 +244,22 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="global_settings_confirm_menu_discard">Zahodiť správu</string>
   <string name="global_settings_confirm_menu_mark_all_read">Označiť všetky správy ako prečítané</string>
   <string name="global_settings_confirm_action_delete_notif">Vymazať (z oznámení)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Žiadna</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Archivovať</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Vymazať</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Nevyžiadaná pošta</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Presunúť</string>
   <string name="global_settings_privacy_hide_useragent">Skryť e-mail klienta</string>
   <string name="global_settings_privacy_hide_useragent_detail">Odstrániť používateľského agenta K-9 z hlavičiek správ</string>
   <string name="global_settings_privacy_hide_timezone">Skryť časové pásmo</string>
@@ -264,6 +282,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_basics_title">Nastaviť nový účet</string>
   <string name="account_setup_basics_email_hint">E-mailová adresa</string>
   <string name="account_setup_basics_password_hint">Heslo</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Ručné nastavenie</string>
   <string name="account_setup_check_settings_title"/>
@@ -302,10 +322,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_incoming_delete_policy_never_label">Ponechať na serveri</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Vymazať na serveri</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Označiť ako prečítanú na serveri</string>
-  <string name="account_setup_incoming_compression_label">Použiť kompresiu na sieti:</string>
-  <string name="account_setup_incoming_mobile_label">Mobilná</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Iná</string>
   <string name="account_setup_expunge_policy_label">Odstrániť vymazané správy zo servera</string>
   <string name="account_setup_expunge_policy_immediately">Ihneď</string>
   <string name="account_setup_expunge_policy_on_poll">Pri synchronizovaní</string>
@@ -580,8 +596,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Neznámy certifikát</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Prijať kľúč</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmietnuť kľúč</string>
-  <string name="message_view_help_key">Delete (Alebo D) – Zmazať\nR – Odpovedať\nA – Odpovedať všetkým\nC – Vytvoriť\nF – Preposlať\nM – Presunúť\nV - Archivovať\nY – Kopírovať\nZ – Označiť (Ne)pprečítané\nG – Hviezdička\nO – Usporiadať podľa typu\nI – Usporiadať podľa poradia\nQ – Späť k priečinkom\nS – Označiť/odznačiť\nJ alebo P – Predošlá správa\nK alebo N – Ďalšia správa</string>
-  <string name="message_list_help_key">Delete (alebo D) – Zmazať\nC – Vytvoriť\nM – presunúť\nV – Archivovať\nY – Skopírovať\nZ – Označiť ako (ne)prečítané\nG – Označit hviezdičkou\nO – Typ zoradenia\nI – Poradie zoradenia\nQ – Návrat na priečinky\nS – Označiť / zrušiť označenie</string>
   <string name="folder_list_filter_hint">Názov priečinku obsahuje</string>
   <string name="folder_list_display_mode_label">Zobraziť priečinky…</string>
   <string name="folder_list_display_mode_all">Všetky priečinky</string>
@@ -629,9 +643,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_push_limit_1000">1000 priečinkov</string>
   <string name="animations_title">Animácie</string>
   <string name="animations_summary">Používať krikľavý vizuálny efekt</string>
-  <string name="volume_navigation_title">Navigácia tlačidlami hlasitosti</string>
-  <string name="volume_navigation_message">V zobrazení správ</string>
-  <string name="volume_navigation_list">V zobrazení zoznamu</string>
   <string name="show_unified_inbox_title">Ukázať jednotnú schránku</string>
   <string name="integrated_inbox_title">Jednotná schránka</string>
   <string name="integrated_inbox_detail">Všetky správy v zjednotených priečinkoch</string>
@@ -645,12 +656,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_automatic_special_folder">Automaticky (%s)</string>
   <string name="font_size_settings_title">Veľkosť písma</string>
   <string name="font_size_settings_description">Nastaviť veľkosť písma</string>
-  <string name="font_size_account_list">Zoznam účtov</string>
-  <string name="font_size_account_name">Názov účtu</string>
-  <string name="font_size_account_description">Popis účtu</string>
-  <string name="font_size_folder_list">Zoznam priečinkov</string>
-  <string name="font_size_folder_name">Názov priečinka</string>
-  <string name="font_size_folder_status">Stav priečinka</string>
   <string name="font_size_message_list">Zoznam správ</string>
   <string name="font_size_message_list_subject">Predmet</string>
   <string name="font_size_message_list_sender">Odosielateľ</string>
@@ -681,7 +686,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="save_or_discard_draft_message_instructions_fmt">Uložiť alebo zahodiť túto správu?</string>
   <string name="confirm_discard_draft_message_title">Zahodiť správu?</string>
   <string name="confirm_discard_draft_message">Naozaj chcete zahodiť túto správu?</string>
-  <string name="select_text_now">Vyberte text na kopírovanie.</string>
   <string name="dialog_confirm_clear_local_folder_title">Zmazať lokálne uložené správy?</string>
   <string name="dialog_confirm_clear_local_folder_message">Týmto odstránite všetky správy z priečinka. Na servi nebude žiadna spŕava zmazaná.</string>
   <string name="dialog_confirm_clear_local_folder_action">Vyčistiť zprávy</string>
@@ -725,12 +729,16 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="settings_import_pick_document_button">Vybrať súbor</string>
   <string name="settings_import_button">Importovať</string>
   <string name="settings_import_success_generic">Nastavenia úspešne importované</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Zadajte heslá</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Import nastavení zlyhal</string>
   <string name="settings_import_read_failure">Nepodarilo sa prečítať súbor s nastaveniami</string>
   <string name="settings_import_partial_failure">Import časti nastavení zlyhal</string>
   <string name="settings_import_status_success">Import prebehol úspešne</string>
   <string name="settings_import_status_password_required">Vyžadované heslo</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Nenaimportované</string>
   <string name="settings_import_status_error">Zlyhanie pri importe</string>
   <string name="settings_import_later_button">Neskôr</string>
@@ -870,19 +878,32 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="recipient_error_parse_failed">Chyba pri spracovaní adresy!</string>
   <string name="error_sign_only_no_encryption">V režime \"len podpis\" nie je možné šifrovať.</string>
   <string name="unsigned_text_divider_label">Nepodpísaný text</string>
-  <string name="apg_deprecated_title">Varovanie o konci podpory APG</string>
-  <string name="apg_deprecated_1">Aplikácia APG už nie je udržiavaná!</string>
-  <string name="apg_deprecated_2">Podpora APG bola z K-9 Mail odstránená.</string>
-  <string name="apg_deprecated_bullet_1">Vývoj je zastavený od roku 2014</string>
-  <string name="apg_deprecated_bullet_2">Obsahuje bezpečnostné problémy</string>
-  <string name="apg_learn_more">Viac informácií nájdete v správe <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">na github.io</a>.</string>
-  <string name="apg_deprecated_ok">Rozumiem!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Táto správa je zašifrovaná</string>
   <string name="crypto_no_provider_message">Táto správa bola zašifrovaná pomocou OpenPGP\nJe potrebné nakonfigurovať kompatibilnú OpenPGP aplikáciu.</string>
   <string name="mail_list_widget_text">Zoznam správ K-9</string>
-  <string name="mail_list_widget_loading">Načítavajú sa správy…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Načítavam…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Načítavam…</string>
   <string name="openpgp_enabled_error_back">Späť</string>
   <string name="general_settings_title">Všeobecné nastavenia</string>
   <!--permissions-->
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Vybrať</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Zrušiť výber</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Označiť ako neprečítané</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Pridať hviezdičku</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Odstrániť hviezdičku</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Archivovať</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Vymazať</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Nevyžiadaná pošta</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

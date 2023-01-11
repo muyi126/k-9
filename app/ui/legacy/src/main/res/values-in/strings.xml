@@ -140,7 +140,7 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <plurals name="notification_new_messages_title">
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> pesan baru</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Belum dibaca (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Belum dibaca (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> lagi pada <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Balas</string>
   <string name="notification_action_mark_as_read">Tandai Sudah Dibaca</string>
@@ -154,7 +154,9 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="notification_certificate_error_text">Periksa pengaturan server Anda</string>
   <string name="notification_authentication_error_title">Otentikasi gagal</string>
   <string name="notification_authentication_error_text">Otentikasi gagal untuk <xliff:g id="account">%s</xliff:g>. Perbarui pengaturan server Anda.</string>
-  <string name="notification_bg_sync_ticker">Memeriksa pesan: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_bg_sync_ticker">Memeriksa pesan: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Memeriksa pesan</string>
   <string name="notification_bg_send_ticker">Mengirimkan pesan: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Mengirimkan pesan</string>
@@ -196,7 +198,7 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="message_compose_description_delete_quoted_text">Buang teks kutipan</string>
   <string name="message_compose_description_edit_quoted_text">Sunting teks kutipan</string>
   <string name="remove_attachment_action">Buang lampiran</string>
-  <string name="message_view_from_format">Dari: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Dari: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Kepada:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
@@ -236,6 +238,22 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="global_settings_confirm_menu_discard">Buang pesan</string>
   <string name="global_settings_confirm_menu_mark_all_read">Tandai semua pesan sebagai telah dibaca</string>
   <string name="global_settings_confirm_action_delete_notif">Hapus (dari notifikasi)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Nihil</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arsipkan</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Hapus</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Pindah</string>
   <string name="global_settings_privacy_hide_useragent">Sembunyikan mail client</string>
   <string name="global_settings_privacy_hide_useragent_detail">Buang User-Agent K-9 dari tajuk surel</string>
   <string name="global_settings_privacy_hide_timezone">Sembunyikan zona waktu</string>
@@ -258,6 +276,8 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_basics_title">Siapkan akun baru</string>
   <string name="account_setup_basics_email_hint">Alamat surel</string>
   <string name="account_setup_basics_password_hint">Sandi</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Manual</string>
   <string name="account_setup_check_settings_title"/>
@@ -296,10 +316,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_incoming_delete_policy_never_label">Jangan hapus dari server</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Hapus dari server</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Tandai sebagai telah dibaca di server</string>
-  <string name="account_setup_incoming_compression_label">Gunakan kompresi pada jaringan:</string>
-  <string name="account_setup_incoming_mobile_label">Mobile</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Lainnya</string>
   <string name="account_setup_expunge_policy_label">Hapus pesan yang dihapus di server</string>
   <string name="account_setup_expunge_policy_immediately">Segera</string>
   <string name="account_setup_expunge_policy_on_poll">Ketika menarik</string>
@@ -574,8 +590,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_failed_dlg_invalid_certificate_title">Sertifikat tidak dikenal</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Terima kunci</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Tolak kunci</string>
-  <string name="message_view_help_key">Del (atau D) - Hapus\nR - Balas\nA - Balas Semua\nC - Tulis\nF - Teruskan\nM - Pindah\nV - Arsipkan\nY - Copy\nZ - Tandai (belum) baca\nG - Star\nO - Urutkan jenis\nI - Urutan sortir\nQ - Kembali ke Folder\nS - Pilih/batalkan pilihan\nJ atau P - Pesan Sebelumnya\nK atau N - Pesan Berikutnya</string>
-  <string name="message_list_help_key">Del (atau D) - Hapus\nC - Tulis\nM - Pindah\nV - Arsipkan\nY - Copy\nZ - Tandai (belum) baca\nG - Star\nO - Urutkan jenis\nI - Urutan sortir\nQ - Kembali ke Folder\nS - Pilih/batalkan pilihan</string>
   <string name="folder_list_filter_hint">Nama folder mengandung</string>
   <string name="folder_list_display_mode_label">Perlihatkan folder…</string>
   <string name="folder_list_display_mode_all">Semua folder</string>
@@ -623,9 +637,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_push_limit_1000">1000 folder</string>
   <string name="animations_title">Animasi</string>
   <string name="animations_summary">Gunakan efek visual mencolok</string>
-  <string name="volume_navigation_title">Navigasi tombol volume</string>
-  <string name="volume_navigation_message">Dalam tampilan pesan</string>
-  <string name="volume_navigation_list">Dalam tampilan daftar</string>
   <string name="show_unified_inbox_title">Tampilkan Kotak Masuk Terpadu</string>
   <string name="integrated_inbox_title">Inbox terpadu</string>
   <string name="integrated_inbox_detail">Semua pesan dalam folder terpadu</string>
@@ -639,12 +650,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_settings_automatic_special_folder">Otomatis (%s)</string>
   <string name="font_size_settings_title">Ukuran font</string>
   <string name="font_size_settings_description">konfigurasi ukuran font</string>
-  <string name="font_size_account_list">Daftar akun</string>
-  <string name="font_size_account_name">Nama akun</string>
-  <string name="font_size_account_description">Deskripsi akun</string>
-  <string name="font_size_folder_list">Daftar folder</string>
-  <string name="font_size_folder_name">Nama folder</string>
-  <string name="font_size_folder_status">Status folder</string>
   <string name="font_size_message_list">Daftar pesan</string>
   <string name="font_size_message_list_subject">Subyek</string>
   <string name="font_size_message_list_sender">Pengirim</string>
@@ -675,7 +680,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="save_or_discard_draft_message_instructions_fmt">Simpan atau Buang pesan ini?</string>
   <string name="confirm_discard_draft_message_title">Buang pesan?</string>
   <string name="confirm_discard_draft_message">Anda yakin ingin membuang pesan ini?</string>
-  <string name="select_text_now">Pilih teks yang akan disalin.</string>
   <string name="dialog_confirm_clear_local_folder_title">Bersihkan pesan lokal?</string>
   <string name="dialog_confirm_clear_local_folder_message">Ini akan menghapus semua pesan lokal dari folder. Tidak ada pesan yang akan dihapus dari server.</string>
   <string name="dialog_confirm_clear_local_folder_action">Bersihkan pesan</string>
@@ -713,12 +717,16 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="settings_import_pick_document_button">Pilih file</string>
   <string name="settings_import_button">Impor</string>
   <string name="settings_import_success_generic">Pengaturan berhasil diimpor</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Silahkan masukkan kata sandi</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Gagal mengimpor pengaturan</string>
   <string name="settings_import_read_failure">Gagal membaca file pengaturan</string>
   <string name="settings_import_partial_failure">Gagal mengimpor beberapa pengaturan</string>
   <string name="settings_import_status_success">Berhasil diimpor</string>
   <string name="settings_import_status_password_required">Diperlukan kata sandi</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Tidak diimpor</string>
   <string name="settings_import_status_error">Kegagalan impor</string>
   <string name="settings_import_later_button">Nanti</string>
@@ -905,19 +913,14 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_settings_crypto_hide_sign_only_off">Semua tanda tangan akan ditampilkan</string>
   <string name="error_sign_only_no_encryption">Enkripsi tidak tersedia dalam mode tanda tangan saja!</string>
   <string name="unsigned_text_divider_label">Teks yang tidak ditandai</string>
-  <string name="apg_deprecated_title">Peringatan AGP tak berlaku lagi</string>
-  <string name="apg_deprecated_1">APG tidak lagi dipertahankan!</string>
-  <string name="apg_deprecated_2">Karena itu, dukungan untuk APG telah dihapus dari K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Pembangunan dihentikan pada awal 2014</string>
-  <string name="apg_deprecated_bullet_2">Berisi masalah keamanan yang tidak diperbaiki</string>
-  <string name="apg_learn_more">Anda bisa <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klik di sini</a> untuk mempelajari lebih lanjut.</string>
-  <string name="apg_deprecated_ok">Mengerti!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Email ini dienkripsi</string>
   <string name="crypto_no_provider_message">Email ini telah dienkripsi dengan OpenPGP. \nUntuk membacanya, Anda perlu menginstal dan mengkonfigurasi Aplikasi OpenPGP yang kompatibel.</string>
   <string name="crypto_no_provider_button">Pergi ke pengaturan</string>
   <string name="mail_list_widget_text">Daftar pesan K-9</string>
-  <string name="mail_list_widget_loading">Memuat pesan…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Memuat…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Memuat…</string>
   <string name="openpgp_enabled_error_title">Enkripsi tidak mungkin dilakukan</string>
   <string name="openpgp_enabled_error_msg">Beberapa penerima yang dipilih tidak mendukung fitur ini!</string>
   <string name="enable_encryption">Aktifkan Enkripsi</string>
@@ -933,7 +936,7 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="dialog_autocrypt_mutual_title">Mode gabungan otomatis kripto</string>
   <string name="dialog_autocrypt_mutual_description_1">Pesan biasanya akan dienkripsi berdasarkan pilihan, atau saat membalas pesan terenkripsi.</string>
   <string name="dialog_autocrypt_mutual_description_2">Jika kedua pengirim dan penerima mengaktifkan mode bersama, enkripsi akan diaktifkan secara default.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Anda dapat <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klik di sini</a> untuk mempelajari lebih lanjut.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Anda dapat <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klik di sini</a> untuk mempelajari lebih lanjut.</string>
   <string name="general_settings_title">Pengaturan Umum</string>
   <string name="dialog_openkeychain_info_title">Tidak ada aplikasi OpenPGP yang terinstal</string>
   <string name="dialog_openkeychain_info_install">Memasang</string>
@@ -967,4 +970,22 @@ Anda dapat menyimpan pesan ini dan menggunakannya sebagai cadangan untuk kunci r
   <string name="permission_contacts_rationale_title">Izinkan akses ke kontak</string>
   <string name="permission_contacts_rationale_message">Untuk dapat memberikan saran kontak dan untuk menampilkan nama kontak dan foto, aplikasi perlu akses ke kontak Anda.</string>
   <string name="generic_loading_error">Terjadi kesalahan saat memuat data</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Pilih</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Hapus pilihan</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Tandai belum dibaca</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Tambah bintang</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Buang bintang</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Arsipkan</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Hapus</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Spam</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

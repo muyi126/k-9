@@ -4,6 +4,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:foreground="?attr/selectableItemBackground"
               android:orientation="horizontal"
               android:layout_gravity="center_vertical"
               tools:layout_height="?android:attr/listPreferredItemHeight"
@@ -147,6 +148,7 @@
                 android:textColor="?android:attr/textColorSecondary"
                 tools:text="Oct 27"/>
 
+        <!-- TODO: Replace with an ImageView. MaterialCheckBox comes with a lot of styling that we don't want. -->
         <CheckBox
                 android:id="@+id/star"
                 style="@style/MessageStarStyle"

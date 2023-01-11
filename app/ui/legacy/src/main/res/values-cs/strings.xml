@@ -12,6 +12,8 @@
   <string name="app_license">Apache License, verze 2.0</string>
   <string name="about_project_title">Projekt s otevřeným zdrojovým kódem</string>
   <string name="about_website_title">Webová stránka</string>
+  <string name="user_manual_title">Uživatelská příručka</string>
+  <string name="get_help_title">Získat nápovědu</string>
   <string name="user_forum_title">Uživatelské fórum</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -93,7 +95,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="single_message_options_action">Odeslat…</string>
   <string name="refile_action">Přesměrovat…</string>
   <string name="done_action">Hotovo</string>
-  <string name="discard_action">Zrušit</string>
+  <string name="discard_action">Zahodit</string>
   <string name="save_draft_action">Uložit jako koncept</string>
   <string name="check_mail_action">Zkontrolovat poštu</string>
   <string name="send_messages_action">Odeslat zprávy</string>
@@ -115,6 +117,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="flag_action">Přidat \u2605</string>
   <string name="unflag_action">Odebrat \u2606</string>
   <string name="copy_action">Kopírovat</string>
+  <string name="unsubscribe_action">Zrušit přihlášení se k odběru</string>
   <string name="show_headers_action">Zobraz hlavičku</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresa zkopírována do schránky</item>
@@ -154,7 +157,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nové zprávy</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Nepřečteno (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Nepřečteno (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> více na <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Odpovědět</string>
   <string name="notification_action_mark_as_read">Přečteno</string>
@@ -169,7 +172,11 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="notification_certificate_error_text">Zkontrolujte nastavení serveru</string>
   <string name="notification_authentication_error_title">Přihlášení se nezdařilo</string>
   <string name="notification_authentication_error_text">Přihlášení k <xliff:g id="account">%s</xliff:g> se nezdařilo. Aktualizujte svá nastavení pro server.</string>
-  <string name="notification_bg_sync_ticker">Zjišťování pošty: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Chyba upozornění</string>
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Vyskytla se chyba při pokusu o vytvoření systémového upozornění pro novou zprávu. Důvodem je nejspíš chybějící zvuk upozornění.\n\nKlepnutím otevřete nastavení upozorňování.</string>
+  <string name="notification_bg_sync_ticker">Zjišťování pošty: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Zjišťování pošty</string>
   <string name="notification_bg_send_ticker">Odesílání pošty: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Odesílání pošty</string>
@@ -216,7 +223,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="message_compose_description_delete_quoted_text">Odstranit citovaný text</string>
   <string name="message_compose_description_edit_quoted_text">Upravit citovaný text</string>
   <string name="remove_attachment_action">Odebrat přílohu</string>
-  <string name="message_view_from_format">Odesílatel: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Odesílatel: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Komu:</string>
   <string name="message_view_cc_label">Kopie:</string>
   <string name="message_view_bcc_label">Skrytá kopie (Bcc):</string>
@@ -257,6 +264,22 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="global_settings_confirm_menu_discard">Zahodit zprávu</string>
   <string name="global_settings_confirm_menu_mark_all_read">Označit všechny zprávy jako přečtené</string>
   <string name="global_settings_confirm_action_delete_notif">Smazat (z oznámení)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Žádné</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Archivovat</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Smazat</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Nevyžádaná</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Přesunout</string>
   <string name="global_settings_privacy_hide_useragent">Skrýt e-mailového klienta</string>
   <string name="global_settings_privacy_hide_useragent_detail">Odstraňovat z hlaviček e-mailů informaci o K-9 (user agent)</string>
   <string name="global_settings_privacy_hide_timezone">Skrýt časovou zónu</string>
@@ -280,6 +303,11 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_basics_title">Založit nový účet</string>
   <string name="account_setup_basics_email_hint">Emailová adresa</string>
   <string name="account_setup_basics_password_hint">Heslo</string>
+  <string name="account_setup_oauth_description">Pokud chcete tento e-mailový účet používat v K-9 mail, je třeba se přihlásit a udělit přístup k e-mailům.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Přihlásit se</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Přihlási se prostřednictvím Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Pokud si zde chcete zobrazit své heslo, zapněte zamykání obrazovky tohoto zařízení.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Ověřte svou identitu</string>
@@ -303,6 +331,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_auth_type_insecure_password">Heslo přenášeno bez zabezpečení</string>
   <string name="account_setup_auth_type_encrypted_password">Zašifrované heslo</string>
   <string name="account_setup_auth_type_tls_client_certificate">Klientský certifikát</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Nastavení serveru příchozí pošty</string>
   <string name="account_setup_incoming_username_label">Uživatelské jméno</string>
   <string name="account_setup_incoming_password_label">Heslo</string>
@@ -321,10 +350,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_incoming_delete_policy_never_label">Nemazat ji na serveru</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Smazat na serveru</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Označit jako přečtenou na serveru</string>
-  <string name="account_setup_incoming_compression_label">Používat v síti kompresi:</string>
-  <string name="account_setup_incoming_mobile_label">Mobilní</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Jiná</string>
+  <string name="account_setup_incoming_use_compression">Komprimovat</string>
   <string name="account_setup_expunge_policy_label">Odstranit smazané zprávy</string>
   <string name="account_setup_expunge_policy_immediately">Ihned</string>
   <string name="account_setup_expunge_policy_on_poll">Při dotazování</string>
@@ -389,6 +415,10 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_failed_dlg_auth_message_fmt">Uživatelské jméno nebo heslo není správné.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Server nabízí neplatný SSL certifikát. Někdy může jít o chybu nastavení serveru, někdy o pokus útoku na vás nebo e-mailový server. Pokud nevíte o co jde, ťukněte na odmítnout a obraťte se na správce dotyčného e-mailového serveru.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Nedaří se připojit k serveru. (<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Pověření zrušeno</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Pověření se nezdařilo s následující chybou: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 v tuto chvíli pro tohoto poskytovatele není podporováno.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Aplikaci se nedaří najít webový prohlížeč, který použít pro udělení přístupu k vašemu účtu.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Upravit podrobnosti</string>
   <string name="account_setup_failed_dlg_continue_action">Pokračovat</string>
   <string name="account_settings_push_advanced_title">Rozšířené</string>
@@ -623,8 +653,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nerozpoznaný certifikát</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Přijmout klíč</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmítnout klíč</string>
-  <string name="message_view_help_key">Delete (nebo D) – Smazat\nR – Odpovědět\nA – Odpovědět všem\nC – Vytvořit\nF – Přeposlat\nM – Přesunout\nV - Archivovat\nY – Kopírovat\nZ – Označit (Ne)přečtené\nG – Hvězdička\nO – Uspořádat podle typu\nI – Uspořádat podle pořadí\nQ – Zpět ke složkám\nS – Označit/odznačit\nJ nebo P – Předešlá zpráva\nK nebo N – Další zpráva</string>
-  <string name="message_list_help_key">Delete (nebo D) – Smazat\nC – Vytvořit\nM – Přesunout\nV – Archivovat\nY – Zkopírovat\nZ – Označit jako (ne)přečtené\nG – Označit hvězdičkou\nO – Typ řazení\nI – Pořadí řazení\nQ – Návrat na složky\nS – Označit / zrušit označení</string>
   <string name="folder_list_filter_hint">Název složky obsahuje</string>
   <string name="folder_list_display_mode_label">Zobrazit složky…</string>
   <string name="folder_list_display_mode_all">Všechny složky</string>
@@ -672,9 +700,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_push_limit_1000">1000 složek</string>
   <string name="animations_title">Animace</string>
   <string name="animations_summary">Používat okázalé vizuální efekty</string>
-  <string name="volume_navigation_title">Navigace tlačítky hlasitosti</string>
-  <string name="volume_navigation_message">Zobrazení zpráv</string>
-  <string name="volume_navigation_list">Různá zobrazení seznamů</string>
   <string name="show_unified_inbox_title">Ukázat sjednocený pohled na doručenou poštu</string>
   <string name="show_starred_count_title">Zobrazit počet označených hvězdičkou</string>
   <string name="integrated_inbox_title">Integrovaná doručená pošta</string>
@@ -689,12 +714,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_settings_automatic_special_folder">Automaticky (%s)</string>
   <string name="font_size_settings_title">Velikost písma</string>
   <string name="font_size_settings_description">Konfigurovat velikost písma</string>
-  <string name="font_size_account_list">Seznam účtů</string>
-  <string name="font_size_account_name">Název účtu</string>
-  <string name="font_size_account_description">Popis účtu</string>
-  <string name="font_size_folder_list">Seznam složek</string>
-  <string name="font_size_folder_name">Název složky</string>
-  <string name="font_size_folder_status">Stav složky</string>
   <string name="font_size_message_list">Seznam zpráv</string>
   <string name="font_size_message_list_subject">Předmět</string>
   <string name="font_size_message_list_sender">Odesílatel</string>
@@ -726,7 +745,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="save_or_discard_draft_message_changes">Uložit nebo zahodit změny?</string>
   <string name="confirm_discard_draft_message_title">Zahodit zprávu?</string>
   <string name="confirm_discard_draft_message">Opravdu chcete tuto zprávu zahodit?</string>
-  <string name="select_text_now">Vyberte text pro kopírování.</string>
   <string name="dialog_confirm_clear_local_folder_title">Vymazat zprávy uložené lokálně?</string>
   <string name="dialog_confirm_clear_local_folder_message">Toto ze složky odebere všechny lokálně uložené zprávy. Ze serveru nebudou vymazány žádné zprávy.</string>
   <string name="dialog_confirm_clear_local_folder_action">Vyčistit zprávy</string>
@@ -770,12 +788,19 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="settings_import_pick_document_button">Vybrat soubor</string>
   <string name="settings_import_button">Import</string>
   <string name="settings_import_success_generic">Nastavení úspěšně importována</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Zadejte hesla</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Prosím přihlaste se</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Prosím přihlaste se a zadejte hesla</string>
   <string name="settings_import_failure">Nepodařilo se importovat nastavení</string>
   <string name="settings_import_read_failure">Nepodařilo se číst soubor s nastaveními</string>
   <string name="settings_import_partial_failure">Nepodařilo se naimportovat některá nastavení</string>
   <string name="settings_import_status_success">Úspěšně naimportováno</string>
   <string name="settings_import_status_password_required">Vyžadováno hesl</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Je vyžadováno přihlášení se</string>
   <string name="settings_import_status_not_imported">Nenaimportováno</string>
   <string name="settings_import_status_error">Nezdar při importu</string>
   <string name="settings_import_later_button">Později</string>
@@ -972,19 +997,14 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_settings_crypto_hide_sign_only_off">Budou zobrazeny všechny podpisy</string>
   <string name="error_sign_only_no_encryption">Šifrování nedostupné v podpisovém módu!</string>
   <string name="unsigned_text_divider_label">Nepodepsaný text</string>
-  <string name="apg_deprecated_title">Varování o ukončení podpory APG</string>
-  <string name="apg_deprecated_1">APG už není udržováno!</string>
-  <string name="apg_deprecated_2">Kvůli tomuto jsme odstranili podporu pro APG z K-9 Mailu.</string>
-  <string name="apg_deprecated_bullet_1">Vývoj skončil na začátku roku 2014</string>
-  <string name="apg_deprecated_bullet_2">Obsahuje neopravené bezpečnostní chyby</string>
-  <string name="apg_learn_more"><a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">Kliknutím sem</a> se můžete dozvědět více.</string>
-  <string name="apg_deprecated_ok">Rozumím!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Tento e-mail je šifrovaný</string>
   <string name="crypto_no_provider_message">Tento email byl zašifrovaný pomocí OpenPGP.\nAbyste si ho mohl/a přečíst, potřebujete si nainstalovat a nakonfigurovat kompatibilní OpenPGP aplikaci.</string>
   <string name="crypto_no_provider_button">Přejít do nastavení</string>
   <string name="mail_list_widget_text">Seznam zpráv K-9</string>
-  <string name="mail_list_widget_loading">Načítání zpráv…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Načítání…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Načítání…</string>
   <string name="openpgp_enabled_error_title">Šifrování není možné</string>
   <string name="openpgp_enabled_error_msg">Někteří ze zvolených příjemců nepodporují tuto funkci!</string>
   <string name="enable_encryption">Zapnout šifrování</string>
@@ -1000,7 +1020,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="dialog_autocrypt_mutual_title">Vzájemný režim automatického šifrování</string>
   <string name="dialog_autocrypt_mutual_description_1">Normálně budou zprávy šifrovány volitelně, nebo při odpovědi na šifrovanou zprávu.</string>
   <string name="dialog_autocrypt_mutual_description_2">Pokud jak odesilatel, tak příjemce zapnou vzájemný režim, šifrování bude ve výchozím stavu zapnuté.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Více informací je možné zjistit <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">kliknutím sem</a>.</string>
+  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Kliknutím sem</a> se můžete dozvědět více.</string>
   <string name="general_settings_title">Hlavní nastavení</string>
   <string name="dialog_openkeychain_info_title">Není nainstalovaná žádná OpenPGP aplikace</string>
   <string name="dialog_openkeychain_info_install">Nainstalovat</string>
@@ -1045,4 +1065,22 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
   <string name="push_info_configure_notification_action">Nastavit upozorňování</string>
   <string name="push_info_disable_push_text">Pokud nepotřebujete okamžitá upozornění na nové zprávy, měli byste Push vypnout a použít pravidelné dotazování se. To kontroluje nové e-maily v pravidelném intervalu a nepotřebuje upozornění.</string>
   <string name="push_info_disable_push_action">Vypnout Push</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Vybrat</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Zrušit výběr</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Označit jako nepřečtené</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Přidat \u2605</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Odebrat \u2606</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Archivovat</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Smazat</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Nevyžádaná</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

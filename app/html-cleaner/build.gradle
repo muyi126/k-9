@@ -1,10 +1,6 @@
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
-
-java {
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-}
+apply plugin: 'com.android.lint'
 
 dependencies {
     implementation "org.jsoup:jsoup:${versions.jsoup}"

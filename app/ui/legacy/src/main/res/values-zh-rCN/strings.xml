@@ -12,8 +12,10 @@
   <string name="app_license">Apache 许可证，2.0 版</string>
   <string name="about_project_title">开源项目</string>
   <string name="about_website_title">网站</string>
+  <string name="user_manual_title">用户手册</string>
+  <string name="get_help_title">获取帮助</string>
   <string name="user_forum_title">用户论坛</string>
-  <string name="about_fediverse_title">多样性</string>
+  <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">推特</string>
   <string name="about_libraries">库</string>
   <string name="license">许可</string>
@@ -116,6 +118,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="flag_action">添加星标</string>
   <string name="unflag_action">移除星标</string>
   <string name="copy_action">复制</string>
+  <string name="unsubscribe_action">取消订阅</string>
   <string name="show_headers_action">显示邮件头</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="other">地址已复制到剪贴板</item>
@@ -148,7 +151,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <plurals name="notification_new_messages_title">
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 条新消息</item>
   </plurals>
-  <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未读邮件（<xliff:g id="account">%s</xliff:g>）</string>
+  <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%1$d</xliff:g>封未读邮件（<xliff:g id="account">%2$s</xliff:g>）</string>
   <string name="notification_additional_messages">加载 <xliff:g id="account">%2$s</xliff:g> 上的更多 <xliff:g id="additional_messages">%1$d</xliff:g> 条消息</string>
   <string name="notification_action_reply">回复</string>
   <string name="notification_action_mark_as_read">标记为已读</string>
@@ -163,7 +166,11 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="notification_certificate_error_text">请检查您的服务器设置</string>
   <string name="notification_authentication_error_title">身份验证失败</string>
   <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> 登录失败，请更新设置。</string>
-  <string name="notification_bg_sync_ticker">正在检查邮件：<xliff:g id="account">%s</xliff:g>：<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">通知错误</string>
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">尝试创建新消息的系统通知时出错。最有可能的原因是缺少通知声音。\n\n轻按打开通知设置。</string>
+  <string name="notification_bg_sync_ticker">正在检查邮件：<xliff:g id="account">%1$s</xliff:g>：<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">正在检查邮件</string>
   <string name="notification_bg_send_ticker">正在发送邮件：<xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">发送邮件</string>
@@ -210,7 +217,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="message_compose_description_delete_quoted_text">删除引用文本</string>
   <string name="message_compose_description_edit_quoted_text">编辑引用文本</string>
   <string name="remove_attachment_action">移除附件</string>
-  <string name="message_view_from_format">发件人：<xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">发件人：<xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">收件人：</string>
   <string name="message_view_cc_label">抄送：</string>
   <string name="message_view_bcc_label">密送:</string>
@@ -251,6 +258,28 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="global_settings_confirm_menu_discard">丢弃邮件</string>
   <string name="global_settings_confirm_menu_mark_all_read">全部标为已读</string>
   <string name="global_settings_confirm_action_delete_notif">删除（来自通知）</string>
+  <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">滑动操作</string>
+  <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">右滑</string>
+  <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">左滑</string>
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">无</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">切换选择</string>
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">标为已读/未读</string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">添加/删除星标</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">归档</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">删除</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">标记为垃圾邮件</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">移动</string>
   <string name="global_settings_privacy_hide_useragent">隐藏邮件客户端</string>
   <string name="global_settings_privacy_hide_useragent_detail">从邮件头中移除 K-9 的 User-Agent</string>
   <string name="global_settings_privacy_hide_timezone">隐藏时区</string>
@@ -274,6 +303,11 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_basics_title">设置新账户</string>
   <string name="account_setup_basics_email_hint">电子邮件地址</string>
   <string name="account_setup_basics_password_hint">密码</string>
+  <string name="account_setup_oauth_description">要通过 K-9 Mail 使用这个电子邮件帐户，你需要登录并授予应用访问你电子邮件的权限。</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">登录</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Google 登录</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">要查看您的密码，请在此设备上启用屏幕锁定。</string>
   <string name="account_setup_basics_show_password_biometrics_title">验证你的身份</string>
@@ -297,6 +331,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_auth_type_insecure_password">非安全传输的密码</string>
   <string name="account_setup_auth_type_encrypted_password">加密的密码</string>
   <string name="account_setup_auth_type_tls_client_certificate">客户端证书</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">收件服务器设置</string>
   <string name="account_setup_incoming_username_label">用户名</string>
   <string name="account_setup_incoming_password_label">密码</string>
@@ -315,10 +350,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_incoming_delete_policy_never_label">不要从服务器上删除</string>
   <string name="account_setup_incoming_delete_policy_delete_label">立刻从服务器上删除</string>
   <string name="account_setup_incoming_delete_policy_markread_label">在服务器上将邮件标记为已读</string>
-  <string name="account_setup_incoming_compression_label">在以下网络上使用压缩以便节约流量：</string>
-  <string name="account_setup_incoming_mobile_label">手机移动网络</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">其他</string>
+  <string name="account_setup_incoming_use_compression">使用压缩</string>
   <string name="account_setup_expunge_policy_label">抹掉删除的邮件</string>
   <string name="account_setup_expunge_policy_immediately">立刻</string>
   <string name="account_setup_expunge_policy_on_poll">接收邮件时</string>
@@ -383,6 +415,10 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_failed_dlg_auth_message_fmt">用户名或密码不正确。\n（<xliff:g id="error">%s</xliff:g>）</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">服务器提供了一个无效的SSL证书。有时候这是由于不正确的服务器配置导致的；有时候这也可能是由于某人正在试图攻击您或者您的邮件服务器。如果您不能确定到底是什么原因，请单击”拒绝“，并联系您的邮件服务器管理人员。\n\n（<xliff:g id="error">%s</xliff:g>）</string>
   <string name="account_setup_failed_dlg_server_message_fmt">无法连接到服务器。\n（<xliff:g id="error">%s</xliff:g>）</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">授权被取消</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">授权失败，错误信息如下：<xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">此提供商目前不支持 OAuth 2.0.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">应用找不到一个浏览器来授予访问你账户的权限。</string>
   <string name="account_setup_failed_dlg_edit_details_action">编辑详细信息</string>
   <string name="account_setup_failed_dlg_continue_action">继续</string>
   <string name="account_settings_push_advanced_title">高级</string>
@@ -617,8 +653,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_failed_dlg_invalid_certificate_title">无法识别的证书信息</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">接收密钥</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">拒绝密钥</string>
-  <string name="message_view_help_key">Del (D) - 删除\nR - 回复\nA - 回复所有\nC - 群发\nF - 转发\nM - 移动\nV - 存档\nY - 复制\nZ - 标记 (未)阅读\nG - 加星\nO - 排序类型\nI - 排序名称\nQ - 返回文件夹\nS - 选择/删除已选\nJ or P - 上一消息\nK or N - 下一消息</string>
-  <string name="message_list_help_key">Del(D) - 删除\nC - 群组\nM - 移动\nV - 归档\nY - 复制\nZ - 标记 (未)已阅\nG - 加星\nO - 排序类型\nI - 排序名称\nQ - 返回文件夹\nS - 选择/删除已选</string>
   <string name="folder_list_filter_hint">文件夹名称中包含</string>
   <string name="folder_list_display_mode_label">文件夹</string>
   <string name="folder_list_display_mode_all">显示全部文件夹</string>
@@ -666,9 +700,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_push_limit_1000">1000 个文件夹</string>
   <string name="animations_title">动画</string>
   <string name="animations_summary">使用绚丽的视觉特效</string>
-  <string name="volume_navigation_title">音量键导航</string>
-  <string name="volume_navigation_message">信息视图</string>
-  <string name="volume_navigation_list">不同的列表视图</string>
+  <string name="volume_navigation_title">消息视图中音量键导航</string>
   <string name="show_unified_inbox_title">显示全局收件箱</string>
   <string name="show_starred_count_title">显示星标邮件数</string>
   <string name="integrated_inbox_title">全局收件箱</string>
@@ -683,12 +715,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_settings_automatic_special_folder">自动（%s）</string>
   <string name="font_size_settings_title">字体大小</string>
   <string name="font_size_settings_description">配置字体大小</string>
-  <string name="font_size_account_list">账户列表</string>
-  <string name="font_size_account_name">账户名称</string>
-  <string name="font_size_account_description">账户描述</string>
-  <string name="font_size_folder_list">文件夹列表</string>
-  <string name="font_size_folder_name">文件夹名称</string>
-  <string name="font_size_folder_status">文件夹状态</string>
   <string name="font_size_message_list">管理列表</string>
   <string name="font_size_message_list_subject">主题</string>
   <string name="font_size_message_list_sender">发件人</string>
@@ -720,7 +746,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="save_or_discard_draft_message_changes">保存或取消更改？</string>
   <string name="confirm_discard_draft_message_title">丢弃该邮件？</string>
   <string name="confirm_discard_draft_message">确定丢弃该邮件？</string>
-  <string name="select_text_now">选择需要拷贝的文本。</string>
   <string name="dialog_confirm_clear_local_folder_title">清除本地消息？</string>
   <string name="dialog_confirm_clear_local_folder_message">这将从文件夹中删除所有本地邮件。 没有消息会从服务器中被删除。</string>
   <string name="dialog_confirm_clear_local_folder_action">清除消息</string>
@@ -758,12 +783,19 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="settings_import_pick_document_button">选择文件</string>
   <string name="settings_import_button">导入</string>
   <string name="settings_import_success_generic">配置导入成功</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">请输入密码</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">请登录</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">请登录并输入密码</string>
   <string name="settings_import_failure">配置导入失败</string>
   <string name="settings_import_read_failure">读取配置文件失败</string>
   <string name="settings_import_partial_failure">导入部分配置失败</string>
   <string name="settings_import_status_success">导入成功</string>
   <string name="settings_import_status_password_required">需要输入密码</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">需要登录</string>
   <string name="settings_import_status_not_imported">没有导入</string>
   <string name="settings_import_status_error">导入失败</string>
   <string name="settings_import_later_button">之后</string>
@@ -951,19 +983,14 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_settings_crypto_hide_sign_only_off">显示所有签名</string>
   <string name="error_sign_only_no_encryption">加密不可用在签名模式下</string>
   <string name="unsigned_text_divider_label">未签名文本</string>
-  <string name="apg_deprecated_title">APG 弃用警告</string>
-  <string name="apg_deprecated_1">APG 已停止维护！</string>
-  <string name="apg_deprecated_2">因此，K-9 Mail 移除了对 APG 的支持。</string>
-  <string name="apg_deprecated_bullet_1">开发在 2014 年初停止了</string>
-  <string name="apg_deprecated_bullet_2">包含未修复的安全漏洞</string>
-  <string name="apg_learn_more">你可以 <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">点击这里</a> 查看更多信息。</string>
-  <string name="apg_deprecated_ok">知道了</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">邮件已被加密</string>
   <string name="crypto_no_provider_message">这份邮件使用 OpenPGP 进行了加密。\n请安装并配置一个兼容 OpenPGP 的应用来查看邮件。</string>
   <string name="crypto_no_provider_button">前往设置</string>
   <string name="mail_list_widget_text">K-9消息列表</string>
-  <string name="mail_list_widget_loading">正在加载邮件……</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">加载中…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">加载中…</string>
   <string name="openpgp_enabled_error_title">无法加密</string>
   <string name="openpgp_enabled_error_msg">某些选定的收件人不支持此功能！</string>
   <string name="enable_encryption">启用加密</string>
@@ -979,7 +1006,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="dialog_autocrypt_mutual_title">Autocrypt 交互模式</string>
   <string name="dialog_autocrypt_mutual_description_1">消息通常会按您的选择，或当回复加密消息时加密。</string>
   <string name="dialog_autocrypt_mutual_description_2">如果发件人和收件人均启用了互动模式，加密默认会被启用。</string>
-  <string name="dialog_autocrypt_mutual_learn_more">您可以<a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">点击这里</a>了解详情。</string>
+  <string name="dialog_autocrypt_mutual_learn_more">你可以<a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">单击此处</a>了解更多。</string>
   <string name="general_settings_title">常规设置</string>
   <string name="dialog_openkeychain_info_title">未安装 OpenPGP 应用</string>
   <string name="dialog_openkeychain_info_install">安装</string>
@@ -1025,4 +1052,24 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="push_info_configure_notification_action">配置通知</string>
   <string name="push_info_disable_push_text">如果您不需要新消息的即时通知，则应禁用推送并使用轮询。 轮询会定期检查新邮件，不需要通知。</string>
   <string name="push_info_disable_push_action">禁用推送</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">选择</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">取消选择</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">标记为已读</string>
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">标记为未读</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">添加星标</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">移除星标</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">归档</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">删除</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">标记为垃圾邮件</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">移动…</string>
 </resources>

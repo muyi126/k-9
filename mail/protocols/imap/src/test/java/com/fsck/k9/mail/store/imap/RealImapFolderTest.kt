@@ -4,7 +4,6 @@ import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.DefaultBodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.mail.K9LibRobolectricTestRunner
 import com.fsck.k9.mail.MessageRetrievalListener
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.Part
@@ -12,11 +11,14 @@ import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.mail.internet.MimeHeader
 import com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse
 import com.google.common.truth.Truth.assertThat
+import java.io.File
 import java.io.IOException
+import java.nio.file.Files
 import java.util.Date
 import java.util.TimeZone
 import okio.Buffer
 import org.apache.james.mime4j.util.MimeUtil
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -25,10 +27,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anySet
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.ArgumentMatchers.eq
 import org.mockito.ArgumentMatchers.startsWith
 import org.mockito.Mockito.atLeastOnce
 import org.mockito.Mockito.times
@@ -38,23 +38,30 @@ import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import org.robolectric.RuntimeEnvironment
 
-@RunWith(K9LibRobolectricTestRunner::class)
 class RealImapFolderTest {
     private val internalImapStore = object : InternalImapStore {
         override val logLabel = "Account"
         override fun getCombinedPrefix() = ""
         override fun getPermanentFlagsIndex() = mutableSetOf<Flag>()
     }
-    private val imapConnection = mock<RealImapConnection>()
+    private val imapConnection = mock<ImapConnection>()
     private val testConnectionManager = TestConnectionManager(imapConnection)
+
+    private lateinit var tempDirectory: File
 
     @Before
     fun setUp() {
-        BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.application.cacheDir)
+        tempDirectory = Files.createTempDirectory("RealImapFolderTest").toFile()
+        BinaryTempFileBody.setTempDirectory(tempDirectory)
+    }
+
+    @After
+    fun tearDown() {
+        tempDirectory.deleteRecursively()
     }
 
     @Test
@@ -475,8 +482,7 @@ class RealImapFolderTest {
 
         val messages = folder.getMessages(1, 10, null, listener)
 
-        verify(listener).messageStarted("99", 0, 1)
-        verify(listener).messageFinished(messages[0], 0, 1)
+        verify(listener).messageFinished(messages[0])
         verifyNoMoreInteractions(listener)
     }
 
@@ -563,8 +569,7 @@ class RealImapFolderTest {
 
         val messages = folder.getMessages(setOf(1L), true, listener)
 
-        verify(listener).messageStarted("99", 0, 1)
-        verify(listener).messageFinished(messages[0], 0, 1)
+        verify(listener).messageFinished(messages[0])
         verifyNoMoreInteractions(listener)
     }
 
@@ -692,7 +697,7 @@ class RealImapFolderTest {
 
         verify(imapConnection).sendCommand(
             "UID FETCH 1 (UID INTERNALDATE RFC822.SIZE BODY.PEEK[HEADER.FIELDS " +
-                "(date subject from content-type to cc reply-to message-id references in-reply-to " +
+                "(date subject from content-type to cc reply-to message-id references in-reply-to list-unsubscribe " +
                 "X-K9mail-Identity Chat-Version)])",
             false
         )
@@ -726,7 +731,102 @@ class RealImapFolderTest {
 
         folder.fetch(messages, fetchProfile, null, MAX_DOWNLOAD_SIZE)
 
-        verify(messages[0]).setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain;\r\n CHARSET=\"US-ASCII\"")
+        verify(messages[0]).setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain;\r\n CHARSET=US-ASCII")
+    }
+
+    @Test
+    fun `fetch() with simple content type parameter`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("text" "plain" ("name" "token") NIL NIL "7bit" 42 23)""",
+            headerName = MimeHeader.HEADER_CONTENT_TYPE,
+            expectedHeaderValue = "text/plain;\r\n name=token"
+        )
+    }
+
+    @Test
+    fun `fetch() with content type parameter that needs to be a quoted string`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("text" "plain" ("name" "one two three") NIL NIL "7bit" 42 23)""",
+            headerName = MimeHeader.HEADER_CONTENT_TYPE,
+            expectedHeaderValue = "text/plain;\r\n name=\"one two three\""
+        )
+    }
+
+    @Test
+    fun `fetch() with content type parameter that needs to be a quoted string with escaped characters`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("text" "plain" ("name" "one \"two\" three") NIL NIL "7bit" 42 23)""",
+            headerName = MimeHeader.HEADER_CONTENT_TYPE,
+            expectedHeaderValue = "text/plain;\r\n name=\"one \\\"two\\\" three\""
+        )
+    }
+
+    @Test
+    fun `fetch() with RFC 2231 encoded content type parameter`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("text" "plain" ("name*" "utf-8''filen%C3%A4me.ext") NIL NIL "7bit" 42 23)""",
+            headerName = MimeHeader.HEADER_CONTENT_TYPE,
+            expectedHeaderValue = "text/plain;\r\n name*=utf-8''filen%C3%A4me.ext"
+        )
+    }
+
+    @Test
+    fun `fetch() with UTF-8 encoded content type parameter`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("text" "plain" ("name" "filenäme.ext") NIL NIL "7bit" 42 23)""",
+            headerName = MimeHeader.HEADER_CONTENT_TYPE,
+            expectedHeaderValue = "text/plain;\r\n name=\"filenäme.ext\""
+        )
+    }
+
+    @Test
+    fun `fetch() with simple content disposition parameter`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
+                """("attachment" ("filename" "token")) NIL NIL)""",
+            headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
+            expectedHeaderValue = "attachment;\r\n filename=token;\r\n size=23"
+        )
+    }
+
+    @Test
+    fun `fetch() with content disposition parameter that needs to be a quoted string`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
+                """("attachment" ("filename" "one two three")) NIL NIL)""",
+            headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
+            expectedHeaderValue = "attachment;\r\n filename=\"one two three\";\r\n size=23"
+        )
+    }
+
+    @Test
+    fun `fetch() with content disposition parameter that needs to be a quoted string with escaped characters`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
+                """("attachment" ("filename" "one \"two\" three")) NIL NIL)""",
+            headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
+            expectedHeaderValue = "attachment;\r\n filename=\"one \\\"two\\\" three\";\r\n size=23"
+        )
+    }
+
+    @Test
+    fun `fetch() with RFC 2231 encoded content disposition parameter`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
+                """("attachment" ("filename*" "utf-8''filen%C3%A4me.ext")) NIL NIL)""",
+            headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
+            expectedHeaderValue = "attachment;\r\n filename*=utf-8''filen%C3%A4me.ext;\r\n size=23"
+        )
+    }
+
+    @Test
+    fun `fetch() with UTF-8 encoded content disposition parameter`() {
+        testHeaderFromBodyStructure(
+            bodyStructure = """("application" "octet-stream" NIL NIL NIL "8bit" 23 NIL """ +
+                """("attachment" ("filename" "filenäme.ext")) NIL NIL)""",
+            headerName = MimeHeader.HEADER_CONTENT_DISPOSITION,
+            expectedHeaderValue = "attachment;\r\n filename=\"filenäme.ext\";\r\n size=23"
+        )
     }
 
     @Test
@@ -796,7 +896,7 @@ class RealImapFolderTest {
         val part = createPart("TEXT")
         whenever(imapConnection.readResponse(anyOrNull())).thenReturn(createImapResponse("x OK"))
 
-        folder.fetchPart(message, part, null, mock(), 4096)
+        folder.fetchPart(message, part, mock(), 4096)
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID BODY.PEEK[TEXT]<0.4096>)", false)
     }
@@ -810,7 +910,7 @@ class RealImapFolderTest {
         val part = createPart("1.1")
         whenever(imapConnection.readResponse(anyOrNull())).thenReturn(createImapResponse("x OK"))
 
-        folder.fetchPart(message, part, null, mock(), MAX_DOWNLOAD_SIZE)
+        folder.fetchPart(message, part, mock(), MAX_DOWNLOAD_SIZE)
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID BODY.PEEK[1.1])", false)
     }
@@ -824,7 +924,7 @@ class RealImapFolderTest {
         val part = createPlainTextPart("1.1")
         setupSingleFetchResponseToCallback()
 
-        folder.fetchPart(message, part, null, DefaultBodyFactory(), MAX_DOWNLOAD_SIZE)
+        folder.fetchPart(message, part, DefaultBodyFactory(), MAX_DOWNLOAD_SIZE)
 
         val bodyArgumentCaptor = argumentCaptor<Body>()
         verify(part).body = bodyArgumentCaptor.capture()
@@ -966,7 +1066,7 @@ class RealImapFolderTest {
 
         folder.search("query", emptySet(), emptySet(), false)
 
-        assertCommandIssued("UID SEARCH OR SUBJECT \"query\" FROM \"query\"")
+        assertCommandIssued("""UID SEARCH OR OR OR OR SUBJECT "query" FROM "query" TO "query" CC "query" BCC "query"""")
     }
 
     @Test
@@ -1015,7 +1115,7 @@ class RealImapFolderTest {
     private fun extractMessageUids(messages: List<ImapMessage>) = messages.map { it.uid }.toSet()
 
     private fun createFolder(folderName: String): RealImapFolder {
-        return RealImapFolder(internalImapStore, testConnectionManager, folderName, FolderNameCodec.newInstance())
+        return RealImapFolder(internalImapStore, testConnectionManager, folderName, FolderNameCodec())
     }
 
     private fun createImapMessage(uid: String): ImapMessage {
@@ -1111,6 +1211,22 @@ class RealImapFolderTest {
         val imapResponses = listOf(createImapResponse(response))
         whenever(imapConnection.executeCommandWithIdSet(eq(Commands.UID_COPY), anyString(), anySet()))
             .thenReturn(imapResponses)
+    }
+
+    private fun testHeaderFromBodyStructure(bodyStructure: String, headerName: String, expectedHeaderValue: String) {
+        val folder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
+        whenever(imapConnection.readResponse(anyOrNull()))
+            .thenReturn(createImapResponse("* 1 FETCH (BODYSTRUCTURE $bodyStructure UID 1)"))
+            .thenReturn(createImapResponse("x OK"))
+        val imapMessage = ImapMessage("1")
+        val messages = listOf(imapMessage)
+        val fetchProfile = createFetchProfile(FetchProfile.Item.STRUCTURE)
+
+        folder.fetch(messages, fetchProfile, null, MAX_DOWNLOAD_SIZE)
+
+        assertThat(imapMessage.getHeader(headerName)).asList().containsExactly(expectedHeaderValue)
     }
 
     companion object {

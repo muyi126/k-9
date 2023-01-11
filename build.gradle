@@ -1,73 +1,75 @@
+import com.android.build.gradle.BasePlugin
+import org.gradle.api.plugins.JavaPlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 buildscript {
     ext {
-        buildConfig = [
-                'compileSdk': 31,
-                'targetSdk': 31,
-                'minSdk': 21,
-                'buildTools': '30.0.3',
-                'robolectricSdk': 31
-        ]
-
+        // Judging the impact of newer library versions on the app requires being intimately familiar with the code
+        // base. Please don't open pull requests upgrading dependencies if you're a new contributor.
         versions = [
-                'kotlin': '1.5.31',
-                'kotlinCoroutines': '1.5.2',
-                'androidxAppCompat': '1.3.1',
-                'androidxActivity': '1.4.0',
+                'kotlin': '1.7.22',
+                'kotlinCoroutines': '1.6.4',
+                'jetbrainsAnnotations': '23.0.0',
+                'androidxAppCompat': '1.5.1',
+                'androidxActivity': '1.6.0',
                 'androidxRecyclerView': '1.2.1',
-                'androidxLifecycle': '2.4.0',
-                'androidxAnnotation': '1.2.0',
+                'androidxLifecycle': '2.5.1',
+                'androidxAnnotation': '1.5.0',
                 'androidxBiometric': '1.1.0',
-                'androidxNavigation': '2.3.5',
-                'androidxConstraintLayout': '2.1.1',
-                'androidxWorkManager': '2.7.0',
-                'androidxFragment': '1.3.6',
-                'androidxLocalBroadcastManager': '1.0.0',
-                'androidxCore': '1.7.0',
+                'androidxNavigation': '2.5.2',
+                'androidxConstraintLayout': '2.1.4',
+                'androidxWorkManager': '2.7.1',
+                'androidxFragment': '1.5.3',
+                'androidxLocalBroadcastManager': '1.1.0',
+                'androidxCore': '1.9.0',
                 'androidxCardView': '1.0.0',
-                'androidxPreference': '1.1.1',
+                'androidxPreference': '1.2.0',
+                'androidxDrawerLayout': '1.1.1',
+                'androidxTransition': '1.4.1',
                 'androidxTestCore': '1.4.0',
-                'materialComponents': '1.4.0',
-                'fastAdapter': '5.5.1',
+                'materialComponents': '1.6.1',
+                'fastAdapter': '5.7.0',
                 'preferencesFix': '1.1.0',
-                'okio': '2.10.0',
-                'moshi': '1.12.0',
+                'okio': '3.2.0',
+                'moshi': '1.14.0',
                 'timber': '5.0.1',
-                'koin': '3.1.3',
+                'koin': '3.2.2',
+                // We can't upgrade Commons IO beyond this version because starting with 2.7 it is using Java 8 API
+                // that is not available until Android API 26 (even with desugaring enabled).
+                // See https://issuetracker.google.com/issues/160484830
                 'commonsIo': '2.6',
                 'mime4j': '0.8.6',
-                'okhttp': '4.9.2',
-                'minidns': '1.0.0',
-                'glide': '4.12.0',
-                'jsoup': '1.13.1',
+                'okhttp': '4.10.0',
+                'minidns': '1.0.4',
+                'glide': '4.14.2',
+                'jsoup': '1.15.3',
+                'httpClient': '4.5.13',
 
                 'androidxTestRunner': '1.4.0',
                 'junit': '4.13.2',
-                'robolectric': '4.7.3',
-                'mockito': '4.0.0',
+                'robolectric': '4.9',
+                'mockito': '4.8.0',
                 'mockitoKotlin': '4.0.0',
                 'truth': '1.1.3',
-                'turbine': '0.7.0',
+                'turbine': '0.11.0',
 
-                'ktlint': '0.40.0'
+                'ktlint': '0.44.0'
         ]
 
         javaVersion = JavaVersion.VERSION_1_8
-        kotlinJvmVersion = "1.8"
     }
 
     repositories {
         mavenCentral()
         google()
-        maven { url "https://plugins.gradle.org/m2/" }
-        jcenter()
+        gradlePluginPortal()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.3'
+        classpath 'com.android.tools.build:gradle:7.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
-        classpath "org.jlleitschuh.gradle:ktlint-gradle:10.0.0"
+        classpath "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:1.7.22-1.0.8"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:11.0.0"
     }
 }
 
@@ -75,20 +77,63 @@ project.ext {
     testCoverage = project.hasProperty('testCoverage')
 }
 
-subprojects {
-    repositories {
-        mavenCentral()
-        google()
-        jcenter()
-        maven { url 'https://jitpack.io' }
-    }
-
+allprojects {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
             substitute module("androidx.core:core") using module("androidx.core:core:${versions.androidxCore}")
             substitute module("androidx.activity:activity") using module("androidx.activity:activity:${versions.androidxActivity}")
+            substitute module("androidx.activity:activity-ktx") using module("androidx.activity:activity-ktx:${versions.androidxActivity}")
+            substitute module("androidx.fragment:fragment") using module("androidx.fragment:fragment:${versions.androidxFragment}")
+            substitute module("androidx.fragment:fragment-ktx") using module("androidx.fragment:fragment-ktx:${versions.androidxFragment}")
             substitute module("androidx.appcompat:appcompat") using module("androidx.appcompat:appcompat:${versions.androidxAppCompat}")
             substitute module("androidx.preference:preference") using module("androidx.preference:preference:${versions.androidxPreference}")
+            substitute module("androidx.recyclerview:recyclerview") using module("androidx.recyclerview:recyclerview:${versions.androidxRecyclerView}")
+            substitute module("androidx.constraintlayout:constraintlayout") using module("androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayout}")
+            substitute module("androidx.drawerlayout:drawerlayout") using module("androidx.drawerlayout:drawerlayout:${versions.androidxDrawerLayout}")
+            substitute module("androidx.lifecycle:lifecycle-livedata") using module("androidx.lifecycle:lifecycle-livedata:${versions.androidxLifecycle}")
+            substitute module("androidx.transition:transition") using module("androidx.transition:transition:${versions.androidxTransition}")
+            substitute module("org.jetbrains:annotations") using module("org.jetbrains:annotations:${versions.jetbrainsAnnotations}")
+            substitute module("org.jetbrains.kotlin:kotlin-stdlib") using module("org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}")
+            substitute module("org.jetbrains.kotlin:kotlin-stdlib-jdk7") using module("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}")
+            substitute module("org.jetbrains.kotlin:kotlin-stdlib-jdk8") using module("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}")
+            substitute module("org.jetbrains.kotlinx:kotlinx-coroutines-android") using module("org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}")
+        }
+    }
+
+    plugins.withType(BasePlugin).configureEach {
+        project.android {
+            compileSdk 33
+
+            defaultConfig {
+                minSdk 21
+                targetSdk 31
+
+                vectorDrawables.useSupportLibrary = true
+                testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+            }
+
+            compileOptions {
+                sourceCompatibility javaVersion
+                targetCompatibility javaVersion
+            }
+
+            lintOptions {
+                abortOnError false
+                lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+            }
+
+            testOptions {
+                unitTests {
+                    includeAndroidResources = true
+                }
+            }
+        }
+    }
+
+    plugins.withType(JavaPlugin).configureEach {
+        project.java {
+            sourceCompatibility = javaVersion
+            targetCompatibility = javaVersion
         }
     }
 
@@ -103,7 +148,7 @@ subprojects {
 
     tasks.withType(KotlinCompile) {
         kotlinOptions {
-            freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+            jvmTarget = javaVersion
         }
     }
 

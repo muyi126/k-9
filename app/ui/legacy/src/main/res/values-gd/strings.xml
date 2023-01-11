@@ -29,6 +29,7 @@
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Thèid an cunntas “<xliff:g id="account">%s</xliff:g>” a thoirt air falbh on phost.</string>
   <!--=== General strings ==================================================================-->
+  <string name="authors">Ùghdaran</string>
   <string name="accounts_title">Cunntasan</string>
   <string name="advanced">Adhartach</string>
   <string name="compose_title_compose">Sgrìobh</string>
@@ -118,7 +119,7 @@
     <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> teachdaireachdan ùra</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> teachdaireachd ùr</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> gun leughadh (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> gun leughadh (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">⁊ <xliff:g id="additional_messages">%1$d</xliff:g> a bharrachd air <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Freagair</string>
   <string name="notification_action_mark_as_read">Comharraich gun deach a leughadh</string>
@@ -132,7 +133,9 @@
   <string name="notification_certificate_error_text">Thoir sùil air roghainnean an fhrithealaiche agad</string>
   <string name="notification_authentication_error_title">Dh’fhàillig an dearbhadh</string>
   <string name="notification_authentication_error_text">Dh’fhàillig dearbhadh a’ chunntais <xliff:g id="account">%s</xliff:g>. Ùraich roghainnean an fhrithealaiche agad.</string>
-  <string name="notification_bg_sync_ticker">A’ toirt sùil airson post: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_bg_sync_ticker">A’ toirt sùil airson post: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">A’ toirt sùil airson post</string>
   <string name="notification_bg_send_ticker">A’ cur a’ phuist: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">A’ cur a’ phuist</string>
@@ -172,7 +175,7 @@
   <string name="message_compose_description_delete_quoted_text">Thoir an às-earrann air falbh</string>
   <string name="message_compose_description_edit_quoted_text">Deasaich an às-earrann</string>
   <string name="remove_attachment_action">Thoir an ceanglachan air falbh</string>
-  <string name="message_view_from_format">O: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">O: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Gu:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
@@ -212,6 +215,22 @@
   <string name="global_settings_confirm_menu_discard">Tilg an teachdaireachd air falbh</string>
   <string name="global_settings_confirm_menu_mark_all_read">Comharraich gun deach gach teachdaireachd a leughadh</string>
   <string name="global_settings_confirm_action_delete_notif">Sguab às (on bhrath)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Chan eil gin</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Tasg-lann</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Sguab às</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Spama</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Gluais</string>
   <string name="global_settings_privacy_hide_useragent">Falaich cliant a’ phuist</string>
   <string name="global_settings_privacy_hide_useragent_detail">Thoir air falbh an raon Mail User-Agent o bhannan-cinn phost</string>
   <string name="global_settings_privacy_hide_timezone">Falaich an roinn-tìde</string>
@@ -234,6 +253,8 @@
   <string name="account_setup_basics_title">Suidhich cunntas ùr</string>
   <string name="account_setup_basics_email_hint">Seòladh puist-d</string>
   <string name="account_setup_basics_password_hint">Facal-faire</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_biometrics_title">Dearbh cò thusa</string>
   <string name="account_setup_basics_manual_setup_action">Suidheachadh a làimh</string>
@@ -273,10 +294,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">Na sguab às an fhrithealaiche e</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Sguab às an fhrithealaiche e</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Comharraich air an fhrithealaiche gun deach a leughadh</string>
-  <string name="account_setup_incoming_compression_label">Cleachd dùmhlachadh air lìonra:</string>
-  <string name="account_setup_incoming_mobile_label">Mobile</string>
-  <string name="account_setup_incoming_wifi_label">WiFi</string>
-  <string name="account_setup_incoming_other_label">Eile</string>
   <string name="account_setup_expunge_policy_label">Ma sguabas mi às teachdaireachd, sguab às an fhrithealaiche e</string>
   <string name="account_setup_expunge_policy_immediately">Sa bhad</string>
   <string name="account_setup_expunge_policy_on_poll">Aig an ath-cheasnachadh</string>
@@ -544,33 +561,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Teisteanas nach aithne dhuinn</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Gabh ris an iuchair</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Diùlt an iuchair</string>
-  <string name="message_view_help_key">Del (no D) – Sguab às
-\nR – Freagair
-\nA – Freagair a h-uile
-\nC – Sgrìobh
-\nF – Sìn air adhart
-\nM – Gluais
-\nV – Cuir san tasg-lann
-\nY – Dèan lethbhreac
-\nZ – Cuir comharra gun deach/nach deach a leughadh
-\nG – Cuir rionnag ris
-\nO – Seòrsa an t-seòrsachaidh
-\nI – Òrdugh an t-seòrsachaidh
-\nQ – Till dha na pasganan
-\nS – Tagh/Dì-thagh
-\nJ no P – An teachdaireachd roimhpe
-\nK no N – An ath-theachdaireachd</string>
-  <string name="message_list_help_key">Del (no D) – Sguab às
-\nC – Sgrìobh
-\nM – Gluais
-\nV – Cuir san tasg-lann
-\nY – Dèan lethbhreac
-\nZ – Cuir comharra gun deach/nach deach a leughadh
-\nG – Cuir rionnag ris
-\nO – Seòrsa an t-seòrsachaidh
-\nI – Òrdugh an t-seòrsachaidh
-\nQ – Till dha na pasganan
-\nS – Tagh/Dì-thagh</string>
   <string name="folder_list_filter_hint">Ainm a’ phasgain anns a bheil</string>
   <string name="folder_list_display_mode_label">Seall pasganan…</string>
   <string name="folder_list_display_mode_all">Na h-uile pasgan</string>
@@ -616,9 +606,6 @@
   <string name="account_setup_push_limit_1000">1,000 pasgan</string>
   <string name="animations_title">Beòthachadh</string>
   <string name="animations_summary">Cleachd èifeachdan lèirsinneach leòmach</string>
-  <string name="volume_navigation_title">Seòladaireachd le putanan àirde na fuaime</string>
-  <string name="volume_navigation_message">Ann an seallaidhean theachdaireachdan</string>
-  <string name="volume_navigation_list">Ann an seallaidhean liostaichean</string>
   <string name="show_unified_inbox_title">Seall an t-oll-bhogsa</string>
   <string name="integrated_inbox_title">An t-oll-bhogsa</string>
   <string name="integrated_inbox_detail">Na h-uile teachdaireachd ann am pasganan co-aonaichte</string>
@@ -631,12 +618,6 @@
   <string name="account_settings_no_folder_selected">Chan eil gin</string>
   <string name="font_size_settings_title">Meud a’ chrutha-chlò</string>
   <string name="font_size_settings_description">Rèitich meud a’ chrutha-chlò</string>
-  <string name="font_size_account_list">Liosta nan cunntasan</string>
-  <string name="font_size_account_name">Ainm a’ chunntais</string>
-  <string name="font_size_account_description">Tuairisgeul a’ chunntais</string>
-  <string name="font_size_folder_list">Liostaichean phasganan</string>
-  <string name="font_size_folder_name">Ainm a’ phasgain</string>
-  <string name="font_size_folder_status">Staid a’ phasgain</string>
   <string name="font_size_message_list">Liostaichean theachdaireachdan</string>
   <string name="font_size_message_list_subject">Cuspair</string>
   <string name="font_size_message_list_sender">Seòladair</string>
@@ -667,7 +648,6 @@
   <string name="save_or_discard_draft_message_instructions_fmt">A bheil thu airson an teachdaireachd seo a shàbhaladh no a thilgeil air falbh\?</string>
   <string name="confirm_discard_draft_message_title">A bheil thu airson an teachdaireachd seo a thilgeil air falbh\?</string>
   <string name="confirm_discard_draft_message">A bheil thu cinnteach gu bheil thu airson an teachdaireachd seo a thilgeil air falbh\?</string>
-  <string name="select_text_now">Tagh teacsa airson lethbhreac a dhèanamh dheth.</string>
   <string name="dialog_confirm_delete_title">Dearbh an sguabadh às</string>
   <string name="dialog_confirm_delete_message">A bheil thu cinnteach gu bheil thu airson an teachdaireachd seo a sguabadh às\?</string>
   <plurals name="dialog_confirm_delete_messages">
@@ -702,7 +682,11 @@
   <string name="settings_export_failure">Cha b’ urrainn dhuinn na roghainnean às-phortadh</string>
   <string name="settings_import_title">Ion-phortaich na roghainnean</string>
   <string name="settings_import_button">Ion-phortaich</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Cha b’ urrainn dhuinn roghainn sam bith ion-phortadh o: <xliff:g id="filename">%s</xliff:g></string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import">Ion-phortaich na roghainnean</string>
   <string name="settings_importing">Ag ion-phortadh nan roghainnean…</string>
   <string name="unread_widget_select_account">Seall co mheud a tha gun leughadh ann an…</string>
@@ -879,20 +863,15 @@
   <string name="recipient_error_parse_failed">Mearachd a’ parsadh an t-seòlaidh!</string>
   <string name="error_sign_only_no_encryption">Chan eil crioptachadh ri fhaighinn sa mhodh anns nach dèanar ach soidhneadh!</string>
   <string name="unsigned_text_divider_label">Teacsa gun soidhneadh</string>
-  <string name="apg_deprecated_title">Rabhadh mu chleachdadh APG</string>
-  <string name="apg_deprecated_1">Chan eilear a’ leasachadh APG tuilleadh!</string>
-  <string name="apg_deprecated_2">Ri linn sin, chan eil taic ri APG aig post K-9 tuilleadh.</string>
-  <string name="apg_deprecated_bullet_1">Sguir daoine dhen obair-leasachaidh aig toiseach 2014</string>
-  <string name="apg_deprecated_bullet_2">Tha duilgheadasan tèarainteachd ann nach deach an càradh</string>
-  <string name="apg_learn_more"><a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">Briog an-seo</a> airson barrachd fiosrachaidh.</string>
-  <string name="apg_deprecated_ok">Tha mi agaibh!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Tha am post-d seo crioptaichte</string>
   <string name="crypto_no_provider_message">Chaidh am post-d seo a chrioptachadh le OpenPGP.
 \nFeumaidh tu aplacaid a tha comasach air OpenPGP a stàladh is a rèiteachadh mus urrainn dhut a leughadh.</string>
   <string name="crypto_no_provider_button">Tagh aplacaid OpenPGP</string>
   <string name="mail_list_widget_text">Liosta theachdaireachdan puist</string>
-  <string name="mail_list_widget_loading">A’ luchdadh nan teachdaireachdan…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">’Ga luchdadh…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">’Ga luchdadh…</string>
   <string name="openpgp_enabled_error_title">Cha ghabh a chrioptachadh</string>
   <string name="openpgp_enabled_error_msg">Cha chuir gach faightear a thagh thu taic ris a’ ghleus seo!</string>
   <string name="enable_encryption">Cuir crioptachadh an comas</string>
@@ -908,9 +887,27 @@
   <string name="dialog_autocrypt_mutual_title">Modh co-dhàimh Autocrypt</string>
   <string name="dialog_autocrypt_mutual_description_1">Mar as trice, thèid teachdaireachdan a chrioptachadh ma thagh thu sin no ma chuireas tu freagairt gu teachdaireachd chrioptaichte.</string>
   <string name="dialog_autocrypt_mutual_description_2">Ma chuireas an dà chuid an seòladair ’s am faightear modh na co-dhàimh air, thèid an crioptachadh mar bhun-roghainn.</string>
-  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Briog an-seo</a> airson barrachd fiosrachaidh.</string>
+  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Briog an-seo</a> airson barrachd fiosrachaidh.</string>
   <string name="general_settings_title">Roghainnean coitcheann</string>
   <string name="ac_transfer_title">Teachdaireachd suidheachaidh Autocrypt</string>
   <string name="ac_transfer_msg_subject">Teachdaireachd suidheachaidh Autocrypt</string>
   <!--permissions-->
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Tagh</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Dì-thagh</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Comharraich nach deach a leughadh</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Cuir rionnag ris</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Thoir an rionnag air falbh</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Tasg-lann</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Sguab às</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Spama</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

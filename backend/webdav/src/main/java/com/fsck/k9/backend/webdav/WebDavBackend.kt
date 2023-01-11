@@ -6,20 +6,18 @@ import com.fsck.k9.backend.api.BackendPusherCallback
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.store.webdav.WebDavStore
-import com.fsck.k9.mail.transport.WebDavTransport
-import timber.log.Timber
 
 class WebDavBackend(
     accountName: String,
     backendStorage: BackendStorage,
-    private val webDavStore: WebDavStore,
-    private val webDavTransport: WebDavTransport
+    private val webDavStore: WebDavStore
 ) : Backend {
     private val webDavSync: WebDavSync = WebDavSync(accountName, backendStorage, webDavStore)
     private val commandGetFolders = CommandRefreshFolderList(backendStorage, webDavStore)
@@ -42,8 +40,8 @@ class WebDavBackend(
         commandGetFolders.refreshFolderList()
     }
 
-    override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
-        webDavSync.sync(folder, syncConfig, listener)
+    override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
+        webDavSync.sync(folderServerId, syncConfig, listener)
     }
 
     override fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {
@@ -139,11 +137,11 @@ class WebDavBackend(
     }
 
     override fun sendMessage(message: Message) {
-        webDavTransport.sendMessage(message)
+        webDavStore.sendMessage(message)
     }
 
     override fun checkOutgoingServerSettings() {
-        webDavTransport.checkSettings()
+        webDavStore.checkSettings()
     }
 
     override fun createPusher(callback: BackendPusherCallback): BackendPusher {

@@ -1,10 +1,12 @@
 package com.fsck.k9.ui.base
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.asLiveData
 import com.fsck.k9.controller.push.PushController
 import java.util.Locale
@@ -34,13 +36,22 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
         initializePushController()
         super.onCreate(savedInstanceState)
 
+        setLayoutDirection()
         listenForAppLanguageChanges()
+    }
+
+    // On Android 12+ the layout direction doesn't seem to be updated when recreating the activity. This is a problem
+    // when switching from an LTR to an RTL language (or the other way around) using the language picker in the app.
+    private fun setLayoutDirection() {
+        if (Build.VERSION.SDK_INT >= 31) {
+            window.decorView.layoutDirection = resources.configuration.layoutDirection
+        }
     }
 
     private fun listenForAppLanguageChanges() {
         appLanguageManager.overrideLocale.asLiveData().observe(this) { overrideLocale ->
             if (overrideLocale != overrideLocaleOnLaunch) {
-                recreate()
+                recreateCompat()
             }
         }
     }
@@ -63,6 +74,10 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
             ?: error("K9 layouts must provide a toolbar with id='toolbar'.")
 
         setSupportActionBar(toolbar)
+    }
+
+    protected fun recreateCompat() {
+        ActivityCompat.recreate(this)
     }
 }
 

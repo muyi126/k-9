@@ -6,8 +6,6 @@ import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.Account
 import com.fsck.k9.mailstore.LocalFolder
 
-private const val NOTIFICATION_LED_WHILE_SYNCING = false
-
 internal class SyncNotificationController(
     private val notificationHelper: NotificationHelper,
     private val actionBuilder: NotificationActionCreator,
@@ -20,9 +18,7 @@ internal class SyncNotificationController(
 
         val notificationId = NotificationIds.getFetchingMailNotificationId(account)
         val outboxFolderId = account.outboxFolderId ?: error("Outbox folder not configured")
-        val showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
-            account, outboxFolderId, notificationId
-        )
+        val showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(account, outboxFolderId)
 
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
@@ -35,17 +31,6 @@ internal class SyncNotificationController(
             .setContentText(accountName)
             .setContentIntent(showMessageListPendingIntent)
             .setPublicVersion(createSendingLockScreenNotification(account))
-
-        if (NOTIFICATION_LED_WHILE_SYNCING) {
-            notificationHelper.configureNotification(
-                builder = notificationBuilder,
-                ringtone = null,
-                vibrationPattern = null,
-                ledColor = account.notificationSettings.light.toColor(account),
-                ledSpeed = NotificationHelper.NOTIFICATION_LED_BLINK_FAST,
-                ringAndVibrate = true
-            )
-        }
 
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
@@ -66,9 +51,7 @@ internal class SyncNotificationController(
         val text = accountName + resourceProvider.checkingMailSeparator() + folderName
 
         val notificationId = NotificationIds.getFetchingMailNotificationId(account)
-        val showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
-            account, folderId, notificationId
-        )
+        val showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(account, folderId)
 
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
@@ -82,17 +65,6 @@ internal class SyncNotificationController(
             .setContentIntent(showMessageListPendingIntent)
             .setPublicVersion(createFetchingMailLockScreenNotification(account))
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
-
-        if (NOTIFICATION_LED_WHILE_SYNCING) {
-            notificationHelper.configureNotification(
-                builder = notificationBuilder,
-                ringtone = null,
-                vibrationPattern = null,
-                ledColor = account.notificationSettings.light.toColor(account),
-                ledSpeed = NotificationHelper.NOTIFICATION_LED_BLINK_FAST,
-                ringAndVibrate = true
-            )
-        }
 
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
@@ -112,17 +84,6 @@ internal class SyncNotificationController(
             .setContentText(text)
             .setPublicVersion(createFetchingMailLockScreenNotification(account))
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
-
-        if (NOTIFICATION_LED_WHILE_SYNCING) {
-            notificationHelper.configureNotification(
-                builder = notificationBuilder,
-                ringtone = null,
-                vibrationPattern = null,
-                ledColor = account.notificationSettings.light.toColor(account),
-                ledSpeed = NotificationHelper.NOTIFICATION_LED_BLINK_FAST,
-                ringAndVibrate = true
-            )
-        }
 
         notificationManager.notify(notificationId, notificationBuilder.build())
     }

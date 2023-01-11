@@ -241,6 +241,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private boolean navigateUp;
 
+    private boolean sendMessageHasBeenTriggered = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -694,6 +696,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
         if (cryptoStatus == null) {
+            Timber.w("Couldn't retrieve crypto status; not creating MessageBuilder!");
             return null;
         }
 
@@ -797,8 +800,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     public void performSendAfterChecks() {
+        if (sendMessageHasBeenTriggered) {
+            return;
+        }
+
         currentMessageBuilder = createMessageBuilder(false);
         if (currentMessageBuilder != null) {
+            sendMessageHasBeenTriggered = true;
             changesMadeSinceLastSave = false;
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.buildAsync(this);
@@ -936,7 +944,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         updateSignature();
         updateMessageFormat();
         replyToPresenter.setIdentity(identity);
-        recipientPresenter.onSwitchIdentity(identity);
+        recipientPresenter.onSwitchIdentity();
     }
 
     private void updateFrom() {
@@ -1492,7 +1500,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             messagingController.sendMessage(account, message, plaintextSubject, null);
             if (draftId != null) {
                 // TODO set draft id to invalid in MessageCompose!
-                messagingController.deleteDraft(account, draftId);
+                messagingController.deleteDraftSkippingTrashFolder(account, draftId);
             }
 
             return null;
@@ -1607,6 +1615,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     @Override
     public void onMessageBuildCancel() {
+        sendMessageHasBeenTriggered = false;
         currentMessageBuilder = null;
         setProgressBarIndeterminateVisibility(false);
     }
@@ -1616,6 +1625,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         Timber.e(me, "Error sending message");
         Toast.makeText(MessageCompose.this,
                 getString(R.string.send_failed_reason, me.getLocalizedMessage()), Toast.LENGTH_LONG).show();
+        sendMessageHasBeenTriggered = false;
         currentMessageBuilder = null;
         setProgressBarIndeterminateVisibility(false);
     }
@@ -1691,7 +1701,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         @Override
-        public void startIntentSenderForMessageLoaderHelper(IntentSender si, int requestCode, Intent fillIntent,
+        public boolean startIntentSenderForMessageLoaderHelper(IntentSender si, int requestCode, Intent fillIntent,
                 int flagsMask, int flagValues, int extraFlags) {
             try {
                 requestCode |= REQUEST_MASK_LOADER_HELPER;
@@ -1699,6 +1709,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             } catch (SendIntentException e) {
                 Timber.e(e, "Irrecoverable error calling PendingIntent!");
             }
+
+            return true;
         }
 
         @Override

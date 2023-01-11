@@ -118,7 +118,7 @@
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> לא נקראו (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> לא נקראו (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> עוד בקבוצה <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">השב</string>
   <string name="notification_action_mark_as_read">סמן כנקרא</string>
@@ -134,7 +134,9 @@
   <string name="notification_authentication_error_title">נכשל באימות</string>
   <string name="notification_authentication_error_text">האימות נכשל עבור <xliff:g id="account">%s</xliff:g>. 
 עדכן את הגדרות השרת.</string>
-  <string name="notification_bg_sync_ticker">בודק דוא"ל: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_bg_sync_ticker">בודק דואל: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">בודק דוא\"ל</string>
   <string name="notification_bg_send_ticker">שולח דוא"ל: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">שולח דוא\"ל</string>
@@ -177,7 +179,7 @@
   <string name="message_compose_description_delete_quoted_text">מחק טקסט מצוטט</string>
   <string name="message_compose_description_edit_quoted_text">ערוך טקסט מצוטט</string>
   <string name="remove_attachment_action">מחק קובץ מצורף</string>
-  <string name="message_view_from_format">מ: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">מ: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">ל:</string>
   <string name="message_view_cc_label">עותק:</string>
   <string name="message_view_show_pictures_action">הצג תמונות</string>
@@ -210,6 +212,22 @@
   <string name="global_settings_confirm_action_spam">דואר זבל</string>
   <string name="global_settings_confirm_menu_discard">מחק הודעה</string>
   <string name="global_settings_confirm_menu_mark_all_read">סמן את כל ההודעות כ\"נקראו\"</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">כלום</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">העבר לארכיון</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">מחק</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">דואר זבל</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">העבר</string>
   <string name="global_settings_privacy_hide_timezone">הסתר איזור זמן</string>
   <string name="global_settings_notification_quick_delete_title">הצג את הכפתור \'מחק\'</string>
   <string name="global_settings_notification_quick_delete_never">אף פעם</string>
@@ -223,6 +241,8 @@
   <string name="account_setup_basics_title">הגדר חשבון חדש</string>
   <string name="account_setup_basics_email_hint">כתובת דוא\"ל</string>
   <string name="account_setup_basics_password_hint">סיסמא</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_biometrics_title">אמת את זהותך</string>
   <string name="account_setup_basics_manual_setup_action">הוראות הגדרה</string>
@@ -256,10 +276,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">אל תמחוק בשרת</string>
   <string name="account_setup_incoming_delete_policy_delete_label">מחק מהשרת</string>
   <string name="account_setup_incoming_delete_policy_markread_label">סמן כנקרא בשרת</string>
-  <string name="account_setup_incoming_compression_label">השתמש בדחיסה ברשת:</string>
-  <string name="account_setup_incoming_mobile_label">סלולרי</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">אחר</string>
   <string name="account_setup_expunge_policy_label">למחוק הודעות שנמחקו</string>
   <string name="account_setup_expunge_policy_immediately">מיד</string>
   <string name="account_setup_expunge_policy_on_poll">When polling</string>
@@ -498,9 +514,6 @@
   <string name="account_setup_push_limit_1000">1000 תיקיות</string>
   <string name="animations_title">אנימציה</string>
   <string name="animations_summary">השתמש באפקטים חזותיים ססגונים</string>
-  <string name="volume_navigation_title">נייוט באמצעות מקשי הווליום</string>
-  <string name="volume_navigation_message">הצגת הודעה</string>
-  <string name="volume_navigation_list">רשימת תצוגות שונות</string>
   <string name="integrated_inbox_title">תיבת דואר נכנס אחידה</string>
   <string name="integrated_inbox_detail">כל ההודעות בתיקיות המאוחדות</string>
   <string name="folder_settings_include_in_integrated_inbox_label">לאחד</string>
@@ -512,12 +525,6 @@
   <string name="account_settings_no_folder_selected">כלום</string>
   <string name="font_size_settings_title">גודל גופן</string>
   <string name="font_size_settings_description">הגדר גודל גופן</string>
-  <string name="font_size_account_list">רשימת חשבונות</string>
-  <string name="font_size_account_name">שם חשבון</string>
-  <string name="font_size_account_description">תיאור חשבון</string>
-  <string name="font_size_folder_list">רשימת תיקיות</string>
-  <string name="font_size_folder_name">שם תיקיה</string>
-  <string name="font_size_folder_status">מצב תיקייה</string>
   <string name="font_size_message_list">רשימת הודעות</string>
   <string name="font_size_message_list_subject">נושא</string>
   <string name="font_size_message_list_sender">שולח</string>
@@ -545,7 +552,6 @@
   <string name="save_or_discard_draft_message_instructions_fmt">לשמור או להשליך הודעה זו?</string>
   <string name="save_or_discard_draft_message_changes">לשמור או לבטל שינויים?</string>
   <string name="confirm_discard_draft_message_title">להשליך את ההודעה?</string>
-  <string name="select_text_now">בחר טקסט כדי להעתיק.</string>
   <string name="dialog_confirm_delete_title">אשר מחיקה</string>
   <string name="dialog_confirm_delete_message">אתה בטוח שאתה רוצה למחוק את ההודעה הזאת?</string>
   <string name="dialog_confirm_delete_confirm_button">מחק</string>
@@ -572,6 +578,10 @@
   <string name="settings_import_title">יבא הגדרות</string>
   <string name="settings_import_pick_document_button">בחר קובץ</string>
   <string name="settings_import_button">יבא</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_later_button">מאוחר יותר</string>
   <string name="settings_import">יבא הגדרות</string>
   <string name="settings_importing">מייבא הגדרות…</string>
@@ -598,6 +608,26 @@
   <string name="address_type_other">אחר</string>
   <string name="address_type_mobile">סלולרי</string>
   <string name="crypto_info_ok">אישור</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
   <string name="general_settings_title">הגדרות כלליות</string>
   <!--permissions-->
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">בחר</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">בטל בחירה</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">סמן כלא נקרא</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">הוסף כוכב</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">מחק כוכב</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">העבר לארכיון</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">מחק</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">דואר זבל</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

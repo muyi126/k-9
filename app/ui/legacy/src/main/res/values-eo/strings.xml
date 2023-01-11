@@ -147,7 +147,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nova mesaĝo</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> novaj mesaĝoj</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> novaj (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> novaj (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> pliaj en <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Respondi</string>
   <string name="notification_action_mark_as_read">Marki kiel legitan</string>
@@ -161,7 +161,9 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="notification_certificate_error_text">Kontrolu agordojn de servilo</string>
   <string name="notification_authentication_error_title">Aŭtentigo malsukcesis</string>
   <string name="notification_authentication_error_text">Aŭtentigo por <xliff:g id="account">%s</xliff:g> malsukcesis. Aktualigu agordojn de servilo.</string>
-  <string name="notification_bg_sync_ticker">Kontrolado de retpoŝto: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_bg_sync_ticker">Kontrolado de retpoŝto: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrolado de retpoŝto</string>
   <string name="notification_bg_send_ticker">Sendado de retletero: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Sendado de retletero</string>
@@ -205,7 +207,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="message_compose_description_delete_quoted_text">Forigi citatan tekston</string>
   <string name="message_compose_description_edit_quoted_text">Redakti citatan tekston</string>
   <string name="remove_attachment_action">Forigi kunsendaĵon</string>
-  <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">De: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Al:</string>
   <string name="message_view_cc_label">Kopio:</string>
   <string name="message_view_bcc_label">Kaŝkopio:</string>
@@ -245,6 +247,22 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="global_settings_confirm_menu_discard">Ignori mesaĝon</string>
   <string name="global_settings_confirm_menu_mark_all_read">Marki ĉiujn kiel legitajn</string>
   <string name="global_settings_confirm_action_delete_notif">Forigi (el sciigo)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Nenia</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arĥivo</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Forigi</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Trudmesaĝo</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Movi</string>
   <string name="global_settings_privacy_hide_useragent">Kaŝi retpoŝtilan nomon</string>
   <string name="global_settings_privacy_hide_useragent_detail">Forviŝi nomon de klienta aplikaĵo K-9 el mesaĝokapo</string>
   <string name="global_settings_privacy_hide_timezone">Kaŝi horzonon</string>
@@ -268,6 +286,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_basics_title">Aldoni novan konton</string>
   <string name="account_setup_basics_email_hint">Retpoŝtadreso</string>
   <string name="account_setup_basics_password_hint">Pasvorto</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Por vidigi vian pasvorton tie ĉi, aktivigu la ŝlos-ekranon ĉe via aparato.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Verigi vian identigon</string>
@@ -309,10 +329,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_incoming_delete_policy_never_label">Ne forigi ĝin en servilo</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Forigi ĝin en servilo</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marki ĝin kiel legitan en servilo</string>
-  <string name="account_setup_incoming_compression_label">Uzi kompaktigon je reto:</string>
-  <string name="account_setup_incoming_mobile_label">Movtelefona</string>
-  <string name="account_setup_incoming_wifi_label">Vifio</string>
-  <string name="account_setup_incoming_other_label">Alia</string>
   <string name="account_setup_expunge_policy_label">Forviŝi forigitajn mesaĝojn el servilo</string>
   <string name="account_setup_expunge_policy_immediately">Senprokraste</string>
   <string name="account_setup_expunge_policy_on_poll">Je ĉiu elŝutado</string>
@@ -593,8 +609,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nekonata atestilo</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Akcepti ŝlosilon</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rifuzi ŝlosilon</string>
-  <string name="message_view_help_key">Del (aŭ D) - forigi\nR - respondi\nA - respondi al ĉiuj\nC - krei\nF - plusendi\nM - movi\nV - arĥivigi\nY - kopii\nZ - marki kiel (ne)legitan\nG - steletigi\nO - ordiga tipo\nI - ordigo\nQ - reveni al mesaĝujoj\nS - (mal)elekti\nJ aŭ P -antaŭa mesaĝo\nK aŭ N - sekva mesaĝo</string>
-  <string name="message_list_help_key">Del (aŭ D) - forigi\nC - krei\nM - movi\nV - arĥivigi\nY - kopii\nZ - marki kiel (ne)legitan\nG - steletigi\nO - ordiga tipo\nI - ordigo\nQ - reveni al mesaĝujoj\nS - (mal)elekti</string>
   <string name="folder_list_filter_hint">Nomo de mesaĝujo enhavas</string>
   <string name="folder_list_display_mode_label">Montri mesaĝujojn…</string>
   <string name="folder_list_display_mode_all">Ĉiuj mesaĝujoj</string>
@@ -642,9 +656,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_push_limit_1000">Maksimume 1000 mesaĝujoj</string>
   <string name="animations_title">Movbildoj</string>
   <string name="animations_summary">Uzas afablajn vidajn efektojn</string>
-  <string name="volume_navigation_title">Navigado per sonfortecaj butonoj</string>
-  <string name="volume_navigation_message">En vido de mesaĝoj</string>
-  <string name="volume_navigation_list">En vidoj de listoj</string>
   <string name="show_unified_inbox_title">Montri unuigitan ricevujon</string>
   <string name="show_starred_count_title">Montri nombron da steletoj</string>
   <string name="integrated_inbox_title">Unuigita ricevujo</string>
@@ -659,12 +670,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_settings_automatic_special_folder">Aŭtomate (%s)</string>
   <string name="font_size_settings_title">Tipara grando</string>
   <string name="font_size_settings_description">Agordas tiparajn grandojn</string>
-  <string name="font_size_account_list">Listo de kontoj</string>
-  <string name="font_size_account_name">Nomo de konto</string>
-  <string name="font_size_account_description">Priskribo de konto</string>
-  <string name="font_size_folder_list">Listoj de mesaĝujoj</string>
-  <string name="font_size_folder_name">Nomo de mesaĝujo</string>
-  <string name="font_size_folder_status">Stato de mesaĝujo</string>
   <string name="font_size_message_list">Listoj de mesaĝoj</string>
   <string name="font_size_message_list_subject">Temo</string>
   <string name="font_size_message_list_sender">Sendinto</string>
@@ -696,7 +701,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="save_or_discard_draft_message_changes">Ĉu konservi aŭ nuligi ŝanĝojn?</string>
   <string name="confirm_discard_draft_message_title">Ĉu forigi mesaĝon?</string>
   <string name="confirm_discard_draft_message">Ĉu vi certe volas forigi tiun ĉi mesaĝon?</string>
-  <string name="select_text_now">Elektu tekston por kopii.</string>
   <string name="dialog_confirm_clear_local_folder_title">Ĉu forviŝi lokajn mesaĝojn?</string>
   <string name="dialog_confirm_clear_local_folder_message">Tio ĉi forigos ĉiujn lokajn mesaĝojn el la mesaĝujo. Neniuj mesaĝoj estos forigitaj el la servilo.</string>
   <string name="dialog_confirm_clear_local_folder_action">Forviŝi mesaĝojn</string>
@@ -736,12 +740,16 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="settings_import_pick_document_button">Elekti dosieron</string>
   <string name="settings_import_button">Enporti</string>
   <string name="settings_import_success_generic">Sukcese enportis agordojn</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Bonvolu entajpi pasvortojn</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Fiaskis enporti agordojn</string>
   <string name="settings_import_read_failure">Fiaskis legi dosieron kun agordoj</string>
   <string name="settings_import_partial_failure">Fiaskis enporti iujn agordojn</string>
   <string name="settings_import_status_success">Sukcesis enporti</string>
   <string name="settings_import_status_password_required">Postulas pasvorton</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Ne enportita</string>
   <string name="settings_import_status_error">Fiaskis enporti</string>
   <string name="settings_import_later_button">Poste</string>
@@ -932,19 +940,14 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_settings_crypto_hide_sign_only_off">Ĉiuj subskriboj montriĝos</string>
   <string name="error_sign_only_no_encryption">Ĉifrado ne eblas en nur-subskriba reĝimo!</string>
   <string name="unsigned_text_divider_label">Nesubskribita teksto</string>
-  <string name="apg_deprecated_title">Averto: APG evitindas</string>
-  <string name="apg_deprecated_1">APG ne estas plu disvolvata!</string>
-  <string name="apg_deprecated_2">Tial subteno por APG estis forigita el K-9 Retpoŝtilo.</string>
-  <string name="apg_deprecated_bullet_1">Disvolvado haltis je komenco de 2014</string>
-  <string name="apg_deprecated_bullet_2">Enhavas neriparitajn sekurec-erarojn</string>
-  <string name="apg_learn_more">Vi povas <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klaki tie ĉi</a> por sciiĝi pli (en la angla).</string>
-  <string name="apg_deprecated_ok">Mi komprenas!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Tiu ĉi retletero estas ĉifrita</string>
   <string name="crypto_no_provider_message">Tiu ĉi retletero estas ĉifrita per OpenPGP.\nPor legi ĝin, vi devas instali kaj agordi kongruan OpenPGP-aplikaĵon.</string>
   <string name="crypto_no_provider_button">Iri al agordoj</string>
   <string name="mail_list_widget_text">K-9 mesaĝlisto</string>
-  <string name="mail_list_widget_loading">Ŝargado de mesaĝoj…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Ŝargado…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Ŝargado…</string>
   <string name="openpgp_enabled_error_title">Ĉifrado ne eblas</string>
   <string name="openpgp_enabled_error_msg">Kelkaj da elektitaj ricevontoj ne subtenas tiun ĉi agordon!</string>
   <string name="enable_encryption">Aktivigi ĉifradon</string>
@@ -960,7 +963,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="dialog_autocrypt_mutual_title">Reciproke aŭtomata ĉifrado</string>
   <string name="dialog_autocrypt_mutual_description_1">Mesaĝoj norme estos ĉifritaj laŭ elekto aŭ kiam respondi al ĉifrita mesaĝo</string>
   <string name="dialog_autocrypt_mutual_description_2">Se ambaŭ sendanto kaj ricevanto aktivigas tiun ĉi reĝimon, ĉifrado estos implicite aktivigita.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Vi povas <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klaki tien ĉi</a> por sciiĝi pli (en la angla).</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Vi povas <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klaki tien ĉi</a> por sciiĝi pli (en la angla).</string>
   <string name="general_settings_title">Ĝeneralaj agordoj</string>
   <string name="dialog_openkeychain_info_title">Neniu OpenPGP-aplikaĵo instalita</string>
   <string name="dialog_openkeychain_info_install">Instali</string>
@@ -1006,4 +1009,22 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
   <string name="push_info_configure_notification_action">Agordi sciigon</string>
   <string name="push_info_disable_push_text">Se vi ne bezonas tujajn sciigojn pri novaj mesaĝoj, malaktivigu puŝ-sciigojn kaj uzu periodajn petojn «pooling». Periodaj petoj «pooling» kontrolas pri novaj retleteroj en ripetiĝanta tempintervalo kaj ne postulas vidigi la puŝ-sciigon,</string>
   <string name="push_info_disable_push_action">Malaktivigi puŝ-sciigojn</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Elekti</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Malelekti</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Marki kiel nelegitan</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Steletigi</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Malsteletigi</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Arĥivo</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Forigi</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Trudmesaĝo</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

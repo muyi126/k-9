@@ -1,7 +1,8 @@
 package com.fsck.k9
 
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.work.WorkerParameters
+import com.fsck.k9.job.MailSyncWorker
 import com.fsck.k9.ui.changelog.ChangeLogMode
 import com.fsck.k9.ui.changelog.ChangelogViewModel
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
@@ -26,10 +27,10 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(application = App::class)
 class DependencyInjectionTest : AutoCloseKoinTest() {
-    val lifecycleOwner = mock<LifecycleOwner> {
-        on { lifecycle } doReturn mock<Lifecycle>()
+    private val lifecycleOwner = mock<LifecycleOwner> {
+        on { lifecycle } doReturn mock()
     }
-    val autocryptTransferView = mock<AutocryptKeyTransferActivity>()
+    private val autocryptTransferView = mock<AutocryptKeyTransferActivity>()
 
     @KoinInternalApi
     @Test
@@ -38,10 +39,11 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
 
         getKoin().checkModules {
             withParameter<OpenPgpApiManager> { lifecycleOwner }
-            create<AutocryptKeyTransferPresenter> { parametersOf(lifecycleOwner, autocryptTransferView) }
-            withParameter<FolderNameFormatter> { RuntimeEnvironment.application }
-            withParameter<SizeFormatter> { RuntimeEnvironment.application }
+            withParameters<AutocryptKeyTransferPresenter> { parametersOf(lifecycleOwner, autocryptTransferView) }
+            withParameter<FolderNameFormatter> { RuntimeEnvironment.getApplication() }
+            withParameter<SizeFormatter> { RuntimeEnvironment.getApplication() }
             withParameter<ChangelogViewModel> { ChangeLogMode.CHANGE_LOG }
+            withParameter<MailSyncWorker> { mock<WorkerParameters>() }
         }
     }
 }

@@ -1,9 +1,7 @@
 package com.fsck.k9
 
-import android.content.Context
 import androidx.annotation.GuardedBy
 import androidx.annotation.RestrictTo
-import com.fsck.k9.helper.sendBlockingSilently
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.preferences.AccountManager
@@ -19,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
@@ -111,6 +110,9 @@ class Preferences internal constructor(
             }
         }
 
+    private val completeAccounts: List<Account>
+        get() = accounts.filter { it.isFinishedSetup }
+
     override fun getAccount(accountUuid: String): Account? {
         synchronized(accountLock) {
             if (accountsMap == null) {
@@ -135,7 +137,7 @@ class Preferences internal constructor(
             val listener = AccountsChangeListener {
                 val account = getAccount(accountUuid)
                 if (account != null) {
-                    sendBlockingSilently(account)
+                    trySendBlocking(account)
                 } else {
                     close()
                 }
@@ -152,10 +154,10 @@ class Preferences internal constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun getAccountsFlow(): Flow<List<Account>> {
         return callbackFlow {
-            send(accounts)
+            send(completeAccounts)
 
             val listener = AccountsChangeListener {
-                sendBlockingSilently(accounts)
+                trySendBlocking(completeAccounts)
             }
             addOnAccountsChangeListener(listener)
 
@@ -201,7 +203,7 @@ class Preferences internal constructor(
     val defaultAccount: Account?
         get() = accounts.firstOrNull()
 
-    fun saveAccount(account: Account) {
+    override fun saveAccount(account: Account) {
         ensureAssignedAccountNumber(account)
         processChangedValues(account)
 
@@ -291,8 +293,8 @@ class Preferences internal constructor(
 
     companion object {
         @JvmStatic
-        fun getPreferences(context: Context): Preferences {
-            return DI.get(Preferences::class.java)
+        fun getPreferences(): Preferences {
+            return DI.get()
         }
     }
 }

@@ -2,11 +2,9 @@ package com.fsck.k9
 
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy
 import com.fsck.k9.mail.Address
-import com.fsck.k9.mail.NetworkType
 import com.fsck.k9.mail.ServerSettings
 import java.util.Calendar
 import java.util.Date
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Account stores all of the settings for a single account defined by the user. Each account is defined by a UUID.
@@ -35,6 +33,10 @@ class Account(override val uuid: String) : BaseAccount {
         set(value) {
             internalOutgoingServerSettings = value
         }
+
+    @get:Synchronized
+    @set:Synchronized
+    var oAuthState: String? = null
 
     /**
      * Storage provider ID, used to locate and manage the underlying DB/file storage.
@@ -225,7 +227,10 @@ class Account(override val uuid: String) : BaseAccount {
     @set:Synchronized
     var idleRefreshMinutes = 0
 
-    private val compressionMap: MutableMap<NetworkType, Boolean> = ConcurrentHashMap()
+    @get:JvmName("useCompression")
+    @get:Synchronized
+    @set:Synchronized
+    var useCompression = true
 
     @get:Synchronized
     @set:Synchronized
@@ -415,6 +420,11 @@ class Account(override val uuid: String) : BaseAccount {
             identities[0] = newIdentity
         }
 
+    @get:JvmName("shouldMigrateToOAuth")
+    @get:Synchronized
+    @set:Synchronized
+    var shouldMigrateToOAuth = false
+
     /**
      * @param automaticCheckIntervalMinutes or -1 for never.
      */
@@ -491,11 +501,6 @@ class Account(override val uuid: String) : BaseAccount {
     }
 
     @Synchronized
-    fun incrementMessagesNotificationChannelVersion() {
-        messagesNotificationChannelVersion++
-    }
-
-    @Synchronized
     fun isSortAscending(sortType: SortType): Boolean {
         return sortAscending.getOrPut(sortType) { sortType.isDefaultAscending }
     }
@@ -503,20 +508,6 @@ class Account(override val uuid: String) : BaseAccount {
     @Synchronized
     fun setSortAscending(sortType: SortType, sortAscending: Boolean) {
         this.sortAscending[sortType] = sortAscending
-    }
-
-    @Synchronized
-    fun setCompression(networkType: NetworkType, useCompression: Boolean) {
-        compressionMap[networkType] = useCompression
-    }
-
-    @Synchronized
-    fun useCompression(networkType: NetworkType): Boolean {
-        return compressionMap[networkType] ?: return true
-    }
-
-    fun getCompressionMap(): Map<NetworkType, Boolean> {
-        return compressionMap.toMap()
     }
 
     @Synchronized

@@ -8,6 +8,7 @@ import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderDetailsAccessor
 import com.fsck.k9.mailstore.FolderMapper
+import com.fsck.k9.mailstore.FolderNotFoundException
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.toFolderType
@@ -69,22 +70,22 @@ internal class RetrieveFolderOperations(private val lockableDatabase: LockableDa
 
             val query =
                 """
-                SELECT ${FOLDER_COLUMNS.joinToString()}, (
-                    SELECT COUNT(messages.id) 
-                    FROM messages 
-                    WHERE messages.folder_id = folders.id 
-                      AND messages.empty = 0 AND messages.deleted = 0 
-                      AND (messages.read = 0 OR folders.id = ?)
-                ), (
-                    SELECT COUNT(messages.id) 
-                    FROM messages 
-                    WHERE messages.folder_id = folders.id 
-                      AND messages.empty = 0 AND messages.deleted = 0 
-                      AND messages.flagged = 1
-                )
-                FROM folders
-                $displayModeSelection
-                """.trimIndent()
+SELECT ${FOLDER_COLUMNS.joinToString()}, (
+  SELECT COUNT(messages.id) 
+  FROM messages 
+  WHERE messages.folder_id = folders.id 
+    AND messages.empty = 0 AND messages.deleted = 0 
+    AND (messages.read = 0 OR folders.id = ?)
+), (
+  SELECT COUNT(messages.id) 
+  FROM messages 
+  WHERE messages.folder_id = folders.id 
+    AND messages.empty = 0 AND messages.deleted = 0 
+    AND messages.flagged = 1
+)
+FROM folders
+$displayModeSelection
+                """
 
             db.rawQuery(query, arrayOf(outboxFolderIdOrZero.toString())).use { cursor ->
                 val cursorFolderAccessor = CursorFolderAccessor(cursor)
@@ -156,6 +157,10 @@ internal class RetrieveFolderOperations(private val lockableDatabase: LockableDa
                 if (cursor.moveToFirst()) cursor.getInt(0) else 0
             }
         }
+    }
+
+    fun hasMoreMessages(folderId: Long): MoreMessages {
+        return getFolder(folderId) { it.moreMessages } ?: throw FolderNotFoundException(folderId)
     }
 }
 

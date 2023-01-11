@@ -6,14 +6,15 @@ import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.webdav.WebDavBackend
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mail.store.webdav.DraftsFolderProvider
+import com.fsck.k9.mail.store.webdav.SniHostSetter
 import com.fsck.k9.mail.store.webdav.WebDavStore
-import com.fsck.k9.mail.transport.WebDavTransport
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.mailstore.K9BackendStorageFactory
 
 class WebDavBackendFactory(
     private val backendStorageFactory: K9BackendStorageFactory,
     private val trustManagerFactory: TrustManagerFactory,
+    private val sniHostSetter: SniHostSetter,
     private val folderRepository: FolderRepository
 ) : BackendFactory {
     override fun createBackend(account: Account): Backend {
@@ -21,9 +22,8 @@ class WebDavBackendFactory(
         val backendStorage = backendStorageFactory.createBackendStorage(account)
         val serverSettings = account.incomingServerSettings
         val draftsFolderProvider = createDraftsFolderProvider(account)
-        val webDavStore = WebDavStore(trustManagerFactory, serverSettings, draftsFolderProvider)
-        val webDavTransport = WebDavTransport(trustManagerFactory, serverSettings, draftsFolderProvider)
-        return WebDavBackend(accountName, backendStorage, webDavStore, webDavTransport)
+        val webDavStore = WebDavStore(trustManagerFactory, sniHostSetter, serverSettings, draftsFolderProvider)
+        return WebDavBackend(accountName, backendStorage, webDavStore)
     }
 
     private fun createDraftsFolderProvider(account: Account): DraftsFolderProvider {

@@ -147,7 +147,7 @@
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> رسالة</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> رسالة جديدة</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> غير مقروئة (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> غير مقروئة (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_action_reply">رُد</string>
   <string name="notification_action_mark_as_read">إعتبارها مقروءة</string>
   <string name="notification_action_mark_all_as_read">إعتبار الكل كمقروء</string>
@@ -160,7 +160,9 @@
   <string name="notification_certificate_error_text">تأكد من إعدادات الخادم</string>
   <string name="notification_authentication_error_title">فشل المصادقة</string>
   <string name="notification_authentication_error_text">فشل مصادقة <xliff:g id="account">%s</xliff:g>. يرجى تحديث إعدادات الخادم.</string>
-  <string name="notification_bg_sync_ticker">تفقد البريد: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_bg_sync_ticker">تفقد البريد: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">التحقق من البريد</string>
   <string name="notification_bg_send_ticker">إرسال البريد: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">إرسال البريد</string>
@@ -201,7 +203,7 @@
   <string name="message_compose_description_delete_quoted_text">حذف النص المقتبَس</string>
   <string name="message_compose_description_edit_quoted_text">تعديل النص المقتبَس</string>
   <string name="remove_attachment_action">إزالة المُرفَق</string>
-  <string name="message_view_from_format">من: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">من: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">إلى :</string>
   <string name="message_view_cc_label">نسخة كربونية :</string>
   <string name="message_view_bcc_label">نسخة مخفية:</string>
@@ -236,6 +238,22 @@
   <string name="global_settings_confirm_menu_discard">إلغاء الرسالة</string>
   <string name="global_settings_confirm_menu_mark_all_read">جعل كل الرسائل مقروءة</string>
   <string name="global_settings_confirm_action_delete_notif">احذف (من الإشعارات)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">بدون</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">أرشيف</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">احذف</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">بريد مُزعج</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">حَرِّكْ</string>
   <string name="global_settings_privacy_hide_useragent">إخفاء عميل البريد</string>
   <string name="global_settings_privacy_hide_useragent_detail">احذف مُعرف بريد كية-9 من ترويسات الرسالة</string>
   <string name="global_settings_privacy_hide_timezone">احذف التوقيت</string>
@@ -256,6 +274,8 @@
   <string name="account_setup_basics_title">إعداد حساب جديد</string>
   <string name="account_setup_basics_email_hint">عنوان البريد الإليكتروني</string>
   <string name="account_setup_basics_password_hint">كلمة السِّر</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">الإعداد يدويا</string>
   <string name="account_setup_check_settings_title"/>
@@ -289,10 +309,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">ﻻ تحذفها على الخادم</string>
   <string name="account_setup_incoming_delete_policy_delete_label">احذفها على الخادم</string>
   <string name="account_setup_incoming_delete_policy_markread_label">إعتبارها كمقروءة على السيرفر</string>
-  <string name="account_setup_incoming_compression_label">إستخدام الضغط على شبكة :</string>
-  <string name="account_setup_incoming_mobile_label">الجوال</string>
-  <string name="account_setup_incoming_wifi_label">الواي فاي</string>
-  <string name="account_setup_incoming_other_label">أخرى</string>
   <string name="account_setup_expunge_policy_label">إزالة الرسائل المحذوفة من الخادوم أيضا</string>
   <string name="account_setup_expunge_policy_immediately">فورًا</string>
   <string name="account_setup_expunge_policy_on_poll">عند الإستجواب</string>
@@ -567,7 +583,6 @@
   <string name="account_setup_push_limit_500">500 مجلد</string>
   <string name="account_setup_push_limit_1000">1000 مجلد</string>
   <string name="animations_title">الحركة</string>
-  <string name="volume_navigation_title">التصفح عبر أزرار التحكم في الصوت</string>
   <string name="integrated_inbox_title">البريد الوارد الموحَّد</string>
   <string name="integrated_inbox_detail">كل الرسائل في مجلدات موحَّدة</string>
   <string name="folder_settings_include_in_integrated_inbox_label">التوحيد</string>
@@ -577,12 +592,6 @@
   <string name="account_settings_no_folder_selected">بدون</string>
   <string name="font_size_settings_title">حجم الخط</string>
   <string name="font_size_settings_description">إختيار حجم الخط</string>
-  <string name="font_size_account_list">قائمة الحساب</string>
-  <string name="font_size_account_name">اسم الحساب</string>
-  <string name="font_size_account_description">وصف الحساب</string>
-  <string name="font_size_folder_list">مجلد القوائم</string>
-  <string name="font_size_folder_name">اسم المجلد</string>
-  <string name="font_size_folder_status">حالة المجلد</string>
   <string name="font_size_message_list">قوائم الرسالة</string>
   <string name="font_size_message_list_subject">العنوان</string>
   <string name="font_size_message_list_sender">مُرسِل</string>
@@ -611,7 +620,6 @@
   <string name="save_or_discard_draft_message_instructions_fmt">احفظ أو إلغ الرسالة؟</string>
   <string name="confirm_discard_draft_message_title">هل تريد إلغاء الرسالة ؟</string>
   <string name="confirm_discard_draft_message">هل أنت متأكد من أنك تود إلغاء هذه الرسالة ؟</string>
-  <string name="select_text_now">حدّد النص للنسخ</string>
   <string name="dialog_confirm_delete_title">تأكيد الحذف</string>
   <string name="dialog_confirm_delete_message">أتريد حذف هذه الرسالة؟</string>
   <string name="dialog_confirm_delete_confirm_button">نعم</string>
@@ -638,6 +646,10 @@
   <string name="settings_import_title">استيراد الإعدادات</string>
   <string name="settings_import_pick_document_button">اختيار ملف</string>
   <string name="settings_import_button">استيراد</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_later_button">لاحقًا</string>
   <string name="settings_import">استيراد الإعدادات</string>
   <string name="settings_importing">استيراد الإعدادات…</string>
@@ -735,15 +747,12 @@
   <string name="messageview_decrypt_retry">إعادة المحاولة</string>
   <string name="messageview_crypto_error_title">خطأ أنثاء عملية فك تعمية الرسالة الإلكترونية</string>
   <string name="unsigned_text_divider_label">نص غير مُوَقَّع</string>
-  <string name="apg_deprecated_2">لذلك فإن دعم برنامج APG قد حُذف من بريد كيه-٩.</string>
-  <string name="apg_deprecated_bullet_1">توقف تطويره في بداية ٢٠١٤</string>
-  <string name="apg_deprecated_bullet_2">تحتوي على مشكلة أمنية غير محلولة.</string>
-  <string name="apg_learn_more">لمعرفة المزيد يمكنك <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">الضغط هنا</a>.</string>
-  <string name="apg_deprecated_ok">حسنًا !</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">هذه الرسالة مُعماة</string>
   <string name="mail_list_widget_text">قائمة رسائل K-9</string>
-  <string name="mail_list_widget_loading">يُحمل الرسائل…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">يُحمل…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">يُحمل…</string>
   <string name="openpgp_enabled_error_title">التعمية غير ممكنة</string>
   <string name="enable_encryption">تنشيط التعمية</string>
   <string name="disable_encryption">تعطيل التعمية</string>
@@ -751,7 +760,7 @@
   <string name="openpgp_enabled_error_back">العودة</string>
   <string name="openpgp_enabled_error_disable">تعطيل التعمية</string>
   <string name="openpgp_encryption">تعمية أوبن بي جي بي OpenPGP</string>
-  <string name="dialog_autocrypt_mutual_learn_more">لمعرفة المزيد يمكنك <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">النقر هنا</a>.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">لمعرفة المزيد يمكنك <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">النقر هنا</a>.</string>
   <string name="general_settings_title">الإعدادات العامة</string>
   <string name="dialog_openkeychain_info_title">ليس هناك أي تطبيق أوبن بي جي بي مُثبّت</string>
   <string name="dialog_openkeychain_info_install">تثبيت</string>
@@ -761,4 +770,22 @@
   <string name="switch_off">مُوقّف</string>
   <!--permissions-->
   <string name="push_info_learn_more_text">لمعرفة المزيد</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">حدد</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">إلغ التحديد</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">علامة غير مقروء</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">أضف نجمة</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">احذف النجمة</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">أرشيف</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">احذف</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">بريد مُزعج</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

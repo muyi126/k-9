@@ -105,7 +105,7 @@
     <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> novih poruka</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> novih poruka</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Nepročitano (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Nepročitano (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> više na <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Odgovori</string>
   <string name="notification_action_mark_as_read">Označi Pročitanim</string>
@@ -119,7 +119,9 @@
   <string name="notification_certificate_error_text">provjerite postavke vašeg poslužitelja</string>
   <string name="notification_authentication_error_title">Identifikacija nije uspjela</string>
   <string name="notification_authentication_error_text">Identifikacija nije uspjela za <xliff:g id="account">%s</xliff:g>. Ažurirajte vaše postavke servera.</string>
-  <string name="notification_bg_sync_ticker">Provjeravam poštu: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_bg_sync_ticker">Provjeravam poštu: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Provjeravanje pošte</string>
   <string name="notification_bg_send_ticker">Šaljem poštu: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Slanje pošte</string>
@@ -161,7 +163,7 @@
   <string name="message_compose_description_delete_quoted_text">Maknuti citirani tekst</string>
   <string name="message_compose_description_edit_quoted_text">Urediti citirani tekst</string>
   <string name="remove_attachment_action">Ukloni privitak</string>
-  <string name="message_view_from_format">Od: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Od: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Za:</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_bcc_label">Bcc:</string>
@@ -201,6 +203,22 @@
   <string name="global_settings_confirm_menu_discard">Odbaci poruku</string>
   <string name="global_settings_confirm_menu_mark_all_read">Označi sve poruke kao pročitane</string>
   <string name="global_settings_confirm_action_delete_notif">Obriši (iz obavijesti)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Nijedna</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <!--Name of the swipe action to add/remove a star-->
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arhiva</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Obriši</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Neželjena pošta</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Premjesti</string>
   <string name="global_settings_privacy_hide_useragent">Sakrij klijent e-pošte</string>
   <string name="global_settings_privacy_hide_useragent_detail">Makni K-9 Korisničkog agenta iz zaglavlja pošte</string>
   <string name="global_settings_privacy_hide_timezone">Sakrij vremensku zonu</string>
@@ -223,6 +241,8 @@
   <string name="account_setup_basics_title">Postavi novi račun</string>
   <string name="account_setup_basics_email_hint">Adresa E-Pošte</string>
   <string name="account_setup_basics_password_hint">Lozinka</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <!--Displayed below the 'account_setup_oauth_description' text-->
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_manual_setup_action">Ručno postavljanje</string>
   <string name="account_setup_check_settings_title"/>
@@ -261,10 +281,6 @@
   <string name="account_setup_incoming_delete_policy_never_label">Nemoj brisati na poslužitelju</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Obriši sa poslužitelja</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Označi kao pročitano na poslužitelju</string>
-  <string name="account_setup_incoming_compression_label">Koristi sabijanje na mreži:</string>
-  <string name="account_setup_incoming_mobile_label">Mobilna</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">Ostalo</string>
   <string name="account_setup_expunge_policy_label">Obriši izbrisane poruke sa poslužitelja</string>
   <string name="account_setup_expunge_policy_immediately">Odmah</string>
   <string name="account_setup_expunge_policy_on_poll">Prilikom provjere</string>
@@ -539,8 +555,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nepoznat Certifikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Prihvati Ključ</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odbij ključ</string>
-  <string name="message_view_help_key">Del (ili D) - Obriši\nR - Odgovori\nA - Odgovori svima\nC - Sastavi\nF - Proslijedi\nM - Pomakni\nV - Arhiviraj\nY - Kopiraj\nZ - Označi (Ne)pročitano\nG - Dodaj zvijezdicu\nO - Način sortiranja\nI - Poredak sortiranja\nQ - Nazad na mape\nS - Označi/odznači\nJ ili P - Prethodna poruka\nK ili N - Sljedeća poruka</string>
-  <string name="message_list_help_key">Del (ili D) - Obriši\nC - Sastavi\nM - Pomakni\nV - Arhiviraj\nY - Kopiraj\nZ - Označi (Ne)pročitano\nG - Dodaj zvijezdicu\nO - Način sortiranja\nI - Poredak sortiranja\nQ - Nazad na mape\nS - Označi/odznači</string>
   <string name="folder_list_filter_hint">Naziv mape sadrži</string>
   <string name="folder_list_display_mode_label">Prikaži mape…</string>
   <string name="folder_list_display_mode_all">Sve mape</string>
@@ -588,9 +602,6 @@
   <string name="account_setup_push_limit_1000">1000 mapa</string>
   <string name="animations_title">Animacija</string>
   <string name="animations_summary">Koristi šarolike vizualne efekte</string>
-  <string name="volume_navigation_title">Navigacija tipkama glasnoće</string>
-  <string name="volume_navigation_message">U pregledu poruka</string>
-  <string name="volume_navigation_list">U pregledu popisa</string>
   <string name="integrated_inbox_title">Objedinjena Dolazna Pošta</string>
   <string name="integrated_inbox_detail">Sve poruke u objedinjenim mapama</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Objedini</string>
@@ -603,12 +614,6 @@
   <string name="account_settings_automatic_special_folder">Automatski (%s)</string>
   <string name="font_size_settings_title">Veličina fonta</string>
   <string name="font_size_settings_description">Postavljanje veličine fonta</string>
-  <string name="font_size_account_list">Popis računa</string>
-  <string name="font_size_account_name">Naziv računa</string>
-  <string name="font_size_account_description">Opis računa</string>
-  <string name="font_size_folder_list">Popis mapa</string>
-  <string name="font_size_folder_name">Naziv mape</string>
-  <string name="font_size_folder_status">Stanje Mape</string>
   <string name="font_size_message_list">Popis poruke</string>
   <string name="font_size_message_list_subject">Subjekt</string>
   <string name="font_size_message_list_sender">Pošiljatelj</string>
@@ -639,7 +644,6 @@
   <string name="save_or_discard_draft_message_instructions_fmt">Spremiti ili Odbaciti ovu poruku?</string>
   <string name="confirm_discard_draft_message_title">Odbaciti poruku?</string>
   <string name="confirm_discard_draft_message">Jeste li sigurni da želite odbaciti ovu poruku?</string>
-  <string name="select_text_now">Odaberi tekst za kopiranje..</string>
   <string name="dialog_confirm_clear_local_folder_title">Očistiti lokalne poruke?</string>
   <string name="dialog_confirm_clear_local_folder_action">Očisti poruke</string>
   <string name="dialog_confirm_delete_title">Potvrda brisanja</string>
@@ -680,12 +684,16 @@
   <string name="settings_import_pick_document_button">Odaberi datoteku</string>
   <string name="settings_import_button">Uvoz</string>
   <string name="settings_import_success_generic">Postavke su uspješno uvezene</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">Molimo unesite lozinke</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_failure">Uvoz postavki nije uspio</string>
   <string name="settings_import_read_failure">Čitanje datoteke postavki nije uspjelo</string>
   <string name="settings_import_partial_failure">Uvoz nekih postavki nije uspio</string>
   <string name="settings_import_status_success">Uspješno uvezeno</string>
   <string name="settings_import_status_password_required">Lozinka obavezna</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_not_imported">Nije uvezeno</string>
   <string name="settings_import_status_error">Uvoz nije uspio</string>
   <string name="settings_import_later_button">Kasnije</string>
@@ -863,19 +871,14 @@
   <string name="account_settings_crypto_hide_sign_only_on">Samo šifrirani potpisi će biti prikazani</string>
   <string name="account_settings_crypto_hide_sign_only_off">Svi potpisi će biti prikazani</string>
   <string name="unsigned_text_divider_label">Nepotpisani tekst</string>
-  <string name="apg_deprecated_title">APG Upozorenje o uklanjanju</string>
-  <string name="apg_deprecated_1">APG više nije održavan!</string>
-  <string name="apg_deprecated_2">Zbog toga, podrška za APG je uklonjena iz K-9 Mail.</string>
-  <string name="apg_deprecated_bullet_1">Razvoj je zaustavljen u ranoj 2014</string>
-  <string name="apg_deprecated_bullet_2">Sadrži neispravljene sigurnosne probleme</string>
-  <string name="apg_learn_more">Možete <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">kliknuti ovdje</a> da saznate više.</string>
-  <string name="apg_deprecated_ok">OK</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Vaš email je šifriran</string>
   <string name="crypto_no_provider_message">Ova e-poruka je šifrirana korištenjem OpenPGP.\nDa bi ste je pročitali, potrebno je da instalirate i postavite odgovarajuću OpenPGP aplikaciju.</string>
   <string name="crypto_no_provider_button">Idi u Postavke</string>
   <string name="mail_list_widget_text">K-9 Popis Poruka</string>
-  <string name="mail_list_widget_loading">Učitavam poruke…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Učitavam…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Učitavam…</string>
   <string name="openpgp_enabled_error_title">Šifriranje nije moguće</string>
   <string name="enable_encryption">Uključi šifriranje</string>
   <string name="disable_encryption">Onemogući šifriranje</string>
@@ -886,7 +889,7 @@
   <string name="openpgp_enabled_error_back">Natrag</string>
   <string name="openpgp_enabled_error_disable">Onemogući šifriranje</string>
   <string name="openpgp_encryption">OpenPGP šifriranje</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Možete <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">kliknuti ovdje</a> da saznate više.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Možete <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">kliknuti ovdje</a> da saznate više.</string>
   <string name="general_settings_title">Opća podešavanja</string>
   <string name="dialog_openkeychain_info_title">Nema intalirane OpenPGP aplikacije</string>
   <string name="dialog_openkeychain_info_install">Instaliraj</string>
@@ -908,4 +911,22 @@
   <string name="switch_off">Isključeno</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Dopusti pristup kontaktima</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Označi</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Odznači</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Označi nepročitanim</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Dodaj zvjezdicu</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Ukloni zvjezdicu</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Arhiva</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Obriši</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Neželjena pošta</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

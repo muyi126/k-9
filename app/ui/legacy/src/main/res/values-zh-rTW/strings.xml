@@ -12,6 +12,8 @@
   <string name="app_license">Apache 授權條款， 版本 2.0</string>
   <string name="about_project_title">開放原始碼專案</string>
   <string name="about_website_title">網站</string>
+  <string name="user_manual_title">使用者手冊</string>
+  <string name="get_help_title">取得說明</string>
   <string name="user_forum_title">使用者論壇</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -105,6 +107,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="search_action">搜尋</string>
   <string name="search_everywhere_action">在所有地方搜尋</string>
   <string name="search_results">搜尋結果</string>
+  <string name="new_messages_title">新郵件</string>
   <string name="preferences_action">設定</string>
   <string name="folders_action">整理信件匣</string>
   <string name="account_settings_action">帳號設定</string>
@@ -115,6 +118,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="flag_action">加上星號</string>
   <string name="unflag_action">移除星號</string>
   <string name="copy_action">複製</string>
+  <string name="unsubscribe_action">取消訂閱</string>
   <string name="show_headers_action">顯示標頭</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="other">位址已複製到剪貼簿</item>
@@ -147,7 +151,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <plurals name="notification_new_messages_title">
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 條新訊息</item>
   </plurals>
-  <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未讀郵件（<xliff:g id="account">%s</xliff:g>）</string>
+  <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%1$d</xliff:g>封未讀郵件（<xliff:g id="account">%2$s</xliff:g>）</string>
   <string name="notification_additional_messages">+ 來自<xliff:g id="account">%2$s</xliff:g>已超過<xliff:g id="additional_messages">%1$d</xliff:g>則訊息</string>
   <string name="notification_action_reply">回覆</string>
   <string name="notification_action_mark_as_read">標示為已讀取</string>
@@ -157,11 +161,16 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="notification_action_archive">封存</string>
   <string name="notification_action_archive_all">全部封存</string>
   <string name="notification_action_spam">垃圾郵件</string>
+  <string name="notification_certificate_error_public">證書錯誤</string>
   <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g>驗證錯誤</string>
   <string name="notification_certificate_error_text">檢查你的伺服器設定</string>
   <string name="notification_authentication_error_title">身份驗證失敗</string>
   <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> 登入失敗。請更新你的伺服器設定。</string>
-  <string name="notification_bg_sync_ticker">正在檢查郵件：<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">通知錯誤</string>
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">嘗試建立新訊息的系統通知時發生錯誤。最有可能的原因是缺少通知聲音。\n\n按一下開啟通知設定。</string>
+  <string name="notification_bg_sync_ticker">正在檢查郵件：<xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">正在檢查郵件</string>
   <string name="notification_bg_send_ticker">正在寄送郵件：<xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">正在寄送郵件</string>
@@ -183,6 +192,9 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="debug_enable_debug_logging_summary">記錄額外的除錯訊息</string>
   <string name="debug_enable_sensitive_logging_title">記錄敏感訊息</string>
   <string name="debug_enable_sensitive_logging_summary">允許在日誌中顯示密碼。</string>
+  <string name="debug_export_logs_title">匯出日誌</string>
+  <string name="debug_export_logs_success">匯出成功。日誌可能包含敏感訊息。請小心選擇您要傳送的人。</string>
+  <string name="debug_export_logs_failure">匯出失敗</string>
   <string name="message_list_load_more_messages_action">載入更多郵件</string>
   <string name="message_to_fmt">收件人：<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">主題</string>
@@ -205,7 +217,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="message_compose_description_delete_quoted_text">清除引用文字內容</string>
   <string name="message_compose_description_edit_quoted_text">編輯引用文字內容</string>
   <string name="remove_attachment_action">移除附件</string>
-  <string name="message_view_from_format">寄件人：<xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">寄件人：<xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">收件人：</string>
   <string name="message_view_cc_label">副本：</string>
   <string name="message_view_bcc_label">密件副本：</string>
@@ -229,6 +241,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="global_settings_show_contact_name_summary">用聯絡人姓名取代顯示電子郵件地址</string>
   <string name="global_settings_registered_name_color_label">使用顏色標示特定聯絡人</string>
   <string name="global_settings_registered_name_color_changed">使用顏色標示聯絡人列表</string>
+  <string name="general_settings_contact_name_color_label">聯絡人名稱顏色</string>
   <string name="global_settings_messageview_fixedwidth_label">固定寬度字體</string>
   <string name="global_settings_messageview_fixedwidth_summary">使用固定寬度字體顯示純文字郵件</string>
   <string name="global_settings_messageview_autofit_width_label">自動調整訊息</string>
@@ -245,6 +258,28 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="global_settings_confirm_menu_discard">捨棄郵件</string>
   <string name="global_settings_confirm_menu_mark_all_read">全部標記為已讀</string>
   <string name="global_settings_confirm_action_delete_notif">刪除 (從通知欄)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">滑動操作</string>
+  <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">右滑</string>
+  <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">左滑</string>
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">無</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">切換選擇</string>
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">標記為已讀/未讀</string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">新增/移除星號</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">封存</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">刪除</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">標記為垃圾郵件</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">移動</string>
   <string name="global_settings_privacy_hide_useragent">隱藏郵件客戶端</string>
   <string name="global_settings_privacy_hide_useragent_detail">從郵件標頭中移除 K-9 的 User-Agent</string>
   <string name="global_settings_privacy_hide_timezone">隱藏時區</string>
@@ -268,6 +303,11 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_setup_basics_title">設定新帳號</string>
   <string name="account_setup_basics_email_hint">電子郵件地址</string>
   <string name="account_setup_basics_password_hint">密碼</string>
+  <string name="account_setup_oauth_description">如要透過 K-9 Mail 使用這個電子郵件帳戶，您需要登入並授權應用程式取用您的電子郵件。</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">登入</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">使用 Google 帳戶登入</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">要在這查看你的密碼請為這個裝置啟用螢幕上鎖。</string>
   <string name="account_setup_basics_show_password_biometrics_title">驗證你的身份</string>
@@ -291,6 +331,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_setup_auth_type_insecure_password">非安全傳輸的密碼</string>
   <string name="account_setup_auth_type_encrypted_password">已加密的密碼</string>
   <string name="account_setup_auth_type_tls_client_certificate">使用者客戶端憑證</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">內送伺服器設定</string>
   <string name="account_setup_incoming_username_label">使用者名稱</string>
   <string name="account_setup_incoming_password_label">密碼</string>
@@ -309,10 +350,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_setup_incoming_delete_policy_never_label">不要從伺服器上刪除</string>
   <string name="account_setup_incoming_delete_policy_delete_label">立刻從伺服器上刪除</string>
   <string name="account_setup_incoming_delete_policy_markread_label">在伺服器上將郵件標記為已讀</string>
-  <string name="account_setup_incoming_compression_label">在使用指定網路類型時使用壓縮以便節約流量：</string>
-  <string name="account_setup_incoming_mobile_label">行動網路</string>
-  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-  <string name="account_setup_incoming_other_label">其他</string>
+  <string name="account_setup_incoming_use_compression">使用壓縮</string>
   <string name="account_setup_expunge_policy_label">抹除刪除的郵件</string>
   <string name="account_setup_expunge_policy_immediately">立刻</string>
   <string name="account_setup_expunge_policy_on_poll">接收郵件時</string>
@@ -377,6 +415,10 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_setup_failed_dlg_auth_message_fmt">使用者名稱或密碼不正確。\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">伺服器提供了一個無效的 SSL 憑證。這是由於不正確的伺服器設定而導致的，也可能是由於有人試圖攻擊你或者你的郵件伺服器。如果你不能確定到底是什麼原因，請點擊「拒絕」，並聯絡你的郵件伺服器管理人員。\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">無法連線到伺服器。\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">授權被取消</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">授權失敗，錯誤訊息為：<xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">此供應商目前不支援 OAuth 2.0。</string>
+  <string name="account_setup_failed_dlg_browser_not_found">應用程式找不到瀏覽器以授予取用您賬戶的權限。</string>
   <string name="account_setup_failed_dlg_edit_details_action">編輯詳細訊息</string>
   <string name="account_setup_failed_dlg_continue_action">繼續</string>
   <string name="account_settings_push_advanced_title">進階</string>
@@ -384,8 +426,8 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_settings_notify_label">新郵件通知</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">通知信件匣</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">全部</string>
-  <string name="account_settings_folder_notify_new_mail_mode_first_class">僅上層信件匣</string>
-  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">上層與下層信件匣</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">僅第一類信件匣</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">第一類與第二類信件匣</string>
   <string name="account_settings_folder_notify_new_mail_mode_not_second_class">不包括下層信件匣</string>
   <string name="account_settings_folder_notify_new_mail_mode_none">無</string>
   <string name="account_settings_notify_sync_label">同步通知</string>
@@ -478,25 +520,25 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_settings_message_age_1_year">一年內</string>
   <string name="account_settings_folder_display_mode_label">顯示的信件匣</string>
   <string name="account_settings_folder_display_mode_all">全部</string>
-  <string name="account_settings_folder_display_mode_first_class">僅上層信件匣</string>
-  <string name="account_settings_folder_display_mode_first_and_second_class">上層與下層信件匣</string>
+  <string name="account_settings_folder_display_mode_first_class">僅第一類信件匣</string>
+  <string name="account_settings_folder_display_mode_first_and_second_class">第一類與第二類信件匣</string>
   <string name="account_settings_folder_display_mode_not_second_class">不包括下層文件匣</string>
   <string name="account_settings_folder_sync_mode_label">檢查信件匣</string>
   <string name="account_settings_folder_sync_mode_all">全部</string>
-  <string name="account_settings_folder_sync_mode_first_class">僅上層信件匣</string>
-  <string name="account_settings_folder_sync_mode_first_and_second_class">上層與下層信件匣</string>
+  <string name="account_settings_folder_sync_mode_first_class">僅第一類信件匣</string>
+  <string name="account_settings_folder_sync_mode_first_and_second_class">第一類與第二類信件匣</string>
   <string name="account_settings_folder_sync_mode_not_second_class">不包括下層信件匣</string>
   <string name="account_settings_folder_sync_mode_none">無</string>
   <string name="account_settings_folder_push_mode_label">推送信件匣</string>
   <string name="account_settings_folder_push_mode_all">全部</string>
-  <string name="account_settings_folder_push_mode_first_class">僅上層信件匣</string>
-  <string name="account_settings_folder_push_mode_first_and_second_class">上層與下層信件匣</string>
+  <string name="account_settings_folder_push_mode_first_class">僅第一類信件匣</string>
+  <string name="account_settings_folder_push_mode_first_and_second_class">第一類與第二類信件匣</string>
   <string name="account_settings_folder_push_mode_not_second_class">不包括下層信件匣</string>
   <string name="account_settings_folder_push_mode_none">無</string>
   <string name="account_settings_folder_target_mode_label">可以移動/複製到的文件匣</string>
   <string name="account_settings_folder_target_mode_all">全部</string>
-  <string name="account_settings_folder_target_mode_first_class">僅上層信件匣</string>
-  <string name="account_settings_folder_target_mode_first_and_second_class">上層與下層信件匣</string>
+  <string name="account_settings_folder_target_mode_first_class">僅第一類信件匣</string>
+  <string name="account_settings_folder_target_mode_first_and_second_class">第一類與第二類信件匣</string>
   <string name="account_settings_folder_target_mode_not_second_class">不包括下層信件匣</string>
   <string name="account_settings_sync_remote_deletetions_label">同步伺服器上的刪除</string>
   <string name="account_settings_sync_remote_deletetions_summary">刪除在伺服器上被刪除的郵件的本地複製</string>
@@ -506,21 +548,21 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="folder_settings_in_top_group_summary">顯示在置頂的組之後</string>
   <string name="folder_settings_folder_display_mode_label">信件匣顯示層別</string>
   <string name="folder_settings_folder_display_mode_normal">不分類</string>
-  <string name="folder_settings_folder_display_mode_first_class">上層</string>
+  <string name="folder_settings_folder_display_mode_first_class">第一類</string>
   <string name="folder_settings_folder_display_mode_second_class">下層</string>
   <string name="folder_settings_folder_sync_mode_label">提取分類信件匣</string>
   <string name="folder_settings_folder_sync_mode_normal">無</string>
-  <string name="folder_settings_folder_sync_mode_first_class">上層</string>
+  <string name="folder_settings_folder_sync_mode_first_class">第一類</string>
   <string name="folder_settings_folder_sync_mode_second_class">下層</string>
   <string name="folder_settings_folder_sync_mode_inherited">使用與顯示層別相同的層別</string>
   <string name="folder_settings_folder_push_mode_label">信件匣推送層別</string>
   <string name="folder_settings_folder_push_mode_normal">不分類</string>
-  <string name="folder_settings_folder_push_mode_first_class">上層</string>
+  <string name="folder_settings_folder_push_mode_first_class">第一類</string>
   <string name="folder_settings_folder_push_mode_second_class">下層</string>
   <string name="folder_settings_folder_push_mode_inherited">與分類層別相同</string>
   <string name="folder_settings_folder_notify_mode_label">信件匣提醒層別</string>
   <string name="folder_settings_folder_notify_mode_normal">不分類</string>
-  <string name="folder_settings_folder_notify_mode_first_class">上層</string>
+  <string name="folder_settings_folder_notify_mode_first_class">第一類</string>
   <string name="folder_settings_folder_notify_mode_second_class">下層</string>
   <string name="folder_settings_folder_notify_mode_inherited">與推送層別相同</string>
   <string name="folder_settings_clear_local_folder_action">清除本地郵件</string>
@@ -531,11 +573,29 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_settings_description_label">帳號名稱</string>
   <string name="account_settings_name_label">你的名字</string>
   <string name="notifications_title">通知</string>
+  <string name="account_settings_vibration">震動</string>
   <string name="account_settings_vibrate_enable">震動</string>
+  <string name="account_settings_vibrate_pattern_label">震動模式</string>
   <string name="account_settings_vibrate_pattern_default">預設</string>
+  <string name="account_settings_vibrate_pattern_1">模式一</string>
+  <string name="account_settings_vibrate_pattern_2">模式二</string>
+  <string name="account_settings_vibrate_pattern_3">模式三</string>
+  <string name="account_settings_vibrate_pattern_4">模式四</string>
+  <string name="account_settings_vibrate_pattern_5">模式五</string>
   <string name="account_settings_vibrate_times">重複震動</string>
+  <string name="account_settings_vibrate_summary_disabled">已停用</string>
   <string name="account_settings_ringtone">新郵件鈴聲</string>
+  <string name="account_settings_notification_light_label">通知燈</string>
+  <string name="account_settings_notification_light_disabled">已停用</string>
   <string name="account_settings_notification_light_account_color">帳號顏色</string>
+  <string name="account_settings_notification_light_default_color">系統預設顏色</string>
+  <string name="account_settings_notification_light_white">白</string>
+  <string name="account_settings_notification_light_red">紅</string>
+  <string name="account_settings_notification_light_green">綠</string>
+  <string name="account_settings_notification_light_blue">藍</string>
+  <string name="account_settings_notification_light_yellow">黃</string>
+  <string name="account_settings_notification_light_cyan">青</string>
+  <string name="account_settings_notification_light_magenta">洋紅</string>
   <string name="account_settings_composition_title">撰寫新郵件選項</string>
   <string name="account_settings_composition_label">撰寫新郵件預設值</string>
   <string name="account_settings_composition_summary">設定預設的寄件人、密件副本以及簽名</string>
@@ -593,13 +653,11 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_setup_failed_dlg_invalid_certificate_title">無法識別的授權憑證</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">接收金鑰</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">拒絕金鑰</string>
-  <string name="message_view_help_key">Del (D) - 刪除\nR - 回覆\nA - 全部回覆\nC - 寄送\nF - 轉寄\nM - 移動\nV - 封存\nY - 複製\nZ - 標示為 (未) 讀取\nG - 加上星號\nO - 排序類型\nI - 排序名稱\nQ - 返回信件匣\nS - 選擇/取消選擇\nJ or P - 上條訊息\nK or N - 下條訊息</string>
-  <string name="message_list_help_key">Del(D) - 刪除\nC - 寄送\nM - 轉寄\nV - 封存\nY - 複製\nZ - 標示為 (未) 讀取\nG - 加上星號\nO - 排序類型\nI - 排序名稱\nQ - 返回信件匣\nS - 選擇/取消選擇</string>
   <string name="folder_list_filter_hint">信件匣名稱包括</string>
   <string name="folder_list_display_mode_label">信件匣</string>
   <string name="folder_list_display_mode_all">顯示全部信件匣</string>
-  <string name="folder_list_display_mode_first_class">只顯示上層信件匣</string>
-  <string name="folder_list_display_mode_first_and_second_class">顯示上層和下層信件匣</string>
+  <string name="folder_list_display_mode_first_class">只顯示第一類信件匣</string>
+  <string name="folder_list_display_mode_first_and_second_class">顯示第一類和第二類信件匣</string>
   <string name="folder_list_display_mode_not_second_class">不包括下層信件匣</string>
   <string name="account_settings_signature__location_label">簽名位置</string>
   <string name="account_settings_signature__location_before_quoted_text">在引用的本文之前</string>
@@ -642,9 +700,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_setup_push_limit_1000">1000個信件匣</string>
   <string name="animations_title">動畫</string>
   <string name="animations_summary">使用絢麗的視覺特效</string>
-  <string name="volume_navigation_title">音量鍵導航</string>
-  <string name="volume_navigation_message">訊息檢視</string>
-  <string name="volume_navigation_list">不同的訊息檢視列表</string>
+  <string name="volume_navigation_title">訊息檢視中音量鍵導航</string>
   <string name="show_unified_inbox_title">顯示全域收件匣</string>
   <string name="show_starred_count_title">顯示有標記星號的數量</string>
   <string name="integrated_inbox_title">全域收件匣</string>
@@ -659,12 +715,6 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_settings_automatic_special_folder">自動 (%s)</string>
   <string name="font_size_settings_title">字體大小</string>
   <string name="font_size_settings_description">設定字體大小</string>
-  <string name="font_size_account_list">帳號列表</string>
-  <string name="font_size_account_name">帳號名稱</string>
-  <string name="font_size_account_description">帳號描述</string>
-  <string name="font_size_folder_list">信件匣列表</string>
-  <string name="font_size_folder_name">信件匣名稱</string>
-  <string name="font_size_folder_status">信件匣狀態</string>
   <string name="font_size_message_list">管理列表</string>
   <string name="font_size_message_list_subject">主題</string>
   <string name="font_size_message_list_sender">寄件人</string>
@@ -696,7 +746,6 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="save_or_discard_draft_message_changes">儲存還是捨棄變更？</string>
   <string name="confirm_discard_draft_message_title">捨棄郵件？</string>
   <string name="confirm_discard_draft_message">是否確定捨棄儲存目前的郵件？</string>
-  <string name="select_text_now">選擇需要複製的文字內容。</string>
   <string name="dialog_confirm_clear_local_folder_title">清除本地訊息？</string>
   <string name="dialog_confirm_clear_local_folder_message">這將從信件匣中刪除所有本地郵件。 沒有訊息會從伺服器中被刪除。</string>
   <string name="dialog_confirm_clear_local_folder_action">清除訊息</string>
@@ -734,12 +783,19 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="settings_import_pick_document_button">選擇檔案</string>
   <string name="settings_import_button">匯入</string>
   <string name="settings_import_success_generic">設定匯入成功</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
   <string name="settings_import_password_required">請輸入密碼</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">請登入</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">請登入並輸入密碼</string>
   <string name="settings_import_failure">設定匯入失敗</string>
   <string name="settings_import_read_failure">讀取設定檔案失敗</string>
   <string name="settings_import_partial_failure">匯入部分設定失敗</string>
   <string name="settings_import_status_success">匯入成功</string>
   <string name="settings_import_status_password_required">需要輸入密碼</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">需要登入</string>
   <string name="settings_import_status_not_imported">沒有匯入</string>
   <string name="settings_import_status_error">匯入失敗</string>
   <string name="settings_import_later_button">之後</string>
@@ -927,19 +983,14 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="account_settings_crypto_hide_sign_only_off">顯示所有簽名</string>
   <string name="error_sign_only_no_encryption">在簽名模式下無法使用加密</string>
   <string name="unsigned_text_divider_label">未簽名文字</string>
-  <string name="apg_deprecated_title">APG 棄用警告</string>
-  <string name="apg_deprecated_1">APG 已停止維護！</string>
-  <string name="apg_deprecated_2">因此，K-9 Mail 移除了對 APG 的支援。</string>
-  <string name="apg_deprecated_bullet_1">開發於 2014 年初停止</string>
-  <string name="apg_deprecated_bullet_2">包括未修復的安全漏洞</string>
-  <string name="apg_learn_more">你可以<a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">點擊這裡</a>了解更多。</string>
-  <string name="apg_deprecated_ok">知道了</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">郵件已被加密</string>
   <string name="crypto_no_provider_message">這封郵件使用 OpenPGP 進行了加密。\n請安裝並設定一個相容 OpenPGP 的應用程式來查看郵件。</string>
   <string name="crypto_no_provider_button">前往設定</string>
   <string name="mail_list_widget_text">K-9 訊息列表</string>
-  <string name="mail_list_widget_loading">正在載入郵件…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">載入中…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">載入中…</string>
   <string name="openpgp_enabled_error_title">無法加密</string>
   <string name="openpgp_enabled_error_msg">有些已選定的收件人不支援此功能！</string>
   <string name="enable_encryption">啟用加密</string>
@@ -955,7 +1006,7 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="dialog_autocrypt_mutual_title">Autocrypt 互相模式</string>
   <string name="dialog_autocrypt_mutual_description_1">訊息通常會按你的選擇而自動加密，或者在回覆加密訊息時進行加密。</string>
   <string name="dialog_autocrypt_mutual_description_2">如果寄件人和收件人都啟用了互相模式，加密預設會被啟用。</string>
-  <string name="dialog_autocrypt_mutual_learn_more">你可以<a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">點擊這裡</a>了解更多。</string>
+  <string name="dialog_autocrypt_mutual_learn_more">你可以<a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">點擊這裡</a>了解更多。</string>
   <string name="general_settings_title">一般設定</string>
   <string name="dialog_openkeychain_info_title">未安裝 OpenPGP 應用程式</string>
   <string name="dialog_openkeychain_info_install">安裝</string>
@@ -1001,4 +1052,24 @@ K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
   <string name="push_info_configure_notification_action">設定通知</string>
   <string name="push_info_disable_push_text">如果你不需要新郵件的即時通知，則應停用推送並使用輪詢。輪詢會定期檢查新郵件，不需要通知權限。</string>
   <string name="push_info_disable_push_action">停用推送</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">選擇</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">取消選擇</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">標記為已讀</string>
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">標記為未讀</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">加上星號</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">移除星號</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">封存</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">刪除</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">標記為垃圾郵件</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">移動…</string>
 </resources>

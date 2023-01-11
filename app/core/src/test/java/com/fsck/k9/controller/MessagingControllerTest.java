@@ -19,7 +19,6 @@ import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -35,15 +34,12 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import com.fsck.k9.preferences.Protocols;
-import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import org.jetbrains.annotations.NotNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -89,8 +85,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Mock
     private SimpleMessagingListener listener;
     @Mock
-    private LocalSearch search;
-    @Mock
     private LocalFolder localFolder;
     @Mock
     private LocalFolder sentFolder;
@@ -100,8 +94,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private NotificationController notificationController;
     @Mock
     private NotificationStrategy notificationStrategy;
-    @Captor
-    private ArgumentCaptor<MessageRetrievalListener<LocalMessage>> messageRetrievalListenerCaptor;
 
     private Context appContext;
     private Set<Flag> reqFlags;
@@ -136,9 +128,9 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void setUp() throws MessagingException {
         ShadowLog.stream = System.out;
         MockitoAnnotations.initMocks(this);
-        appContext = RuntimeEnvironment.application;
+        appContext = RuntimeEnvironment.getApplication();
 
-        preferences = Preferences.getPreferences(appContext);
+        preferences = Preferences.getPreferences();
 
         controller = new MessagingController(appContext, notificationController, notificationStrategy,
                 localStoreProvider, messageCountsProvider, backendManager, preferences, messageStoreManager,
@@ -175,35 +167,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
         controller.refreshFolderListSynchronous(account);
 
         verify(backend).refreshFolderList();
-    }
-
-    @Test
-    public void searchLocalMessagesSynchronous_shouldCallSearchForMessagesOnLocalStore()
-            throws Exception {
-        when(search.searchAllAccounts()).thenReturn(true);
-        when(search.getAccountUuids()).thenReturn(new String[0]);
-
-        controller.searchLocalMessagesSynchronous(search, listener);
-
-        verify(localStore).searchForMessages(nullable(MessageRetrievalListener.class), eq(search));
-    }
-
-    @Test
-    public void searchLocalMessagesSynchronous_shouldNotifyWhenStoreFinishesRetrievingAMessage()
-            throws Exception {
-        LocalMessage localMessage = mock(LocalMessage.class);
-        when(localMessage.getFolder()).thenReturn(localFolder);
-        when(search.searchAllAccounts()).thenReturn(true);
-        when(search.getAccountUuids()).thenReturn(new String[0]);
-        when(localStore.searchForMessages(nullable(MessageRetrievalListener.class), eq(search)))
-                .thenThrow(new MessagingException("Test"));
-
-        controller.searchLocalMessagesSynchronous(search, listener);
-
-        verify(localStore).searchForMessages(messageRetrievalListenerCaptor.capture(), eq(search));
-        messageRetrievalListenerCaptor.getValue().messageFinished(localMessage, 1, 1);
-        verify(listener).listLocalMessagesAddMessages(eq(account),
-                eq((String) null), eq(Collections.singletonList(localMessage)));
     }
 
     private void setupRemoteSearch() throws Exception {
@@ -419,7 +382,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(localStore.getFolder(SENT_FOLDER_ID)).thenReturn(sentFolder);
         when(sentFolder.getDatabaseId()).thenReturn(SENT_FOLDER_ID);
         when(localFolder.exists()).thenReturn(true);
-        when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessageToSend1));
+        when(localFolder.getMessages()).thenReturn(Collections.singletonList(localMessageToSend1));
         when(localMessageToSend1.getUid()).thenReturn("localMessageToSend1");
         when(localMessageToSend1.getDatabaseId()).thenReturn(42L);
         when(localMessageToSend1.getHeader(K9.IDENTITY_HEADER)).thenReturn(new String[]{});

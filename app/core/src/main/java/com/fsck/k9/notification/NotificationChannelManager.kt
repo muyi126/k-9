@@ -58,7 +58,7 @@ class NotificationChannelManager(
         accounts: List<Account>
     ) {
         for (account in accounts) {
-            val groupId = account.uuid
+            val groupId = account.notificationChannelGroupId
             val group = NotificationChannelGroup(groupId, account.displayName)
 
             val channelMessages = getChannelMessages(account)
@@ -75,25 +75,13 @@ class NotificationChannelManager(
         notificationManager: NotificationManager,
         accounts: List<Account>
     ) {
-        val existingAccounts = HashMap<String, Account>()
-        for (account in accounts) {
-            existingAccounts[account.uuid] = account
-        }
+        val accountUuids = accounts.map { it.uuid }.toSet()
 
         val groups = notificationManager.notificationChannelGroups
         for (group in groups) {
-            val groupId = group.id
-
-            var shouldDelete = false
-            if (!existingAccounts.containsKey(groupId)) {
-                shouldDelete = true
-            } else if (existingAccounts[groupId]?.displayName != group.name.toString()) {
-                // There is no way to change group names. Deleting group, so it is re-generated.
-                shouldDelete = true
-            }
-
-            if (shouldDelete) {
-                notificationManager.deleteNotificationChannelGroup(groupId)
+            val accountUuid = group.id.toAccountUuid()
+            if (accountUuid !in accountUuids) {
+                notificationManager.deleteNotificationChannelGroup(group.id)
             }
         }
     }
@@ -116,16 +104,15 @@ class NotificationChannelManager(
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun getChannelMessages(account: Account): NotificationChannel {
         val channelName = resourceProvider.messagesChannelName
-        val channelDescription = resourceProvider.messagesChannelDescription
         val channelId = getChannelIdFor(account, ChannelType.MESSAGES)
         val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channelGroupId = account.uuid
 
-        val messagesChannel = NotificationChannel(channelId, channelName, importance)
-        messagesChannel.description = channelDescription
-        messagesChannel.group = channelGroupId
+        return NotificationChannel(channelId, channelName, importance).apply {
+            description = resourceProvider.messagesChannelDescription
+            group = account.uuid
 
-        return messagesChannel
+            setPropertiesFrom(account)
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -145,10 +132,14 @@ class NotificationChannelManager(
 
     fun getChannelIdFor(account: Account, channelType: ChannelType): String {
         return if (channelType == ChannelType.MESSAGES) {
-            "messages_channel_${account.uuid}${account.messagesNotificationChannelSuffix}"
+            getMessagesChannelId(account, account.messagesNotificationChannelSuffix)
         } else {
             "miscellaneous_channel_${account.uuid}"
         }
+    }
+
+    private fun getMessagesChannelId(account: Account, suffix: String): String {
+        return "messages_channel_${account.uuid}$suffix"
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -176,11 +167,8 @@ class NotificationChannelManager(
             return
         }
 
-        notificationManager.deleteNotificationChannel(oldChannelId)
-
-        account.incrementMessagesNotificationChannelVersion()
-
-        val newChannelId = getChannelIdFor(account, ChannelType.MESSAGES)
+        val newChannelVersion = account.messagesNotificationChannelVersion + 1
+        val newChannelId = getMessagesChannelId(account, "_$newChannelVersion")
         val channelName = resourceProvider.messagesChannelName
         val importance = oldNotificationChannel.importance
 
@@ -189,13 +177,18 @@ class NotificationChannelManager(
             group = account.uuid
 
             copyPropertiesFrom(oldNotificationChannel)
-            copyPropertiesFrom(account)
+            setPropertiesFrom(account)
         }
 
         Timber.v("Recreating NotificationChannel(%s => %s)", oldChannelId, newChannelId)
         Timber.v("Old NotificationChannel: %s", oldNotificationChannel)
         Timber.v("New NotificationChannel: %s", newNotificationChannel)
         notificationManager.createNotificationChannel(newNotificationChannel)
+
+        // To avoid a race condition we first create the new NotificationChannel, point the Account to it,
+        // then delete the old one.
+        account.messagesNotificationChannelVersion = newChannelVersion
+        notificationManager.deleteNotificationChannel(oldChannelId)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -208,8 +201,8 @@ class NotificationChannelManager(
         val notificationSettings = account.notificationSettings
         return sound == notificationSettings.ringtoneUri &&
             systemLight == notificationSettings.light &&
-            shouldVibrate() == notificationSettings.isVibrateEnabled &&
-            vibrationPattern.contentEquals(notificationSettings.vibrationPattern)
+            shouldVibrate() == notificationSettings.vibration.isEnabled &&
+            vibrationPattern.contentEquals(notificationSettings.vibration.systemPattern)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -226,7 +219,7 @@ class NotificationChannelManager(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun NotificationChannel.copyPropertiesFrom(account: Account) {
+    private fun NotificationChannel.setPropertiesFrom(account: Account) {
         val notificationSettings = account.notificationSettings
 
         if (notificationSettings.isRingEnabled) {
@@ -239,9 +232,14 @@ class NotificationChannelManager(
         val isLightEnabled = notificationSettings.light != NotificationLight.Disabled
         enableLights(isLightEnabled)
 
-        vibrationPattern = notificationSettings.vibrationPattern
-        enableVibration(notificationSettings.isVibrateEnabled)
+        vibrationPattern = notificationSettings.vibration.systemPattern
+        enableVibration(notificationSettings.vibration.isEnabled)
     }
+
+    private val Account.notificationChannelGroupId: String
+        get() = uuid
+
+    private fun String.toAccountUuid(): String = this
 
     private val Account.messagesNotificationChannelSuffix: String
         get() = messagesNotificationChannelVersion.let { version -> if (version == 0) "" else "_$version" }

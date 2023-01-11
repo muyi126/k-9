@@ -1,6 +1,5 @@
 package com.fsck.k9.activity
 
-import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -15,17 +14,17 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Observer
+import androidx.fragment.app.commit
+import androidx.fragment.app.commitNow
 import com.fsck.k9.Account
-import com.fsck.k9.Account.SortType
 import com.fsck.k9.K9
 import com.fsck.k9.K9.SplitViewMode
 import com.fsck.k9.Preferences
@@ -33,12 +32,9 @@ import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.fragment.MessageListFragment
-import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.mailstore.SearchStatusManager
-import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
@@ -50,13 +46,13 @@ import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.K9Drawer
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
-import com.fsck.k9.ui.base.Theme
-import com.fsck.k9.ui.changelog.RecentChangesActivity
-import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
-import com.fsck.k9.ui.messagesource.MessageSourceActivity
-import com.fsck.k9.ui.messageview.MessageViewFragment
+import com.fsck.k9.ui.messagelist.MessageListFragment
+import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener
+import com.fsck.k9.ui.messageview.Direction
+import com.fsck.k9.ui.messageview.MessageViewContainerFragment
+import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
 import com.fsck.k9.ui.messageview.PlaceholderFragment
 import com.fsck.k9.ui.onboarding.OnboardingActivity
@@ -65,10 +61,8 @@ import com.fsck.k9.ui.permissions.Permission
 import com.fsck.k9.ui.permissions.PermissionUiHelper
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
-import com.google.android.material.snackbar.Snackbar
 import com.mikepenz.materialdrawer.util.getOptimalDrawerWidth
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -82,15 +76,13 @@ open class MessageList :
     K9Activity(),
     MessageListFragmentListener,
     MessageViewFragmentListener,
+    MessageViewContainerListener,
     FragmentManager.OnBackStackChangedListener,
     OnSwitchCompleteListener,
     PermissionUiHelper {
 
-    private val recentChangesViewModel: RecentChangesViewModel by viewModel()
-
     protected val searchStatusManager: SearchStatusManager by inject()
     private val preferences: Preferences by inject()
-    private val channelUtils: NotificationChannelManager by inject()
     private val defaultFolderProvider: DefaultFolderProvider by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
@@ -99,21 +91,27 @@ open class MessageList :
     private val permissionUiHelper: PermissionUiHelper = K9PermissionUiHelper(this)
 
     private lateinit var actionBar: ActionBar
-    private lateinit var searchView: SearchView
+    private var searchView: SearchView? = null
+    private var initialSearchViewQuery: String? = null
+    private var initialSearchViewIconified: Boolean = true
+
     private var drawer: K9Drawer? = null
     private var openFolderTransaction: FragmentTransaction? = null
-    private var menu: Menu? = null
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
     private var messageListFragment: MessageListFragment? = null
-    private var messageViewFragment: MessageViewFragment? = null
-    private var firstBackStackId = -1
+    private var messageViewContainerFragment: MessageViewContainerFragment? = null
     private var account: Account? = null
     private var search: LocalSearch? = null
     private var singleFolderMode = false
-    private var lastDirection = if (K9.isMessageViewShowNext) NEXT else PREVIOUS
 
-    private var messageListActivityAppearance: MessageListActivityAppearance? = null
+    private val lastDirection: Direction
+        get() {
+            return messageViewContainerFragment?.lastDirection
+                ?: if (K9.isMessageViewShowNext) Direction.NEXT else Direction.PREVIOUS
+        }
+
+    private var messageListActivityConfig: MessageListActivityConfig? = null
 
     /**
      * `true` if the message list should be displayed as flat list (i.e. no threading)
@@ -121,7 +119,7 @@ open class MessageList :
      * filtered views, e.g. when only displaying the unread messages in a folder.
      */
     private var noThreading = false
-    private var displayMode: DisplayMode? = null
+    private var displayMode: DisplayMode = DisplayMode.MESSAGE_LIST
     private var messageReference: MessageReference? = null
 
     /**
@@ -130,7 +128,6 @@ open class MessageList :
     private var messageViewOnly = false
     private var messageListWasDisplayed = false
     private var viewSwitcher: ViewSwitcher? = null
-    private lateinit var recentChangesSnackbar: Snackbar
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -204,8 +201,6 @@ open class MessageList :
         initializeLayout()
         initializeFragments()
         displayViews()
-        initializeRecentChangesSnackbar()
-        channelUtils.updateChannels()
 
         if (savedInstanceState == null) {
             checkAndRequestPermissions()
@@ -227,13 +222,11 @@ open class MessageList :
 
         setIntent(intent)
 
-        if (firstBackStackId >= 0) {
-            supportFragmentManager.popBackStackImmediate(firstBackStackId, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            firstBackStackId = -1
-        }
+        // Start with a fresh fragment back stack
+        supportFragmentManager.popBackStackImmediate(FIRST_FRAGMENT_TRANSACTION, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
         removeMessageListFragment()
-        removeMessageViewFragment()
+        removeMessageViewContainerFragment()
 
         messageReference = null
         search = null
@@ -261,9 +254,11 @@ open class MessageList :
     private fun findFragments() {
         val fragmentManager = supportFragmentManager
         messageListFragment = fragmentManager.findFragmentById(R.id.message_list_container) as MessageListFragment?
-        messageViewFragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEW) as MessageViewFragment?
+        messageViewContainerFragment =
+            fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER) as MessageViewContainerFragment?
 
         messageListFragment?.let { messageListFragment ->
+            messageViewContainerFragment?.setViewModel(messageListFragment.viewModel)
             initializeFromLocalSearch(messageListFragment.localSearch)
         }
     }
@@ -279,14 +274,14 @@ open class MessageList :
                 search!!, false, K9.isThreadedViewEnabled && !noThreading
             )
             fragmentTransaction.add(R.id.message_list_container, messageListFragment)
-            fragmentTransaction.commit()
+            fragmentTransaction.commitNow()
 
             this.messageListFragment = messageListFragment
         }
 
         // Check if the fragment wasn't restarted and has a MessageReference in the arguments.
         // If so, open the referenced message.
-        if (!hasMessageListFragment && messageViewFragment == null && messageReference != null) {
+        if (!hasMessageListFragment && messageViewContainerFragment == null && messageReference != null) {
             openMessage(messageReference!!)
         }
     }
@@ -305,14 +300,14 @@ open class MessageList :
         }
 
         if (savedInstanceState != null) {
-            val savedDisplayMode = savedInstanceState.getSerializable(STATE_DISPLAY_MODE) as DisplayMode?
+            val savedDisplayMode = savedInstanceState.getSerializable(STATE_DISPLAY_MODE) as DisplayMode
             if (savedDisplayMode != DisplayMode.SPLIT_VIEW) {
                 displayMode = savedDisplayMode
                 return
             }
         }
 
-        displayMode = if (messageViewFragment != null || messageReference != null) {
+        displayMode = if (messageViewContainerFragment != null || messageReference != null) {
             DisplayMode.MESSAGE_VIEW
         } else {
             DisplayMode.MESSAGE_LIST
@@ -340,44 +335,23 @@ open class MessageList :
                 showMessageView()
             }
             DisplayMode.SPLIT_VIEW -> {
+                val messageListFragment = checkNotNull(this.messageListFragment)
+
                 messageListWasDisplayed = true
-                if (messageViewFragment == null) {
-                    showMessageViewPlaceHolder()
-                } else {
-                    val activeMessage = messageViewFragment!!.messageReference
-                    if (activeMessage != null) {
-                        messageListFragment!!.setActiveMessage(activeMessage)
+                messageListFragment.setFullyActive()
+
+                messageViewContainerFragment.let { messageViewContainerFragment ->
+                    if (messageViewContainerFragment == null) {
+                        showMessageViewPlaceHolder()
+                    } else {
+                        messageViewContainerFragment.isActive = true
                     }
                 }
+
                 setDrawerLockState()
                 onMessageListDisplayed()
             }
         }
-    }
-
-    private val shouldShowRecentChangesHintObserver = Observer<Boolean> { showRecentChangesHint ->
-        val recentChangesSnackbarVisible = recentChangesSnackbar.isShown
-        if (showRecentChangesHint && !recentChangesSnackbarVisible) {
-            recentChangesSnackbar.show()
-        } else if (!showRecentChangesHint && recentChangesSnackbarVisible) {
-            recentChangesSnackbar.dismiss()
-        }
-    }
-
-    @SuppressLint("ShowToast")
-    private fun initializeRecentChangesSnackbar() {
-        recentChangesSnackbar = Snackbar
-            .make(findViewById(R.id.container), R.string.changelog_snackbar_text, Snackbar.LENGTH_INDEFINITE)
-            .setAction(R.string.okay_action) { launchRecentChangesActivity() }
-
-        recentChangesViewModel.shouldShowRecentChangesHint.observe(this, shouldShowRecentChangesHintObserver)
-    }
-
-    private fun launchRecentChangesActivity() {
-        recentChangesViewModel.shouldShowRecentChangesHint.removeObserver(shouldShowRecentChangesHintObserver)
-
-        val intent = Intent(this, RecentChangesActivity::class.java)
-        startActivity(intent)
     }
 
     private fun decodeExtras(intent: Intent): Boolean {
@@ -412,30 +386,30 @@ open class MessageList :
 
     private fun decodeExtrasToLaunchData(intent: Intent): LaunchData {
         val action = intent.action
-        val data = intent.data
         val queryString = intent.getStringExtra(SearchManager.QUERY)
 
-        if (action == Intent.ACTION_VIEW && data != null && data.pathSegments.size >= 3) {
-            val segmentList = data.pathSegments
-            val accountId = segmentList[0]
-            for (account in preferences.accounts) {
-                if (account.accountNumber.toString() == accountId) {
-                    val folderId = segmentList[1].toLong()
-                    val messageUid = segmentList[2]
-                    val messageReference = MessageReference(account.uuid, folderId, messageUid)
-
-                    return LaunchData(
-                        search = messageReference.toLocalSearch(),
-                        messageReference = messageReference,
-                        messageViewOnly = true
-                    )
-                }
-            }
-        } else if (action == ACTION_SHORTCUT) {
+        if (action == ACTION_SHORTCUT) {
             // Handle shortcut intents
             val specialFolder = intent.getStringExtra(EXTRA_SPECIAL_FOLDER)
-            if (SearchAccount.UNIFIED_INBOX == specialFolder) {
+            if (specialFolder == SearchAccount.UNIFIED_INBOX) {
                 return LaunchData(search = SearchAccount.createUnifiedInboxAccount().relatedSearch)
+            }
+
+            val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
+            if (accountUuid != null) {
+                val account = preferences.getAccount(accountUuid)
+                if (account == null) {
+                    Timber.d("Account %s not found.", accountUuid)
+                    return LaunchData(createDefaultLocalSearch())
+                }
+
+                val folderId = defaultFolderProvider.getDefaultFolder(account)
+                val search = LocalSearch().apply {
+                    addAccountUuid(accountUuid)
+                    addAllowedFolder(folderId)
+                }
+
+                return LaunchData(search = search)
             }
         } else if (action == Intent.ACTION_SEARCH && queryString != null) {
             // Query was received from Search Dialog
@@ -444,6 +418,9 @@ open class MessageList :
             val search = LocalSearch().apply {
                 isManualSearch = true
                 or(SearchCondition(SearchField.SENDER, SearchSpecification.Attribute.CONTAINS, query))
+                or(SearchCondition(SearchField.TO, SearchSpecification.Attribute.CONTAINS, query))
+                or(SearchCondition(SearchField.CC, SearchSpecification.Attribute.CONTAINS, query))
+                or(SearchCondition(SearchField.BCC, SearchSpecification.Attribute.CONTAINS, query))
                 or(SearchCondition(SearchField.SUBJECT, SearchSpecification.Attribute.CONTAINS, query))
                 or(SearchCondition(SearchField.MESSAGE_CONTENTS, SearchSpecification.Attribute.CONTAINS, query))
             }
@@ -480,7 +457,8 @@ open class MessageList :
 
                 return LaunchData(
                     search = search,
-                    messageReference = messageReference
+                    messageReference = messageReference,
+                    messageViewOnly = intent.getBooleanExtra(EXTRA_MESSAGE_VIEW_ONLY, false)
                 )
             }
         } else if (intent.hasExtra(EXTRA_SEARCH)) {
@@ -492,24 +470,6 @@ open class MessageList :
             }
 
             return LaunchData(search = search, account = account, noThreading = noThreading)
-        } else if (intent.hasExtra("account")) {
-            val accountUuid = intent.getStringExtra("account")
-            if (accountUuid != null) {
-                // We've most likely been started by an old unread widget or accounts shortcut
-                val account = preferences.getAccount(accountUuid)
-                if (account == null) {
-                    Timber.d("Account %s not found.", accountUuid)
-                    return LaunchData(createDefaultLocalSearch())
-                }
-
-                val folderId = defaultFolderProvider.getDefaultFolder(account)
-                val search = LocalSearch().apply {
-                    addAccountUuid(accountUuid)
-                    addAllowedFolder(folderId)
-                }
-
-                return LaunchData(search = search)
-            }
         }
 
         // Default action
@@ -539,10 +499,10 @@ open class MessageList :
     public override fun onResume() {
         super.onResume()
 
-        if (messageListActivityAppearance == null) {
-            messageListActivityAppearance = MessageListActivityAppearance.create(generalSettingsManager)
-        } else if (messageListActivityAppearance != MessageListActivityAppearance.create(generalSettingsManager)) {
-            recreate()
+        if (messageListActivityConfig == null) {
+            messageListActivityConfig = MessageListActivityConfig.create(generalSettingsManager)
+        } else if (messageListActivityConfig != MessageListActivityConfig.create(generalSettingsManager)) {
+            recreateCompat()
         }
 
         if (displayMode != DisplayMode.MESSAGE_VIEW) {
@@ -567,7 +527,10 @@ open class MessageList :
         outState.putSerializable(STATE_DISPLAY_MODE, displayMode)
         outState.putBoolean(STATE_MESSAGE_VIEW_ONLY, messageViewOnly)
         outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, messageListWasDisplayed)
-        outState.putInt(STATE_FIRST_BACK_STACK_ID, firstBackStackId)
+        searchView?.let { searchView ->
+            outState.putBoolean(STATE_SEARCH_VIEW_ICONIFIED, searchView.isIconified)
+            outState.putString(STATE_SEARCH_VIEW_QUERY, searchView.query?.toString())
+        }
     }
 
     public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -575,7 +538,8 @@ open class MessageList :
 
         messageViewOnly = savedInstanceState.getBoolean(STATE_MESSAGE_VIEW_ONLY)
         messageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED)
-        firstBackStackId = savedInstanceState.getInt(STATE_FIRST_BACK_STACK_ID)
+        initialSearchViewIconified = savedInstanceState.getBoolean(STATE_SEARCH_VIEW_ICONIFIED, true)
+        initialSearchViewQuery = savedInstanceState.getString(STATE_SEARCH_VIEW_QUERY)
     }
 
     private fun initializeActionBar() {
@@ -597,14 +561,16 @@ open class MessageList :
         return object : DrawerListener {
             override fun onDrawerClosed(drawerView: View) {
                 if (openFolderTransaction != null) {
-                    openFolderTransaction!!.commit()
-                    openFolderTransaction = null
+                    commitOpenFolderTransaction()
                 }
             }
 
             override fun onDrawerStateChanged(newState: Int) = Unit
 
-            override fun onDrawerOpened(drawerView: View) = Unit
+            override fun onDrawerOpened(drawerView: View) {
+                collapseSearchView()
+                messageListFragment?.finishActionMode()
+            }
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
         }
@@ -612,7 +578,7 @@ open class MessageList :
 
     fun openFolder(folderId: Long) {
         if (displayMode == DisplayMode.SPLIT_VIEW) {
-            removeMessageViewFragment()
+            removeMessageViewContainerFragment()
             showMessageViewPlaceHolder()
         }
 
@@ -621,14 +587,20 @@ open class MessageList :
         search.addAllowedFolder(folderId)
 
         performSearch(search)
-
-        onMessageListDisplayed()
     }
 
     private fun openFolderImmediately(folderId: Long) {
         openFolder(folderId)
+        commitOpenFolderTransaction()
+    }
+
+    private fun commitOpenFolderTransaction() {
         openFolderTransaction!!.commit()
         openFolderTransaction = null
+
+        messageListFragment!!.setFullyActive()
+
+        onMessageListDisplayed()
     }
 
     fun openUnifiedInbox() {
@@ -678,7 +650,7 @@ open class MessageList :
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         var eventHandled = false
-        if (event.action == KeyEvent.ACTION_DOWN && searchView.isIconified) {
+        if (event.action == KeyEvent.ACTION_DOWN && isSearchViewCollapsed()) {
             eventHandled = onCustomKeyDown(event)
         }
 
@@ -698,8 +670,8 @@ open class MessageList :
             } else {
                 showMessageList()
             }
-        } else if (this::searchView.isInitialized && !searchView.isIconified) {
-            searchView.isIconified = true
+        } else if (!isSearchViewCollapsed()) {
+            collapseSearchView()
         } else {
             if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
                 if (K9.isShowUnifiedInbox) {
@@ -735,24 +707,18 @@ open class MessageList :
 
         when (event.keyCode) {
             KeyEvent.KEYCODE_VOLUME_UP -> {
-                if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
+                if (messageViewContainerFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
                     K9.isUseVolumeKeysForNavigation
                 ) {
                     showPreviousMessage()
                     return true
-                } else if (displayMode != DisplayMode.MESSAGE_VIEW && K9.isUseVolumeKeysForListNavigation) {
-                    messageListFragment!!.onMoveUp()
-                    return true
                 }
             }
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
+                if (messageViewContainerFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
                     K9.isUseVolumeKeysForNavigation
                 ) {
                     showNextMessage()
-                    return true
-                } else if (displayMode != DisplayMode.MESSAGE_VIEW && K9.isUseVolumeKeysForListNavigation) {
-                    messageListFragment!!.onMoveDown()
                     return true
                 }
             }
@@ -761,14 +727,14 @@ open class MessageList :
                 return true
             }
             KeyEvent.KEYCODE_DPAD_LEFT -> {
-                return if (messageViewFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
+                return if (messageViewContainerFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
                     showPreviousMessage()
                 } else {
                     false
                 }
             }
             KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                return if (messageViewFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
+                return if (messageViewContainerFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
                     showNextMessage()
                 } else {
                     false
@@ -800,80 +766,71 @@ open class MessageList :
             'g' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onToggleFlagged()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onToggleFlagged()
+                } else if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onToggleFlagged()
                 }
                 return true
             }
             'm' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onMove()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onMove()
+                } else if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onMove()
                 }
                 return true
             }
             'v' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onArchive()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onArchive()
+                } else if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onArchive()
                 }
                 return true
             }
             'y' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onCopy()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onCopy()
+                } else if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onCopy()
                 }
                 return true
             }
             'z' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onToggleRead()
-                } else if (messageViewFragment != null) {
-                    messageViewFragment!!.onToggleRead()
+                } else if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onToggleRead()
                 }
                 return true
             }
             'f' -> {
-                if (messageViewFragment != null) {
-                    messageViewFragment!!.onForward()
+                if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onForward()
                 }
                 return true
             }
             'a' -> {
-                if (messageViewFragment != null) {
-                    messageViewFragment!!.onReplyAll()
+                if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onReplyAll()
                 }
                 return true
             }
             'r' -> {
-                if (messageViewFragment != null) {
-                    messageViewFragment!!.onReply()
+                if (messageViewContainerFragment != null) {
+                    messageViewContainerFragment!!.onReply()
                 }
                 return true
             }
             'j', 'p' -> {
-                if (messageViewFragment != null) {
+                if (messageViewContainerFragment != null) {
                     showPreviousMessage()
                 }
                 return true
             }
             'n', 'k' -> {
-                if (messageViewFragment != null) {
+                if (messageViewContainerFragment != null) {
                     showNextMessage()
                 }
-                return true
-            }
-            'h' -> {
-                val toast = if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG)
-                } else {
-                    Toast.makeText(this, R.string.message_view_help_key, Toast.LENGTH_LONG)
-                }
-                toast.show()
                 return true
             }
         }
@@ -884,14 +841,14 @@ open class MessageList :
     private fun onDeleteHotKey() {
         if (displayMode == DisplayMode.MESSAGE_LIST) {
             messageListFragment!!.onDelete()
-        } else if (messageViewFragment != null) {
-            messageViewFragment!!.onDelete()
+        } else if (messageViewContainerFragment != null) {
+            messageViewContainerFragment!!.onDelete()
         }
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
         // Swallow these events too to avoid the audible notification of a volume change
-        if (K9.isUseVolumeKeysForListNavigation) {
+        if (K9.isUseVolumeKeysForNavigation) {
             if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
                 Timber.v("Swallowed key up.")
                 return true
@@ -918,142 +875,36 @@ open class MessageList :
                 goBack()
             }
             return true
-        } else if (id == R.id.compose) {
-            messageListFragment!!.onCompose()
-            return true
-        } else if (id == R.id.toggle_message_view_theme) {
-            onToggleTheme()
-            return true
-        } else if (id == R.id.set_sort_date) { // MessageList
-            messageListFragment!!.changeSort(SortType.SORT_DATE)
-            return true
-        } else if (id == R.id.set_sort_arrival) {
-            messageListFragment!!.changeSort(SortType.SORT_ARRIVAL)
-            return true
-        } else if (id == R.id.set_sort_subject) {
-            messageListFragment!!.changeSort(SortType.SORT_SUBJECT)
-            return true
-        } else if (id == R.id.set_sort_sender) {
-            messageListFragment!!.changeSort(SortType.SORT_SENDER)
-            return true
-        } else if (id == R.id.set_sort_flag) {
-            messageListFragment!!.changeSort(SortType.SORT_FLAGGED)
-            return true
-        } else if (id == R.id.set_sort_unread) {
-            messageListFragment!!.changeSort(SortType.SORT_UNREAD)
-            return true
-        } else if (id == R.id.set_sort_attach) {
-            messageListFragment!!.changeSort(SortType.SORT_ATTACHMENT)
-            return true
-        } else if (id == R.id.select_all) {
-            messageListFragment!!.selectAll()
-            return true
-        } else if (id == R.id.search_remote) {
-            messageListFragment!!.onRemoteSearch()
-            return true
-        } else if (id == R.id.search_everywhere) {
-            searchEverywhere()
-            return true
-        } else if (id == R.id.mark_all_as_read) {
-            messageListFragment!!.confirmMarkAllAsRead()
-            return true
-        } else if (id == R.id.next_message) { // MessageView
-            showNextMessage()
-            return true
-        } else if (id == R.id.previous_message) {
-            showPreviousMessage()
-            return true
-        } else if (id == R.id.delete) {
-            messageViewFragment!!.onDelete()
-            return true
-        } else if (id == R.id.reply) {
-            messageViewFragment!!.onReply()
-            return true
-        } else if (id == R.id.reply_all) {
-            messageViewFragment!!.onReplyAll()
-            return true
-        } else if (id == R.id.forward) {
-            messageViewFragment!!.onForward()
-            return true
-        } else if (id == R.id.forward_as_attachment) {
-            messageViewFragment!!.onForwardAsAttachment()
-            return true
-        } else if (id == R.id.edit_as_new_message) {
-            messageViewFragment!!.onEditAsNewMessage()
-            return true
-        } else if (id == R.id.share) {
-            messageViewFragment!!.onSendAlternate()
-            return true
-        } else if (id == R.id.toggle_unread) {
-            messageViewFragment!!.onToggleRead()
-            return true
-        } else if (id == R.id.archive || id == R.id.refile_archive) {
-            messageViewFragment!!.onArchive()
-            return true
-        } else if (id == R.id.spam || id == R.id.refile_spam) {
-            messageViewFragment!!.onSpam()
-            return true
-        } else if (id == R.id.move || id == R.id.refile_move) {
-            messageViewFragment!!.onMove()
-            return true
-        } else if (id == R.id.copy || id == R.id.refile_copy) {
-            messageViewFragment!!.onCopy()
-            return true
-        } else if (id == R.id.move_to_drafts) {
-            messageViewFragment!!.onMoveToDrafts()
-            return true
-        } else if (id == R.id.show_headers) {
-            startActivity(MessageSourceActivity.createLaunchIntent(this, messageViewFragment!!.messageReference))
-            return true
         }
 
-        if (!singleFolderMode) {
-            // None of the options after this point are "safe" for search results
-            // TODO: This is not true for "unread" and "starred" searches in regular folders
-            return false
-        }
-
-        return when (id) {
-            R.id.send_messages -> {
-                messageListFragment!!.onSendPendingMessages()
-                true
-            }
-            R.id.expunge -> {
-                messageListFragment!!.onExpunge()
-                true
-            }
-            R.id.empty_trash -> {
-                messageListFragment!!.onEmptyTrash()
-                true
-            }
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
-    }
-
-    private fun searchEverywhere() {
-        val searchIntent = Intent(this, Search::class.java).apply {
-            action = Intent.ACTION_SEARCH
-            putExtra(SearchManager.QUERY, intent.getStringExtra(SearchManager.QUERY))
-        }
-        onNewIntent(searchIntent)
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.message_list_option, menu)
-        this.menu = menu
 
-        // setup search view
         val searchItem = menu.findItem(R.id.search)
-        searchView = searchItem.actionView as SearchView
+        initializeSearchMenuItem(searchItem)
+
+        return true
+    }
+
+    private fun initializeSearchMenuItem(searchItem: MenuItem) {
+        // Reuse existing SearchView if available
+        searchView?.let { searchView ->
+            searchItem.actionView = searchView
+            return
+        }
+
+        val searchView = searchItem.actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
         searchView.queryHint = resources.getString(R.string.search_action)
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 messageListFragment?.onSearchRequested(query)
+                collapseSearchView()
                 return true
             }
 
@@ -1062,168 +913,18 @@ open class MessageList :
             }
         })
 
-        return true
+        searchView.setQuery(initialSearchViewQuery, false)
+        searchView.isIconified = initialSearchViewIconified
+
+        this.searchView = searchView
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        super.onPrepareOptionsMenu(menu)
-        configureMenu(menu)
-        return true
-    }
+    private fun isSearchViewCollapsed(): Boolean = searchView?.isIconified == true
 
-    /**
-     * Hide menu items not appropriate for the current context.
-     *
-     * **Note:**
-     * Please adjust the comments in `res/menu/message_list_option.xml` if you change the  visibility of a menu item
-     * in this method.
-     */
-    private fun configureMenu(menu: Menu?) {
-        if (menu == null) return
-
-        // Set visibility of menu items related to the message view
-        if (displayMode == DisplayMode.MESSAGE_LIST || messageViewFragment == null ||
-            !messageViewFragment!!.isInitialized
-        ) {
-            menu.findItem(R.id.next_message).isVisible = false
-            menu.findItem(R.id.previous_message).isVisible = false
-            menu.findItem(R.id.single_message_options).isVisible = false
-            menu.findItem(R.id.delete).isVisible = false
-            menu.findItem(R.id.compose).isVisible = false
-            menu.findItem(R.id.archive).isVisible = false
-            menu.findItem(R.id.move).isVisible = false
-            menu.findItem(R.id.copy).isVisible = false
-            menu.findItem(R.id.spam).isVisible = false
-            menu.findItem(R.id.refile).isVisible = false
-            menu.findItem(R.id.toggle_unread).isVisible = false
-            menu.findItem(R.id.toggle_message_view_theme).isVisible = false
-            menu.findItem(R.id.show_headers).isVisible = false
-        } else {
-            // hide prev/next buttons in split mode
-            if (displayMode != DisplayMode.MESSAGE_VIEW) {
-                menu.findItem(R.id.next_message).isVisible = false
-                menu.findItem(R.id.previous_message).isVisible = false
-            } else {
-                val ref = messageViewFragment!!.messageReference
-                val initialized = messageListFragment != null &&
-                    messageListFragment!!.isLoadFinished
-                val canDoPrev = initialized && !messageListFragment!!.isFirst(ref)
-                val canDoNext = initialized && !messageListFragment!!.isLast(ref)
-                val prev = menu.findItem(R.id.previous_message)
-                prev.isEnabled = canDoPrev
-                prev.icon.alpha = if (canDoPrev) 255 else 127
-                val next = menu.findItem(R.id.next_message)
-                next.isEnabled = canDoNext
-                next.icon.alpha = if (canDoNext) 255 else 127
-            }
-
-            val toggleTheme = menu.findItem(R.id.toggle_message_view_theme)
-            if (generalSettingsManager.getSettings().fixedMessageViewTheme) {
-                toggleTheme.isVisible = false
-            } else {
-                // Set title of menu item to switch to dark/light theme
-                if (themeManager.messageViewTheme === Theme.DARK) {
-                    toggleTheme.setTitle(R.string.message_view_theme_action_light)
-                } else {
-                    toggleTheme.setTitle(R.string.message_view_theme_action_dark)
-                }
-                toggleTheme.isVisible = true
-            }
-
-            if (messageViewFragment!!.isOutbox) {
-                menu.findItem(R.id.toggle_unread).isVisible = false
-            } else {
-                // Set title of menu item to toggle the read state of the currently displayed message
-                val drawableAttr = if (messageViewFragment!!.isMessageRead) {
-                    menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_unread_action)
-                    intArrayOf(R.attr.iconActionMarkAsUnread)
-                } else {
-                    menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action)
-                    intArrayOf(R.attr.iconActionMarkAsRead)
-                }
-                val typedArray = obtainStyledAttributes(drawableAttr)
-                menu.findItem(R.id.toggle_unread).icon = typedArray.getDrawable(0)
-                typedArray.recycle()
-            }
-
-            menu.findItem(R.id.delete).isVisible = K9.isMessageViewDeleteActionVisible
-
-            // Set visibility of copy, move, archive, spam in action bar and refile submenu
-            if (messageViewFragment!!.isCopyCapable) {
-                menu.findItem(R.id.copy).isVisible = K9.isMessageViewCopyActionVisible
-                menu.findItem(R.id.refile_copy).isVisible = true
-            } else {
-                menu.findItem(R.id.copy).isVisible = false
-                menu.findItem(R.id.refile_copy).isVisible = false
-            }
-
-            if (messageViewFragment!!.isMoveCapable) {
-                val canMessageBeArchived = messageViewFragment!!.canMessageBeArchived()
-                val canMessageBeMovedToSpam = messageViewFragment!!.canMessageBeMovedToSpam()
-
-                menu.findItem(R.id.move).isVisible = K9.isMessageViewMoveActionVisible
-                menu.findItem(R.id.archive).isVisible = canMessageBeArchived && K9.isMessageViewArchiveActionVisible
-                menu.findItem(R.id.spam).isVisible = canMessageBeMovedToSpam && K9.isMessageViewSpamActionVisible
-
-                menu.findItem(R.id.refile_move).isVisible = true
-                menu.findItem(R.id.refile_archive).isVisible = canMessageBeArchived
-                menu.findItem(R.id.refile_spam).isVisible = canMessageBeMovedToSpam
-            } else {
-                menu.findItem(R.id.move).isVisible = false
-                menu.findItem(R.id.archive).isVisible = false
-                menu.findItem(R.id.spam).isVisible = false
-
-                menu.findItem(R.id.refile).isVisible = false
-            }
-
-            if (messageViewFragment!!.isOutbox) {
-                menu.findItem(R.id.move_to_drafts).isVisible = true
-            }
-        }
-
-        // Set visibility of menu items related to the message list
-
-        // Hide search menu items by default and enable one when appropriate
-        menu.findItem(R.id.search).isVisible = false
-        menu.findItem(R.id.search_remote).isVisible = false
-        menu.findItem(R.id.search_everywhere).isVisible = false
-
-        if (displayMode == DisplayMode.MESSAGE_VIEW || messageListFragment == null ||
-            !messageListFragment!!.isInitialized
-        ) {
-            menu.findItem(R.id.set_sort).isVisible = false
-            menu.findItem(R.id.select_all).isVisible = false
-            menu.findItem(R.id.send_messages).isVisible = false
-            menu.findItem(R.id.expunge).isVisible = false
-            menu.findItem(R.id.empty_trash).isVisible = false
-            menu.findItem(R.id.mark_all_as_read).isVisible = false
-        } else {
-            menu.findItem(R.id.set_sort).isVisible = true
-            menu.findItem(R.id.select_all).isVisible = true
-            menu.findItem(R.id.compose).isVisible = true
-            menu.findItem(R.id.mark_all_as_read).isVisible = messageListFragment!!.isMarkAllAsReadSupported
-
-            if (!messageListFragment!!.isSingleAccountMode) {
-                menu.findItem(R.id.expunge).isVisible = false
-                menu.findItem(R.id.send_messages).isVisible = false
-            } else {
-                menu.findItem(R.id.send_messages).isVisible = messageListFragment!!.isOutbox
-                menu.findItem(R.id.expunge).isVisible = messageListFragment!!.isRemoteFolder &&
-                    messageListFragment!!.shouldShowExpungeAction()
-            }
-            menu.findItem(R.id.empty_trash).isVisible = messageListFragment!!.isShowingTrashFolder
-
-            // If this is an explicit local search, show the option to search on the server
-            if (!messageListFragment!!.isRemoteSearch && messageListFragment!!.isRemoteSearchAllowed) {
-                menu.findItem(R.id.search_remote).isVisible = true
-            } else if (!messageListFragment!!.isManualSearch) {
-                menu.findItem(R.id.search).isVisible = true
-            }
-
-            val messageListFragment = messageListFragment!!
-            if (messageListFragment.isManualSearch && !messageListFragment.localSearch.searchAllAccounts()) {
-                menu.findItem(R.id.search_everywhere).isVisible = true
-            }
+    private fun collapseSearchView() {
+        searchView?.let { searchView ->
+            searchView.setQuery(null, false)
+            searchView.isIconified = true
         }
     }
 
@@ -1242,8 +943,8 @@ open class MessageList :
         progressBar!!.visibility = if (enable) View.VISIBLE else View.INVISIBLE
     }
 
-    override fun setMessageListProgress(progress: Int) {
-        progressBar!!.progress = progress
+    override fun setMessageListProgress(level: Int) {
+        progressBar!!.progress = level
     }
 
     override fun openMessage(messageReference: MessageReference) {
@@ -1254,20 +955,25 @@ open class MessageList :
         if (draftsFolderId != null && folderId == draftsFolderId) {
             MessageActions.actionEditDraft(this, messageReference)
         } else {
-            if (messageListFragment != null) {
-                messageListFragment!!.setActiveMessage(messageReference)
+            val fragment = MessageViewContainerFragment.newInstance(messageReference)
+            supportFragmentManager.commitNow {
+                replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER)
             }
 
-            val fragment = MessageViewFragment.newInstance(messageReference)
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW)
-            fragmentTransaction.commit()
-            messageViewFragment = fragment
+            messageViewContainerFragment = fragment
 
-            if (displayMode != DisplayMode.SPLIT_VIEW) {
+            messageListFragment?.let { messageListFragment ->
+                fragment.setViewModel(messageListFragment.viewModel)
+            }
+
+            if (displayMode == DisplayMode.SPLIT_VIEW) {
+                fragment.isActive = true
+            } else {
                 showMessageView()
             }
         }
+
+        collapseSearchView()
     }
 
     override fun onForward(messageReference: MessageReference, decryptionResultForReply: Parcelable?) {
@@ -1296,6 +1002,8 @@ open class MessageList :
 
     override fun onBackStackChanged() {
         findFragments()
+        messageListFragment?.setFullyActive()
+
         if (isDrawerEnabled && !isAdditionalMessageListDisplayed) {
             unlockDrawer()
         }
@@ -1303,27 +1011,28 @@ open class MessageList :
         if (displayMode == DisplayMode.SPLIT_VIEW) {
             showMessageViewPlaceHolder()
         }
-
-        configureMenu(menu)
     }
 
-    private fun addMessageListFragment(fragment: MessageListFragment, addToBackStack: Boolean) {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
+    private fun addMessageListFragment(fragment: MessageListFragment) {
+        messageListFragment?.isActive = false
 
-        fragmentTransaction.replace(R.id.message_list_container, fragment)
-        if (addToBackStack) {
-            fragmentTransaction.addToBackStack(null)
+        supportFragmentManager.commit {
+            replace(R.id.message_list_container, fragment)
+
+            setReorderingAllowed(true)
+
+            if (supportFragmentManager.backStackEntryCount == 0) {
+                addToBackStack(FIRST_FRAGMENT_TRANSACTION)
+            } else {
+                addToBackStack(null)
+            }
         }
 
         messageListFragment = fragment
+        fragment.setFullyActive()
 
         if (isDrawerEnabled) {
             lockDrawer()
-        }
-
-        val transactionId = fragmentTransaction.commit()
-        if (transactionId >= 0 && firstBackStackId < 0) {
-            firstBackStackId = transactionId
         }
     }
 
@@ -1349,6 +1058,11 @@ open class MessageList :
         return true
     }
 
+    override fun startSupportActionMode(callback: ActionMode.Callback): ActionMode? {
+        collapseSearchView()
+        return super.startSupportActionMode(callback)
+    }
+
     override fun showThread(account: Account, threadRootId: Long) {
         showMessageViewPlaceHolder()
 
@@ -1360,11 +1074,11 @@ open class MessageList :
         initializeFromLocalSearch(tmpSearch)
 
         val fragment = MessageListFragment.newInstance(tmpSearch, true, false)
-        addMessageListFragment(fragment, true)
+        addMessageListFragment(fragment)
     }
 
     private fun showMessageViewPlaceHolder() {
-        removeMessageViewFragment()
+        removeMessageViewContainerFragment()
 
         // Add placeholder fragment if necessary
         val fragmentManager = supportFragmentManager
@@ -1377,11 +1091,11 @@ open class MessageList :
         messageListFragment!!.setActiveMessage(null)
     }
 
-    private fun removeMessageViewFragment() {
-        if (messageViewFragment != null) {
+    private fun removeMessageViewContainerFragment() {
+        if (messageViewContainerFragment != null) {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.remove(messageViewFragment!!)
-            messageViewFragment = null
+            fragmentTransaction.remove(messageViewContainerFragment!!)
+            messageViewContainerFragment = null
             fragmentTransaction.commit()
 
             showDefaultTitleView()
@@ -1395,11 +1109,6 @@ open class MessageList :
         fragmentTransaction.commit()
     }
 
-    override fun remoteSearchStarted() {
-        // Remove action button for remote search
-        configureMenu(menu)
-    }
-
     override fun goBack() {
         val fragmentManager = supportFragmentManager
         when {
@@ -1409,29 +1118,41 @@ open class MessageList :
         }
     }
 
+    override fun closeMessageView() {
+        returnToMessageList()
+    }
+
+    override fun setActiveMessage(messageReference: MessageReference) {
+        val messageListFragment = checkNotNull(messageListFragment)
+
+        messageListFragment.setActiveMessage(messageReference)
+    }
+
     override fun showNextMessageOrReturn() {
         if (K9.isMessageViewReturnToList || !showLogicalNextMessage()) {
-            if (displayMode == DisplayMode.SPLIT_VIEW) {
-                showMessageViewPlaceHolder()
-            } else {
-                showMessageList()
-            }
+            returnToMessageList()
+        }
+    }
+
+    private fun returnToMessageList() {
+        if (displayMode == DisplayMode.SPLIT_VIEW) {
+            showMessageViewPlaceHolder()
+        } else {
+            showMessageList()
         }
     }
 
     private fun showLogicalNextMessage(): Boolean {
-        var result = false
-        if (lastDirection == NEXT) {
-            result = showNextMessage()
-        } else if (lastDirection == PREVIOUS) {
-            result = showPreviousMessage()
+        val couldMoveInLastDirection = when (lastDirection) {
+            Direction.NEXT -> showNextMessage()
+            Direction.PREVIOUS -> showPreviousMessage()
         }
 
-        if (!result) {
-            result = showNextMessage() || showPreviousMessage()
+        return if (couldMoveInLastDirection) {
+            true
+        } else {
+            showNextMessage() || showPreviousMessage()
         }
-
-        return result
     }
 
     override fun setProgress(enable: Boolean) {
@@ -1439,39 +1160,31 @@ open class MessageList :
     }
 
     private fun showNextMessage(): Boolean {
-        val ref = messageViewFragment!!.messageReference
-        if (ref != null) {
-            if (messageListFragment!!.openNext(ref)) {
-                lastDirection = NEXT
-                return true
-            }
-        }
-        return false
+        val messageViewContainerFragment = checkNotNull(messageViewContainerFragment)
+
+        return messageViewContainerFragment.showNextMessage()
     }
 
     private fun showPreviousMessage(): Boolean {
-        val ref = messageViewFragment!!.messageReference
-        if (ref != null) {
-            if (messageListFragment!!.openPrevious(ref)) {
-                lastDirection = PREVIOUS
-                return true
-            }
-        }
-        return false
+        val messageViewContainerFragment = checkNotNull(messageViewContainerFragment)
+
+        return messageViewContainerFragment.showPreviousMessage()
     }
 
     private fun showMessageList() {
         messageViewOnly = false
         messageListWasDisplayed = true
         displayMode = DisplayMode.MESSAGE_LIST
-        viewSwitcher!!.showFirstView()
 
+        messageViewContainerFragment?.isActive = false
+        messageListFragment!!.isActive = true
         messageListFragment!!.setActiveMessage(null)
+
+        viewSwitcher!!.showFirstView()
 
         setDrawerLockState()
 
         showDefaultTitleView()
-        configureMenu(menu)
 
         onMessageListDisplayed()
     }
@@ -1487,7 +1200,11 @@ open class MessageList :
     }
 
     private fun showMessageView() {
+        val messageViewContainerFragment = checkNotNull(this.messageViewContainerFragment)
+
         displayMode = DisplayMode.MESSAGE_VIEW
+        messageListFragment?.isActive = false
+        messageViewContainerFragment.isActive = true
 
         if (!messageListWasDisplayed) {
             viewSwitcher!!.animateFirstView = false
@@ -1499,20 +1216,6 @@ open class MessageList :
         }
 
         showMessageTitleView()
-        configureMenu(menu)
-    }
-
-    override fun updateMenu() {
-        invalidateOptionsMenu()
-    }
-
-    override fun disableDeleteAction() {
-        menu!!.findItem(R.id.delete).isEnabled = false
-    }
-
-    private fun onToggleTheme() {
-        themeManager.toggleMessageViewTheme()
-        recreate()
     }
 
     private fun showDefaultTitleView() {
@@ -1527,7 +1230,8 @@ open class MessageList :
 
     override fun onSwitchComplete(displayedChild: Int) {
         if (displayedChild == 0) {
-            removeMessageViewFragment()
+            removeMessageViewContainerFragment()
+            messageListFragment?.onFullyActive()
         }
     }
 
@@ -1565,8 +1269,8 @@ open class MessageList :
 
         if (requestCode and REQUEST_FLAG_PENDING_INTENT != 0) {
             val originalRequestCode = requestCode xor REQUEST_FLAG_PENDING_INTENT
-            if (messageViewFragment != null) {
-                messageViewFragment!!.onPendingIntentResult(originalRequestCode, resultCode, data)
+            if (messageViewContainerFragment != null) {
+                messageViewContainerFragment!!.onPendingIntentResult(originalRequestCode, resultCode, data)
             }
         }
     }
@@ -1618,6 +1322,11 @@ open class MessageList :
         }
     }
 
+    private fun MessageListFragment.setFullyActive() {
+        isActive = true
+        onFullyActive()
+    }
+
     private fun configureDrawer() {
         val drawer = drawer ?: return
         drawer.selectAccount(account!!.uuid)
@@ -1663,6 +1372,7 @@ open class MessageList :
 
         private const val EXTRA_ACCOUNT = "account_uuid"
         private const val EXTRA_MESSAGE_REFERENCE = "message_reference"
+        private const val EXTRA_MESSAGE_VIEW_ONLY = "message_view_only"
 
         // used for remote search
         const val EXTRA_SEARCH_ACCOUNT = "com.fsck.k9.search_account"
@@ -1671,14 +1381,12 @@ open class MessageList :
         private const val STATE_DISPLAY_MODE = "displayMode"
         private const val STATE_MESSAGE_VIEW_ONLY = "messageViewOnly"
         private const val STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed"
-        private const val STATE_FIRST_BACK_STACK_ID = "firstBackstackId"
+        private const val STATE_SEARCH_VIEW_ICONIFIED = "searchViewIconified"
+        private const val STATE_SEARCH_VIEW_QUERY = "searchViewQuery"
 
-        private const val FRAGMENT_TAG_MESSAGE_VIEW = "MessageViewFragment"
+        private const val FIRST_FRAGMENT_TRANSACTION = "first"
+        private const val FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER = "MessageViewContainerFragment"
         private const val FRAGMENT_TAG_PLACEHOLDER = "MessageViewPlaceholder"
-
-        // Used for navigating to next/previous message
-        private const val PREVIOUS = 1
-        private const val NEXT = 2
 
         private const val REQUEST_CODE_MASK = 0xFFFF0000.toInt()
         private const val REQUEST_FLAG_PENDING_INTENT = 1 shl 15
@@ -1754,31 +1462,48 @@ open class MessageList :
 
         @JvmStatic
         fun shortcutIntentForAccount(context: Context?, account: Account): Intent {
-            val folderId = defaultFolderProvider.getDefaultFolder(account)
+            return Intent(context, MessageList::class.java).apply {
+                action = ACTION_SHORTCUT
+                putExtra(EXTRA_ACCOUNT, account.uuid)
 
-            val search = LocalSearch().apply {
-                addAccountUuid(account.uuid)
-                addAllowedFolder(folderId)
+                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-
-            return intentDisplaySearch(context, search, noThreading = false, newTask = true, clearTop = true)
         }
 
         fun actionDisplayMessageIntent(
             context: Context,
             messageReference: MessageReference,
-            openInUnifiedInbox: Boolean = false
+            openInUnifiedInbox: Boolean = false,
+            messageViewOnly: Boolean = false
+        ): Intent {
+            return actionDisplayMessageTemplateIntent(context, openInUnifiedInbox, messageViewOnly).apply {
+                putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString())
+            }
+        }
+
+        fun actionDisplayMessageTemplateIntent(
+            context: Context,
+            openInUnifiedInbox: Boolean,
+            messageViewOnly: Boolean
         ): Intent {
             return Intent(context, MessageList::class.java).apply {
-                putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString())
-
                 if (openInUnifiedInbox) {
                     val search = SearchAccount.createUnifiedInboxAccount().relatedSearch
                     putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search))
                 }
 
+                putExtra(EXTRA_MESSAGE_VIEW_ONLY, messageViewOnly)
+
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
+        }
+
+        fun actionDisplayMessageTemplateFillIntent(messageReference: MessageReference): Intent {
+            return Intent().apply {
+                putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString())
             }
         }
 

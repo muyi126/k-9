@@ -36,10 +36,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
-import com.fsck.k9.backend.api.BuildConfig;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncListener;
-import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.controller.ControllerExtension.ControllerInternals;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
@@ -52,7 +50,9 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingReplace;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
+import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.helper.MutableBoolean;
+import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
@@ -60,7 +60,6 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageDownloadState;
-import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.ServerSettings;
@@ -71,6 +70,7 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
+import com.fsck.k9.mailstore.MessageListCache;
 import com.fsck.k9.mailstore.MessageStore;
 import com.fsck.k9.mailstore.MessageStoreManager;
 import com.fsck.k9.mailstore.OutboxState;
@@ -91,7 +91,6 @@ import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
 import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
 import static com.fsck.k9.helper.Preconditions.checkNotNull;
 import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
-import static com.fsck.k9.search.LocalSearchExtensions.getAccountsFromLocalSearch;
 
 
 /**
@@ -322,12 +321,12 @@ public class MessagingController {
 
 
     private void suppressMessages(Account account, List<LocalMessage> messages) {
-        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
+        MessageListCache cache = MessageListCache.getCache(account.getUuid());
         cache.hideMessages(messages);
     }
 
     private void unsuppressMessages(Account account, List<LocalMessage> messages) {
-        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
+        MessageListCache cache = MessageListCache.getCache(account.getUuid());
         cache.unhideMessages(messages);
     }
 
@@ -335,42 +334,36 @@ public class MessagingController {
         long messageId = message.getDatabaseId();
         long folderId = message.getFolder().getDatabaseId();
 
-        EmailProviderCache cache = EmailProviderCache.getCache(message.getFolder().getAccountUuid(), context);
+        MessageListCache cache = MessageListCache.getCache(message.getFolder().getAccountUuid());
         return cache.isMessageHidden(messageId, folderId);
     }
 
     private void setFlagInCache(final Account account, final List<Long> messageIds,
             final Flag flag, final boolean newState) {
 
-        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
-        String columnName = LocalStore.getColumnNameForFlag(flag);
-        String value = Integer.toString((newState) ? 1 : 0);
-        cache.setValueForMessages(messageIds, columnName, value);
+        MessageListCache cache = MessageListCache.getCache(account.getUuid());
+        cache.setFlagForMessages(messageIds, flag, newState);
     }
 
     private void removeFlagFromCache(final Account account, final List<Long> messageIds,
             final Flag flag) {
 
-        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
-        String columnName = LocalStore.getColumnNameForFlag(flag);
-        cache.removeValueForMessages(messageIds, columnName);
+        MessageListCache cache = MessageListCache.getCache(account.getUuid());
+        cache.removeFlagForMessages(messageIds, flag);
     }
 
     private void setFlagForThreadsInCache(final Account account, final List<Long> threadRootIds,
             final Flag flag, final boolean newState) {
 
-        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
-        String columnName = LocalStore.getColumnNameForFlag(flag);
-        String value = Integer.toString((newState) ? 1 : 0);
-        cache.setValueForThreads(threadRootIds, columnName, value);
+        MessageListCache cache = MessageListCache.getCache(account.getUuid());
+        cache.setValueForThreads(threadRootIds, flag, newState);
     }
 
     private void removeFlagForThreadsFromCache(final Account account, final List<Long> messageIds,
             final Flag flag) {
 
-        EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
-        String columnName = LocalStore.getColumnNameForFlag(flag);
-        cache.removeValueForThreads(messageIds, columnName);
+        MessageListCache cache = MessageListCache.getCache(account.getUuid());
+        cache.removeFlagForThreads(messageIds, flag);
     }
 
     public void refreshFolderList(final Account account) {
@@ -379,8 +372,8 @@ public class MessagingController {
 
     public void refreshFolderListSynchronous(Account account) {
         try {
-            ServerSettings serverSettings = account.getIncomingServerSettings();
-            if (serverSettings.isMissingCredentials()) {
+            if (isAuthenticationProblem(account, true)) {
+                Timber.d("Authentication will fail. Skip refreshing the folder list.");
                 handleAuthenticationFailure(account, true);
                 return;
             }
@@ -395,61 +388,7 @@ public class MessagingController {
             preferences.saveAccount(account);
         } catch (Exception e) {
             Timber.e(e);
-        }
-    }
-
-    /**
-     * Find all messages in any local account which match the query 'query'
-     */
-    public void searchLocalMessages(final LocalSearch search, final MessagingListener listener) {
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                searchLocalMessagesSynchronous(search, listener);
-            }
-        });
-    }
-
-    @VisibleForTesting
-    void searchLocalMessagesSynchronous(final LocalSearch search, final MessagingListener listener) {
-        List<Account> searchAccounts = getAccountsFromLocalSearch(search, preferences);
-
-        for (final Account account : searchAccounts) {
-
-            // Collecting statistics of the search result
-            MessageRetrievalListener<LocalMessage> retrievalListener = new MessageRetrievalListener<LocalMessage>() {
-                @Override
-                public void messageStarted(String message, int number, int ofTotal) {
-                }
-
-                @Override
-                public void messagesFinished(int number) {
-                }
-
-                @Override
-                public void messageFinished(LocalMessage message, int number, int ofTotal) {
-                    if (!isMessageSuppressed(message)) {
-                        List<LocalMessage> messages = new ArrayList<>();
-
-                        messages.add(message);
-                        if (listener != null) {
-                            listener.listLocalMessagesAddMessages(account, null, messages);
-                        }
-                    }
-                }
-            };
-
-            // build and do the query in the localstore
-            try {
-                LocalStore localStore = localStoreProvider.getInstance(account);
-                localStore.searchForMessages(retrievalListener, search);
-            } catch (Exception e) {
-                Timber.e(e);
-            }
-        }
-
-        if (listener != null) {
-            listener.listLocalMessagesFinished();
+            handleException(account, e);
         }
     }
 
@@ -575,7 +514,7 @@ public class MessagingController {
             if (localFolder.getVisibleLimit() > 0) {
                 localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
             }
-            synchronizeMailbox(account, folderId, listener);
+            synchronizeMailbox(account, folderId, false, listener);
         } catch (MessagingException me) {
             throw new RuntimeException("Unable to set visible limit on folder", me);
         }
@@ -584,9 +523,9 @@ public class MessagingController {
     /**
      * Start background synchronization of the specified folder.
      */
-    public void synchronizeMailbox(Account account, long folderId, MessagingListener listener) {
+    public void synchronizeMailbox(Account account, long folderId, boolean notify, MessagingListener listener) {
         putBackground("synchronizeMailbox", listener, () ->
-                synchronizeMailboxSynchronous(account, folderId, listener, new NotificationState())
+                synchronizeMailboxSynchronous(account, folderId, notify, listener, new NotificationState())
         );
     }
 
@@ -596,7 +535,7 @@ public class MessagingController {
         final CountDownLatch latch = new CountDownLatch(1);
         putBackground("synchronizeMailbox", null, () -> {
             try {
-                synchronizeMailboxSynchronous(account, folderId, null, new NotificationState());
+                synchronizeMailboxSynchronous(account, folderId, true, null, new NotificationState());
             } finally {
                 latch.countDown();
             }
@@ -609,19 +548,12 @@ public class MessagingController {
         }
     }
 
-    /**
-     * Start foreground synchronization of the specified folder. This is generally only called
-     * by synchronizeMailbox.
-     * <p>
-     * TODO Break this method up into smaller chunks.
-     */
-    @VisibleForTesting
-    void synchronizeMailboxSynchronous(Account account, long folderId, MessagingListener listener,
-            NotificationState notificationState) {
+    private void synchronizeMailboxSynchronous(Account account, long folderId, boolean notify,
+            MessagingListener listener, NotificationState notificationState) {
         refreshFolderListIfStale(account);
 
         Backend backend = getBackend(account);
-        syncFolder(account, folderId, listener, backend, notificationState);
+        syncFolder(account, folderId, notify, listener, backend, notificationState);
     }
 
     private void refreshFolderListIfStale(Account account) {
@@ -636,10 +568,10 @@ public class MessagingController {
         }
     }
 
-    private void syncFolder(Account account, long folderId, MessagingListener listener, Backend backend,
+    private void syncFolder(Account account, long folderId, boolean notify, MessagingListener listener, Backend backend,
             NotificationState notificationState) {
-        ServerSettings serverSettings = account.getIncomingServerSettings();
-        if (serverSettings.isMissingCredentials()) {
+        if (isAuthenticationProblem(account, true)) {
+            Timber.d("Authentication will fail. Skip synchronizing folder %d.", folderId);
             handleAuthenticationFailure(account, true);
             return;
         }
@@ -667,9 +599,14 @@ public class MessagingController {
             return;
         }
 
-        MessageStore messageStore = messageStoreManager.getMessageStore(account);
-        Long lastChecked = messageStore.getFolder(folderId, FolderDetailsAccessor::getLastChecked);
-        boolean suppressNotifications = lastChecked == null;
+        final boolean suppressNotifications;
+        if (notify) {
+            MessageStore messageStore = messageStoreManager.getMessageStore(account);
+            Long lastChecked = messageStore.getFolder(folderId, FolderDetailsAccessor::getLastChecked);
+            suppressNotifications = lastChecked == null;
+        } else {
+            suppressNotifications = true;
+        }
 
         String folderServerId = localFolder.getServerId();
         SyncConfig syncConfig = createSyncConfig(account);
@@ -681,7 +618,7 @@ public class MessagingController {
         if (commandException != null && !syncListener.syncFailed) {
             String rootMessage = getRootCauseMessage(commandException);
             Timber.e("Root cause failure in %s:%s was '%s'", account, folderServerId, rootMessage);
-            updateFolderStatus(account, folderServerId, rootMessage);
+            updateFolderStatus(account, folderId, rootMessage);
             listener.synchronizeMailboxFailed(account, folderId, rootMessage);
         }
     }
@@ -696,18 +633,25 @@ public class MessagingController {
                     SYNC_FLAGS);
     }
 
-    private void updateFolderStatus(Account account, String folderServerId, String status) {
-        try {
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(folderServerId);
-            localFolder.setStatus(status);
-        } catch (MessagingException e) {
-            Timber.w(e, "Couldn't update folder status for folder %s", folderServerId);
-        }
+    private void updateFolderStatus(Account account, long folderId, String status) {
+        MessageStore messageStore = messageStoreManager.getMessageStore(account);
+        messageStore.setStatus(folderId, status);
     }
 
     public void handleAuthenticationFailure(Account account, boolean incoming) {
+        if (account.shouldMigrateToOAuth()) {
+            migrateAccountToOAuth(account);
+        }
+
         notificationController.showAuthenticationErrorNotification(account, incoming);
+    }
+
+    private void migrateAccountToOAuth(Account account) {
+        account.setIncomingServerSettings(account.getIncomingServerSettings().newAuthenticationType(AuthType.XOAUTH2));
+        account.setOutgoingServerSettings(account.getOutgoingServerSettings().newAuthenticationType(AuthType.XOAUTH2));
+        account.setShouldMigrateToOAuth(false);
+
+        preferences.saveAccount(account);
     }
 
     public void handleException(Account account, Exception exception) {
@@ -1072,7 +1016,7 @@ public class MessagingController {
         Timber.i("Marking all messages in %s:%s as read", account, folderServerId);
 
         // TODO: Make this one database UPDATE operation
-        List<LocalMessage> messages = localFolder.getMessages(null, false);
+        List<LocalMessage> messages = localFolder.getMessages(false);
         for (Message message : messages) {
             if (!message.isSet(Flag.SEEN)) {
                 message.setFlag(Flag.SEEN, true);
@@ -1267,51 +1211,37 @@ public class MessagingController {
         );
     }
 
-    private void loadMessageRemoteSynchronous(Account account, long folderId, String uid,
+    private void loadMessageRemoteSynchronous(Account account, long folderId, String messageServerId,
             MessagingListener listener, boolean loadPartialFromSearch) {
         try {
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(folderId);
-            localFolder.open();
-            String folderServerId = localFolder.getServerId();
-
-            LocalMessage message = localFolder.getMessage(uid);
-
-            if (uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                Timber.w("Message has local UID so cannot download fully.");
-                // ASH move toast
-                android.widget.Toast.makeText(context,
-                        "Message has local UID so cannot download fully",
-                        android.widget.Toast.LENGTH_LONG).show();
-                // TODO: Using X_DOWNLOADED_FULL is wrong because it's only a partial message. But
-                // one we can't download completely. Maybe add a new flag; X_PARTIAL_MESSAGE ?
-                message.setFlag(Flag.X_DOWNLOADED_FULL, true);
-                message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
-            } else {
-                Backend backend = getBackend(account);
-
-                if (loadPartialFromSearch) {
-                    SyncConfig syncConfig = createSyncConfig(account);
-                    backend.downloadMessage(syncConfig, folderServerId, uid);
-                } else {
-                    backend.downloadCompleteMessage(folderServerId, uid);
-                }
-
-                message = localFolder.getMessage(uid);
-
-                if (!loadPartialFromSearch) {
-                    message.setFlag(Flag.X_DOWNLOADED_FULL, true);
-                }
+            if (messageServerId.startsWith(K9.LOCAL_UID_PREFIX)) {
+                throw new IllegalArgumentException("Must not be called with a local UID");
             }
 
-            // now that we have the full message, refresh the headers
+            MessageStore messageStore = messageStoreManager.getMessageStore(account);
+
+            String folderServerId = messageStore.getFolderServerId(folderId);
+            if (folderServerId == null) {
+                throw new IllegalStateException("Folder not found (ID: " + folderId + ")");
+            }
+
+            Backend backend = getBackend(account);
+
+            if (loadPartialFromSearch) {
+                SyncConfig syncConfig = createSyncConfig(account);
+                backend.downloadMessage(syncConfig, folderServerId, messageServerId);
+            } else {
+                backend.downloadCompleteMessage(folderServerId, messageServerId);
+            }
+
             for (MessagingListener l : getListeners(listener)) {
-                l.loadMessageRemoteFinished(account, folderId, uid);
+                l.loadMessageRemoteFinished(account, folderId, messageServerId);
             }
         } catch (Exception e) {
             for (MessagingListener l : getListeners(listener)) {
-                l.loadMessageRemoteFailed(account, folderId, uid, e);
+                l.loadMessageRemoteFailed(account, folderId, messageServerId, e);
             }
+
             notifyUserIfCertificateProblem(account, e, true);
             Timber.e(e, "Error while loading remote message");
         }
@@ -1331,9 +1261,6 @@ public class MessagingController {
         FetchProfile fp = new FetchProfile();
         fp.add(FetchProfile.Item.BODY);
         localFolder.fetch(Collections.singletonList(message), fp, null);
-
-        notificationController.removeNewMailNotification(account, message.makeMessageReference());
-        markMessageAsOpened(account, message);
 
         return message;
     }
@@ -1356,7 +1283,15 @@ public class MessagingController {
         return message;
     }
 
-    private void markMessageAsOpened(Account account, LocalMessage message) throws MessagingException {
+    public void markMessageAsOpened(Account account, LocalMessage message) {
+        put("markMessageAsOpened", null, () -> {
+            markMessageAsOpenedBlocking(account, message);
+        });
+    }
+
+    private void markMessageAsOpenedBlocking(Account account, LocalMessage message) {
+        notificationController.removeNewMailNotification(account,message.makeMessageReference());
+
         if (!message.isSet(Flag.SEEN)) {
             if (account.isMarkMessageAsReadOnView()) {
                 markMessageAsReadOnView(account, message);
@@ -1368,11 +1303,15 @@ public class MessagingController {
         }
     }
 
-    private void markMessageAsReadOnView(Account account, LocalMessage message) throws MessagingException {
-        List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
-        setFlag(account, messageIds, Flag.SEEN, true);
+    private void markMessageAsReadOnView(Account account, LocalMessage message) {
+        try {
+            List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
+            setFlag(account, messageIds, Flag.SEEN, true);
 
-        message.setFlagInternal(Flag.SEEN, true);
+            message.setFlagInternal(Flag.SEEN, true);
+        } catch (MessagingException e) {
+            Timber.e(e, "Error while marking message as read");
+        }
     }
 
     private void markMessageAsNotNew(Account account, LocalMessage message) {
@@ -1521,10 +1460,9 @@ public class MessagingController {
     @VisibleForTesting
     protected void sendPendingMessagesSynchronous(final Account account) {
         Exception lastFailure = null;
-        boolean wasPermanentFailure = false;
         try {
-            ServerSettings serverSettings = account.getOutgoingServerSettings();
-            if (serverSettings.isMissingCredentials()) {
+            if (isAuthenticationProblem(account, false)) {
+                Timber.d("Authentication will fail. Skip sending messages.");
                 handleAuthenticationFailure(account, false);
                 return;
             }
@@ -1541,7 +1479,7 @@ public class MessagingController {
 
             long outboxFolderId = localFolder.getDatabaseId();
 
-            List<LocalMessage> localMessages = localFolder.getMessages(null);
+            List<LocalMessage> localMessages = localFolder.getMessages();
             int progress = 0;
             int todo = localMessages.size();
             for (MessagingListener l : getListeners()) {
@@ -1571,10 +1509,16 @@ public class MessagingController {
                     long messageId = message.getDatabaseId();
                     OutboxState outboxState = outboxStateRepository.getOutboxState(messageId);
 
-                    if (outboxState.getSendState() != SendState.READY) {
-                        Timber.v("Skipping sending message %s", message.getUid());
-                        notificationController.showSendFailedNotification(account,
-                                new MessagingException(message.getSubject()));
+                    SendState sendState = outboxState.getSendState();
+                    if (sendState != SendState.READY) {
+                        Timber.v("Skipping sending message %s (reason: %s)", message.getUid(),
+                                sendState.getDatabaseName());
+
+                        if (sendState == SendState.RETRIES_EXCEEDED) {
+                            lastFailure = new MessagingException("Retries exceeded", true);
+                        } else {
+                            lastFailure = new MessagingException(outboxState.getSendError(), true);
+                        }
                         continue;
                     }
 
@@ -1607,22 +1551,19 @@ public class MessagingController {
                     } catch (AuthenticationFailedException e) {
                         outboxStateRepository.decrementSendAttempts(messageId);
                         lastFailure = e;
-                        wasPermanentFailure = false;
 
                         handleAuthenticationFailure(account, false);
                         handleSendFailure(account, localFolder, message, e);
                     } catch (CertificateValidationException e) {
                         outboxStateRepository.decrementSendAttempts(messageId);
                         lastFailure = e;
-                        wasPermanentFailure = false;
 
                         notifyUserIfCertificateProblem(account, e, false);
                         handleSendFailure(account, localFolder, message, e);
                     } catch (MessagingException e) {
                         lastFailure = e;
-                        wasPermanentFailure = e.isPermanentFailure();
 
-                        if (wasPermanentFailure) {
+                        if (e.isPermanentFailure()) {
                             String errorMessage = e.getMessage();
                             outboxStateRepository.setSendAttemptError(messageId, errorMessage);
                         } else if (outboxState.getNumberOfSendAttempts() + 1 >= MAX_SEND_ATTEMPTS) {
@@ -1632,24 +1573,19 @@ public class MessagingController {
                         handleSendFailure(account, localFolder, message, e);
                     } catch (Exception e) {
                         lastFailure = e;
-                        wasPermanentFailure = true;
 
                         handleSendFailure(account, localFolder, message, e);
                     }
                 } catch (Exception e) {
                     lastFailure = e;
-                    wasPermanentFailure = false;
+
                     Timber.e(e, "Failed to fetch message for sending");
                     notifySynchronizeMailboxFailed(account, localFolder, e);
                 }
             }
 
             if (lastFailure != null) {
-                if (wasPermanentFailure) {
-                    notificationController.showSendFailedNotification(account, lastFailure);
-                } else {
-                    notificationController.showSendFailedNotification(account, lastFailure);
-                }
+                notificationController.showSendFailedNotification(account, lastFailure);
             }
         } catch (Exception e) {
             Timber.v(e, "Failed to send pending messages");
@@ -1679,9 +1615,11 @@ public class MessagingController {
 
             if (!sentFolder.isLocalOnly()) {
                 String destinationUid = messageStore.getMessageServerId(destinationMessageId);
-                PendingCommand command = PendingAppend.create(sentFolderId, destinationUid);
-                queuePendingCommand(account, command);
-                processPendingCommands(account);
+                if (destinationUid != null) {
+                    PendingCommand command = PendingAppend.create(sentFolderId, destinationUid);
+                    queuePendingCommand(account, command);
+                    processPendingCommands(account);
+                }
             }
         }
 
@@ -1956,24 +1894,26 @@ public class MessagingController {
         });
     }
 
-    public void deleteDraft(final Account account, long id) {
-        try {
-            Long folderId = account.getDraftsFolderId();
-            if (folderId == null) {
-                Timber.w("No Drafts folder configured. Can't delete draft.");
-                return;
-            }
+    public void deleteDraftSkippingTrashFolder(Account account, long messageId) {
+        deleteDraft(account, messageId, true);
+    }
 
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(folderId);
-            localFolder.open();
-            String uid = localFolder.getMessageUidById(id);
-            if (uid != null) {
-                MessageReference messageReference = new MessageReference(account.getUuid(), folderId, uid);
-                deleteMessage(messageReference);
-            }
-        } catch (MessagingException me) {
-            Timber.e(me, "Error deleting draft");
+    public void deleteDraft(Account account, long messageId) {
+        deleteDraft(account, messageId, false);
+    }
+
+    private void deleteDraft(Account account, long messageId, boolean skipTrashFolder) {
+        Long folderId = account.getDraftsFolderId();
+        if (folderId == null) {
+            Timber.w("No Drafts folder configured. Can't delete draft.");
+            return;
+        }
+
+        MessageStore messageStore = messageStoreManager.getMessageStore(account);
+        String messageServerId = messageStore.getMessageServerId(messageId);
+        if (messageServerId != null) {
+            MessageReference messageReference = new MessageReference(account.getUuid(), folderId, messageServerId);
+            deleteMessages(Collections.singletonList(messageReference), skipTrashFolder);
         }
     }
 
@@ -1981,15 +1921,15 @@ public class MessagingController {
         actOnMessagesGroupedByAccountAndFolder(messages, (account, messageFolder, accountMessages) -> {
             suppressMessages(account, accountMessages);
             putBackground("deleteThreads", null, () ->
-                    deleteThreadsSynchronous(account, messageFolder.getDatabaseId(), accountMessages)
+                deleteThreadsSynchronous(account, messageFolder.getDatabaseId(), accountMessages, false)
             );
         });
     }
 
-    private void deleteThreadsSynchronous(Account account, long folderId, List<LocalMessage> messages) {
+    private void deleteThreadsSynchronous(Account account, long folderId, List<LocalMessage> messages, boolean skipTrashFolder) {
         try {
             List<LocalMessage> messagesToDelete = collectMessagesInThreads(account, messages);
-            deleteMessagesSynchronous(account, folderId, messagesToDelete);
+            deleteMessagesSynchronous(account, folderId, messagesToDelete, skipTrashFolder);
         } catch (MessagingException e) {
             Timber.e(e, "Something went wrong while deleting threads");
         }
@@ -2014,14 +1954,18 @@ public class MessagingController {
     }
 
     public void deleteMessage(MessageReference message) {
-        deleteMessages(Collections.singletonList(message));
+        deleteMessages(Collections.singletonList(message), false);
     }
 
     public void deleteMessages(List<MessageReference> messages) {
+        deleteMessages(messages, false);
+    }
+
+    private void deleteMessages(List<MessageReference> messages, boolean skipTrashFolder) {
         actOnMessagesGroupedByAccountAndFolder(messages, (account, messageFolder, accountMessages) -> {
             suppressMessages(account, accountMessages);
             putBackground("deleteMessages", null, () ->
-                    deleteMessagesSynchronous(account, messageFolder.getDatabaseId(), accountMessages)
+                deleteMessagesSynchronous(account, messageFolder.getDatabaseId(), accountMessages, skipTrashFolder)
             );
         });
     }
@@ -2055,7 +1999,7 @@ public class MessagingController {
 
     }
 
-    private void deleteMessagesSynchronous(Account account, long folderId, List<LocalMessage> messages) {
+    private void deleteMessagesSynchronous(Account account, long folderId, List<LocalMessage> messages, boolean skipTrashFolder) {
         try {
             List<LocalMessage> localOnlyMessages = new ArrayList<>();
             List<LocalMessage> syncedMessages = new ArrayList<>();
@@ -2080,8 +2024,10 @@ public class MessagingController {
 
             Map<String, String> uidMap = null;
             Long trashFolderId = account.getTrashFolderId();
+            boolean isSpamFolder = account.hasSpamFolder() && account.getSpamFolderId() == folderId;
+
             LocalFolder localTrashFolder = null;
-            if (!account.hasTrashFolder() || folderId == trashFolderId ||
+            if (skipTrashFolder || !account.hasTrashFolder() || folderId == trashFolderId || isSpamFolder ||
                     (backend.getSupportsTrashFolder() && !backend.isDeleteMoveToTrash())) {
                 Timber.d("Not moving deleted messages to local Trash folder. Removing local copies.");
 
@@ -2200,7 +2146,7 @@ public class MessagingController {
         // Remove all messages marked as deleted
         folder.destroyDeletedMessages();
 
-        compact(account, null);
+        compact(account);
     }
 
     public void emptyTrash(final Account account, MessagingListener listener) {
@@ -2279,7 +2225,7 @@ public class MessagingController {
     public boolean performPeriodicMailSync(Account account) {
         final CountDownLatch latch = new CountDownLatch(1);
         MutableBoolean syncError = new MutableBoolean(false);
-        checkMail(account, false, false, new SimpleMessagingListener() {
+        checkMail(account, false, false, true, new SimpleMessagingListener() {
             @Override
             public void checkMailFinished(Context context, Account account) {
                 latch.countDown();
@@ -2315,10 +2261,8 @@ public class MessagingController {
      * Checks mail for one or multiple accounts. If account is null all accounts
      * are checked.
      */
-    public void checkMail(final Account account,
-            final boolean ignoreLastCheckedTime,
-            final boolean useManualWakeLock,
-            final MessagingListener listener) {
+    public void checkMail(Account account, boolean ignoreLastCheckedTime, boolean useManualWakeLock, boolean notify,
+            MessagingListener listener) {
 
         final WakeLock wakeLock;
         if (useManualWakeLock) {
@@ -2350,7 +2294,7 @@ public class MessagingController {
                     }
 
                     for (final Account account : accounts) {
-                        checkMailForAccount(context, account, ignoreLastCheckedTime, listener);
+                        checkMailForAccount(account, ignoreLastCheckedTime, notify, listener);
                     }
 
                 } catch (Exception e) {
@@ -2377,9 +2321,8 @@ public class MessagingController {
     }
 
 
-    private void checkMailForAccount(final Context context, final Account account,
-            final boolean ignoreLastCheckedTime,
-            final MessagingListener listener) {
+    private void checkMailForAccount(Account account, boolean ignoreLastCheckedTime, boolean notify,
+            MessagingListener listener) {
         Timber.i("Synchronizing account %s", account);
 
         NotificationState notificationState = new NotificationState();
@@ -2401,28 +2344,14 @@ public class MessagingController {
 
                 if (LocalFolder.isModeMismatch(aDisplayMode, fDisplayClass)) {
                     // Never sync a folder that isn't displayed
-                    /*
-                    if (K9.DEBUG) {
-                        Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName() +
-                              " which is in display mode " + fDisplayClass + " while account is in display mode " + aDisplayMode);
-                    }
-                    */
-
                     continue;
                 }
 
                 if (LocalFolder.isModeMismatch(aSyncMode, fSyncClass)) {
                     // Do not sync folders in the wrong class
-                    /*
-                    if (K9.DEBUG) {
-                        Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName() +
-                              " which is in sync mode " + fSyncClass + " while account is in sync mode " + aSyncMode);
-                    }
-                    */
-
                     continue;
                 }
-                synchronizeFolder(account, folder, ignoreLastCheckedTime, listener, notificationState);
+                synchronizeFolder(account, folder, ignoreLastCheckedTime, notify, listener, notificationState);
             }
         } catch (MessagingException e) {
             Timber.e(e, "Unable to synchronize account %s", account);
@@ -2446,14 +2375,14 @@ public class MessagingController {
     }
 
     private void synchronizeFolder(Account account, LocalFolder folder, boolean ignoreLastCheckedTime,
-            MessagingListener listener, NotificationState notificationState) {
+            boolean notify, MessagingListener listener, NotificationState notificationState) {
         putBackground("sync" + folder.getServerId(), null, () -> {
-            synchronizeFolderInBackground(account, folder, ignoreLastCheckedTime, listener, notificationState);
+            synchronizeFolderInBackground(account, folder, ignoreLastCheckedTime, notify, listener, notificationState);
         });
     }
 
     private void synchronizeFolderInBackground(Account account, LocalFolder folder, boolean ignoreLastCheckedTime,
-            MessagingListener listener, NotificationState notificationState) {
+            boolean notify, MessagingListener listener, NotificationState notificationState) {
         Timber.v("Folder %s was last synced @ %tc", folder.getServerId(), folder.getLastChecked());
 
         if (!ignoreLastCheckedTime) {
@@ -2476,7 +2405,7 @@ public class MessagingController {
         try {
             showFetchingMailNotificationIfNecessary(account, folder);
             try {
-                synchronizeMailboxSynchronous(account, folder.getDatabaseId(), listener, notificationState);
+                synchronizeMailboxSynchronous(account, folder.getDatabaseId(), notify, listener, notificationState);
             } finally {
                 showEmptyFetchingMailNotificationIfNecessary(account);
             }
@@ -2501,21 +2430,13 @@ public class MessagingController {
         notificationController.clearFetchingMailNotification(account);
     }
 
-    public void compact(final Account account, final MessagingListener ml) {
-        putBackground("compact:" + account, ml, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    MessageStore messageStore = messageStoreManager.getMessageStore(account);
-                    long oldSize = messageStore.getSize();
-                    messageStore.compact();
-                    long newSize = messageStore.getSize();
-                    for (MessagingListener l : getListeners(ml)) {
-                        l.accountSizeChanged(account, oldSize, newSize);
-                    }
-                } catch (Exception e) {
-                    Timber.e(e, "Failed to compact account %s", account);
-                }
+    public void compact(Account account) {
+        putBackground("compact:" + account, null, () -> {
+            try {
+                MessageStore messageStore = messageStoreManager.getMessageStore(account);
+                messageStore.compact();
+            } catch (Exception e) {
+                Timber.e(e, "Failed to compact account %s", account);
             }
         });
     }
@@ -2606,6 +2527,14 @@ public class MessagingController {
         }
 
         notificationController.showCertificateErrorNotification(account, incoming);
+    }
+
+    private boolean isAuthenticationProblem(Account account, boolean incoming) {
+        ServerSettings serverSettings = incoming ?
+                account.getIncomingServerSettings() : account.getOutgoingServerSettings();
+
+        return serverSettings.isMissingCredentials() ||
+                serverSettings.authenticationType == AuthType.XOAUTH2 && account.getOAuthState() == null;
     }
 
     private void actOnMessagesGroupedByAccountAndFolder(List<MessageReference> messages, MessageActor actor) {
@@ -2739,7 +2668,6 @@ public class MessagingController {
             LocalFolder localFolder = message.getFolder();
             if (!suppressNotifications &&
                     notificationStrategy.shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
-                Timber.v("Creating notification for message %s:%s", localFolder.getName(), message.getUid());
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                 boolean silent = notificationState.wasNotified();
                 notificationController.addNewMailNotification(account, message, silent);

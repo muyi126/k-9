@@ -1,25 +1,24 @@
 
 package com.fsck.k9.mail;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import com.fsck.k9.logging.Timber;
+import com.fsck.k9.mail.helper.Rfc822Token;
+import com.fsck.k9.mail.helper.Rfc822Tokenizer;
+import com.fsck.k9.mail.helper.TextUtils;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.codec.DecodeMonitor;
 import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.dom.address.Mailbox;
 import org.apache.james.mime4j.dom.address.MailboxList;
 import org.apache.james.mime4j.field.address.DefaultAddressParser;
-import timber.log.Timber;
-
-import android.text.TextUtils;
-import android.text.util.Rfc822Token;
-import android.text.util.Rfc822Tokenizer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public class Address implements Serializable {
     private static final Pattern ATOM = Pattern.compile("^(?:[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]|\\s)+$");
@@ -29,7 +28,7 @@ public class Address implements Serializable {
      */
     private static final Address[] EMPTY_ADDRESS_ARRAY = new Address[0];
 
-    @NonNull
+    @NotNull
     private String mAddress;
 
     private String mPersonal;

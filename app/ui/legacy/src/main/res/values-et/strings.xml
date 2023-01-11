@@ -11,7 +11,9 @@
   <string name="source_code">Lähtekood</string>
   <string name="app_license">Apache litsents, versioon 2.0</string>
   <string name="about_project_title">Avatud lähtekoodiga projekt</string>
-  <string name="about_website_title">Veebileht</string>
+  <string name="about_website_title">Veebisait</string>
+  <string name="user_manual_title">Kasutusjuhend</string>
+  <string name="get_help_title">Abiteave</string>
   <string name="user_forum_title">Foorum huvilistele</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -116,6 +118,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="flag_action">Lisa tärn</string>
   <string name="unflag_action">Eemalda tärn</string>
   <string name="copy_action">Kopeeri</string>
+  <string name="unsubscribe_action">Eemalda tellimus</string>
   <string name="show_headers_action">Näita päiseid</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Aadress kopeeritud lõikelauale</item>
@@ -151,7 +154,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> uus kiri</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> uut kirja</item>
   </plurals>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Lugemata (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Lugemata (<xliff:g id="account">%2$s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> veel kontol <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Vasta</string>
   <string name="notification_action_mark_as_read">Märgi loetuks</string>
@@ -166,7 +169,11 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="notification_certificate_error_text">Kontrolli serveri sätteid</string>
   <string name="notification_authentication_error_title">Autentimine ebaõnnestus</string>
   <string name="notification_authentication_error_text">Autentimine ebaõnnestus konto <xliff:g id="account">%s</xliff:g> puhul. Uuenda serveri seadeid.</string>
-  <string name="notification_bg_sync_ticker">Kontrollib e-kirju: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">Viga teavitusel</string>
+  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">Uue saabunud sõnumi kohta süsteemise teavituse loomisel tekkis viga. Üks võimalik põhjus on teavitusele määratud heli puudumine.\n\nAva teavituste seadistused.</string>
+  <string name="notification_bg_sync_ticker">Kontrollib e-kirju: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrollib e-kirju</string>
   <string name="notification_bg_send_ticker">Saadab e-kirja: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Saadab e-kirja</string>
@@ -213,7 +220,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="message_compose_description_delete_quoted_text">Eemalda osundatud tekst</string>
   <string name="message_compose_description_edit_quoted_text">Muuda osundatud teksti</string>
   <string name="remove_attachment_action">Eemalda manus</string>
-  <string name="message_view_from_format">Kellelt: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_from_format">Kellelt: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
   <string name="message_to_label">Kellele:</string>
   <string name="message_view_cc_label">Koopia:</string>
   <string name="message_view_bcc_label">Pimekoopia:</string>
@@ -254,6 +261,24 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="global_settings_confirm_menu_discard">Loobu kirjast</string>
   <string name="global_settings_confirm_menu_mark_all_read">Märgi kõik kirjad loetuks</string>
   <string name="global_settings_confirm_action_delete_notif">Kustuta (teadetest)</string>
+  <!--Title of the screen to configure swipe actions-->
+  <!--Name of the setting to configure the right swipe action-->
+  <!--Name of the setting to configure the left swipe action-->
+  <!--The list item users select to not use a swipe action for a particular direction-->
+  <string name="general_settings_swipe_action_none">Mitte ükski</string>
+  <!--Name of the swipe action to select/deselect a message-->
+  <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Märgi loetuks/mitteloetuks</string>
+  <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Lisa või eemalda tärn</string>
+  <!--Name of the swipe action to archive a message-->
+  <string name="general_settings_swipe_action_archive">Arhiveeri</string>
+  <!--Name of the swipe action to delete a message-->
+  <string name="general_settings_swipe_action_delete">Kustuta</string>
+  <!--Name of the swipe action to move a message to the spam folder-->
+  <string name="general_settings_swipe_action_spam">Rämps</string>
+  <!--Name of the swipe action to move a message to another folder-->
+  <string name="general_settings_swipe_action_move">Teisalda</string>
   <string name="global_settings_privacy_hide_useragent">Peida meiliklient</string>
   <string name="global_settings_privacy_hide_useragent_detail">Eemalda K-9 User-Agent meili päistest</string>
   <string name="global_settings_privacy_hide_timezone">Peida ajavöönd</string>
@@ -277,6 +302,11 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_setup_basics_title">Seadista uus konto</string>
   <string name="account_setup_basics_email_hint">E-posti aadress</string>
   <string name="account_setup_basics_password_hint">Salasõna</string>
+  <string name="account_setup_oauth_description">Kui soovid seda e-posti teenust kasutada K-9 e-postikliendiga, siis logi teenusesse ja anna rakendusele õigus e-kirju ligeda.</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">Logi sisse</string>
+  <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">Logi sisse kasutades Google\'i teenuseid</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Kui soovid siin näha salasõna, siis lülita sisse lukustuskuva kasutamine.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Tuvasta oma isik</string>
@@ -300,6 +330,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_setup_auth_type_insecure_password">Salasõna, ebaturvaliselt edastatud</string>
   <string name="account_setup_auth_type_encrypted_password">Krüpteeritud salasõna</string>
   <string name="account_setup_auth_type_tls_client_certificate">Kliendi sertifikaat</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
   <string name="account_setup_incoming_title">Sissetuleva meiliserveri sätted</string>
   <string name="account_setup_incoming_username_label">Kasutajanimi</string>
   <string name="account_setup_incoming_password_label">Salasõna</string>
@@ -318,10 +349,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_setup_incoming_delete_policy_never_label">Ära kustuta seda serveris</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Kustuta serveris</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Märgi serveris loetuks</string>
-  <string name="account_setup_incoming_compression_label">Kasuta tihendamist võrgus:</string>
-  <string name="account_setup_incoming_mobile_label">Mobiilne</string>
-  <string name="account_setup_incoming_wifi_label">WiFi</string>
-  <string name="account_setup_incoming_other_label">Muu</string>
+  <string name="account_setup_incoming_use_compression">Kasuta pakkimist</string>
   <string name="account_setup_expunge_policy_label">Eemalda kustutatud kirjad serverist</string>
   <string name="account_setup_expunge_policy_immediately">Koheselt</string>
   <string name="account_setup_expunge_policy_on_poll">Andmete kontrollimisel</string>
@@ -383,11 +411,15 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_setup_options_mail_display_count_all">kõik kirjad</string>
   <string name="move_copy_cannot_copy_unsynced_message">Serveriga sünkroniseerimata kirja pole võimalik kopeerida ega teisaldada</string>
   <string name="account_setup_failed_dlg_title">Seadistamist polnud võimalik lõpetada</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Vale kasutajanimi või parool.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Vale kasutajanimi või salasõna.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Server esitles vigast SSL sertifikaati. Mõnikord juhtub see serveri vale konfiguratsiooni tõttu. Mõnikord seetõttu, et keegi proovib rünnata Sind või Sinu meiliserverit. Kui Sa ei ole kindel mis toimub, klõpsa Tühista ja võta ühendust tegelastega, kes haldavad su meiliserverit.
 
 (<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Ei saa serveriga ühendust.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Autentimine on katkenud</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Autentimine ei õnnestunud ja tekkis järgnev viga: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">See teenusepakkuja ei võimalda OAuth 2.0 kasutamist.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">Rakendus ei suutnud tuvastada veebibrauserit, mida saaks sinu kontole ligipääsu lubamiseks kasutada.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Muuda detaile</string>
   <string name="account_setup_failed_dlg_continue_action">Jätka</string>
   <string name="account_settings_push_advanced_title">Täpsemalt</string>
@@ -622,8 +654,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnustamata sertifikaat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aktsepteeri võti</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Keeldu võtmest</string>
-  <string name="message_view_help_key">Del (või D) - Kustuta\nR - Vasta\nA - Vasta kõigile\nC - Koosta\nF - Saada edasi\nM - Teisalda\nV - Arhiveeri\nY - Kopeeri\nZ - Märgi (mitte)loetuks\nG - Tärn\nO - Sortimise tüüp\nI - Sorteerimise järjekord\nQ - Tagasi kaustadesse\nS - Vali/Tühista valik\nJ or P - Eelmine kiri\nK or N - Järgmine kiri</string>
-  <string name="message_list_help_key">Del (või D) - Kustuta\nC - Koosta kiri\nM - Teisalda\nV - Arhiveri\nY - Kopeeri\nZ - Märgi (mitte)loetuks\nG - Märgi tärniga\nO - Sortimise tüüp\nI - Sortimise järjekord\nQ - Tagasi kasutade loendisse\nS - Vali/eemalda valik</string>
   <string name="folder_list_filter_hint">Kausta nimi sisaldab</string>
   <string name="folder_list_display_mode_label">Näita kaustu…</string>
   <string name="folder_list_display_mode_all">Kõik kaustad</string>
@@ -671,9 +701,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_setup_push_limit_1000">1000 kausta</string>
   <string name="animations_title">Animatsioon</string>
   <string name="animations_summary">Kasuta erinevaid visuaalseid efekte</string>
-  <string name="volume_navigation_title">Helitugevuse nupuga liikumine</string>
-  <string name="volume_navigation_message">Kirjade vaadetes</string>
-  <string name="volume_navigation_list">Nimekirja vaadetes</string>
   <string name="show_unified_inbox_title">Näita koondsisendkausta</string>
   <string name="show_starred_count_title">Näita tärniga tähistatud kirjade arvu</string>
   <string name="integrated_inbox_title">Koondsisendkaust</string>
@@ -688,12 +715,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_settings_automatic_special_folder">Automaatne (%s)</string>
   <string name="font_size_settings_title">Fondi suurus</string>
   <string name="font_size_settings_description">Kaustade nimekiri</string>
-  <string name="font_size_account_list">Konto nimekiri</string>
-  <string name="font_size_account_name">Konto nimi</string>
-  <string name="font_size_account_description">Konto kirjeldus</string>
-  <string name="font_size_folder_list">Kausta nimekirjad</string>
-  <string name="font_size_folder_name">Kausta nimi</string>
-  <string name="font_size_folder_status">Kausta olek</string>
   <string name="font_size_message_list">Kirjade loendid</string>
   <string name="font_size_message_list_subject">Teema</string>
   <string name="font_size_message_list_sender">Saatja</string>
@@ -725,7 +746,6 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="save_or_discard_draft_message_changes">Salvestada või loobuda muudatustest?</string>
   <string name="confirm_discard_draft_message_title">Kas loobud kirjast?</string>
   <string name="confirm_discard_draft_message">Kas sa oled kindel, et soovid kirjast loobuda?</string>
-  <string name="select_text_now">Vali kopeerimiseks tekst.</string>
   <string name="dialog_confirm_clear_local_folder_title">Kas kustutame kohalikud kirjad?</string>
   <string name="dialog_confirm_clear_local_folder_message">Sellega kustutame kõik kirjade kohalikud koopiad antud kaustast. Serveris asuvad kirjad jäävad alles.</string>
   <string name="dialog_confirm_clear_local_folder_action">Kustuta kirjad</string>
@@ -765,12 +785,19 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="settings_import_pick_document_button">Vali fail</string>
   <string name="settings_import_button">Impordi</string>
   <string name="settings_import_success_generic">Sätted edukalt imporditud</string>
-  <string name="settings_import_password_required">Palun sisesta paroolid</string>
+  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+  <string name="settings_import_password_required">Palun sisesta salasõnad</string>
+  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">Palun logi sisse</string>
+  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">Palun logi sisse ja sisesta salasõnad</string>
   <string name="settings_import_failure">Sätete importimine ebaõnnestus</string>
   <string name="settings_import_read_failure">Sätete faili lugemine ebaõnnestus</string>
   <string name="settings_import_partial_failure">Mõnede sätete importimine ebaõnnestus</string>
   <string name="settings_import_status_success">Importimine õnnestus</string>
   <string name="settings_import_status_password_required">Salasõna on vajalik</string>
+  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">Sisselogimine on nõutav</string>
   <string name="settings_import_status_not_imported">Ei imporditud</string>
   <string name="settings_import_status_error">Importimise viga</string>
   <string name="settings_import_later_button">Hiljem</string>
@@ -780,9 +807,9 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
     <item quantity="one">„<xliff:g id="account">%s</xliff:g>“ konto kasutamiseks palun sisesta serveri salasõna.</item>
     <item quantity="other">„<xliff:g id="account">%s</xliff:g>“ konto kasutamiseks palun sisesta serveri salasõnad.</item>
   </plurals>
-  <string name="settings_import_incoming_server_password_hint">Sissetuleva serveri parool</string>
-  <string name="settings_import_outgoing_server_password_hint">Väljuva serveri parool</string>
-  <string name="settings_import_use_same_password_for_outgoing_server">Kasuta sama parooli väljuva serveri tarbeks</string>
+  <string name="settings_import_incoming_server_password_hint">Saabuvaid kirju teenindava serveri salasõna</string>
+  <string name="settings_import_outgoing_server_password_hint">Väljuvaid kirju teenindava serveri salasõna</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Kasuta sama salasõna ka väljuvate kirjade serveri tarbeks</string>
   <string name="server_name_format">Serveri nimi: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Näita lugemata sõnumite arvu…</string>
   <string name="unread_widget_account_title">Konto</string>
@@ -961,19 +988,14 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="account_settings_crypto_hide_sign_only_off">Näita kõiki allkirju</string>
   <string name="error_sign_only_no_encryption">Ainult allkirjastamisel ei ole krüptimine kasutusel!</string>
   <string name="unsigned_text_divider_label">Allkirjastamata tekst</string>
-  <string name="apg_deprecated_title">APG pole enam kasutusel</string>
-  <string name="apg_deprecated_1">APG arendust enam ei toimu ja ta pole enam kasutusel!</string>
-  <string name="apg_deprecated_2">Seetõttu on APG tugi K-9 Mail\'ist eemaldatud.</string>
-  <string name="apg_deprecated_bullet_1">Arendus lõppes 2014. aasta alguses</string>
-  <string name="apg_deprecated_bullet_2">Sisaldab parandamata turvavigu</string>
-  <string name="apg_learn_more">Võid lisainfoks <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klikkida siia</a></string>
-  <string name="apg_deprecated_ok">Arusaadav!</string>
-  <string name="apg">APG</string>
   <string name="crypto_no_provider_title">See e-kiri on krüpteeritud</string>
   <string name="crypto_no_provider_message">Selle kirja krüptimisel on kasutusel OpenPGP.\nKirjalugemsieks palun paigalda ja seadista sobilik OpenPGP rakendus.</string>
   <string name="crypto_no_provider_button">Ava sätted</string>
   <string name="mail_list_widget_text">K-9 kirjade loend</string>
-  <string name="mail_list_widget_loading">Kirjade laadimine…</string>
+  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+  <string name="message_list_widget_initializing">Laadib…</string>
+  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+  <string name="message_list_widget_list_item_loading">Laadib…</string>
   <string name="openpgp_enabled_error_title">Krüpteerimine poe võimalik</string>
   <string name="openpgp_enabled_error_msg">Mõned kirja saajad ei saa seda funktsionaalsust kasutada!</string>
   <string name="enable_encryption">Võimalda krüpteerimine</string>
@@ -989,7 +1011,7 @@ Veateated saad saata, kaastööd teha ning küsida teavet järgmisel lehel:
   <string name="dialog_autocrypt_mutual_title">Autocrypt-standardi kahepoolne režiim</string>
   <string name="dialog_autocrypt_mutual_description_1">Tavapäraselt krüptitakse kiri, kui sa sellise valiku teed või vastad krüptitud kirjale.</string>
   <string name="dialog_autocrypt_mutual_description_2">Kui kirja saatja ning saaja kasutavad Autocrypt-standardi kahepoolset režiimi, siis krüptimine on vaikimisi kasutusel.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Lisateavet <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">leiad siit</a>.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Lisateavet <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">leiad siit</a>.</string>
   <string name="general_settings_title">Üldised sätted</string>
   <string name="dialog_openkeychain_info_title">OpenPGP rakendus paigaldamata</string>
   <string name="dialog_openkeychain_info_install">Paigalda</string>
@@ -1035,4 +1057,22 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
   <string name="push_info_configure_notification_action">Seadista teavitusi</string>
   <string name="push_info_disable_push_text">Kui sul pole vaja ülikiiret infot saabunud kirjade kohta, siis lülita tõuketeenused välja ning lase K-9 Mail\'il kasutada tavapärast uute kirjade kontrollimist. Sellisel juhul vaatab K-9 Mail seadistatud ajavahemiku järel serverist uusi kirju ja mainitud püsiteavitust pole vaja.</string>
   <string name="push_info_disable_push_action">Ära kasuta tõuketeenuseid</string>
+  <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">Vali</string>
+  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+  <string name="swipe_action_deselect">Tühista valik</string>
+  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+  <string name="swipe_action_mark_as_unread">Märgi mitteloetuks</string>
+  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+  <string name="swipe_action_add_star">Lisa tärn</string>
+  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+  <string name="swipe_action_remove_star">Eemalda tärn</string>
+  <!--Name of the swipe action to archive a message. Try to keep it short.-->
+  <string name="swipe_action_archive">Arhiveeri</string>
+  <!--Name of the swipe action to delete a message. Try to keep it short.-->
+  <string name="swipe_action_delete">Kustuta</string>
+  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+  <string name="swipe_action_spam">Rämps</string>
+  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
 </resources>

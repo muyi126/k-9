@@ -46,11 +46,11 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.ArgumentMatchers.same
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
+import org.mockito.Mockito.`when`
 import org.mockito.kotlin.anyOrNull
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState
 import org.openintents.openpgp.OpenPgpError
@@ -81,7 +81,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
     @Before
     @Throws(Exception::class)
     fun setUp() {
-        BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.application.cacheDir)
+        BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.getApplication().cacheDir)
         `when`(autocryptOpenPgpApiInteractor.getKeyMaterialForKeyId(openPgpApi, TEST_KEY_ID, SENDER_EMAIL))
             .thenReturn(AUTOCRYPT_KEY_MATERIAL)
     }

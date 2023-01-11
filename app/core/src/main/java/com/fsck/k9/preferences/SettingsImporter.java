@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import androidx.annotation.VisibleForTesting;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountPreferenceSerializer;
+import com.fsck.k9.Clock;
 import com.fsck.k9.Core;
 import com.fsck.k9.DI;
 import com.fsck.k9.Identity;
@@ -76,17 +77,19 @@ public class SettingsImporter {
         public final AccountDescription original;
         public final AccountDescription imported;
         public final boolean overwritten;
+        public final boolean authorizationNeeded;
         public final boolean incomingPasswordNeeded;
         public final boolean outgoingPasswordNeeded;
         public final String incomingServerName;
         public final String outgoingServerName;
 
         private AccountDescriptionPair(AccountDescription original, AccountDescription imported,
-                boolean overwritten, boolean incomingPasswordNeeded, boolean outgoingPasswordNeeded,
-                String incomingServerName, String outgoingServerName) {
+                boolean overwritten, boolean authorizationNeeded, boolean incomingPasswordNeeded,
+                boolean outgoingPasswordNeeded, String incomingServerName, String outgoingServerName) {
             this.original = original;
             this.imported = imported;
             this.overwritten = overwritten;
+            this.authorizationNeeded = authorizationNeeded;
             this.incomingPasswordNeeded = incomingPasswordNeeded;
             this.outgoingPasswordNeeded = outgoingPasswordNeeded;
             this.incomingServerName = incomingServerName;
@@ -185,7 +188,7 @@ public class SettingsImporter {
 
             Imported imported = parseSettings(inputStream, globalSettings, accountUuids, false);
 
-            Preferences preferences = Preferences.getPreferences(context);
+            Preferences preferences = Preferences.getPreferences();
             Storage storage = preferences.getStorage();
 
             if (globalSettings) {
@@ -228,7 +231,7 @@ public class SettingsImporter {
                                         editor = preferences.createStorageEditor();
 
                                         String newUuid = importResult.imported.uuid;
-                                        String oldAccountUuids = storage.getString("accountUuids", "");
+                                        String oldAccountUuids = preferences.getStorage().getString("accountUuids", "");
                                         String newAccountUuids = (oldAccountUuids.length() > 0) ?
                                                 oldAccountUuids + "," + newUuid : newUuid;
 
@@ -328,7 +331,7 @@ public class SettingsImporter {
 
         AccountDescription original = new AccountDescription(account.name, account.uuid);
 
-        Preferences prefs = Preferences.getPreferences(context);
+        Preferences prefs = Preferences.getPreferences();
         List<Account> accounts = prefs.getAccounts();
 
         String uuid = account.uuid;
@@ -371,7 +374,10 @@ public class SettingsImporter {
 
         String incomingServerName = incoming.host;
         boolean incomingPasswordNeeded = AuthType.EXTERNAL != incoming.authenticationType &&
+                AuthType.XOAUTH2 != incoming.authenticationType &&
                 (incoming.password == null || incoming.password.isEmpty());
+
+        boolean authorizationNeeded = incoming.authenticationType == AuthType.XOAUTH2;
 
         String incomingServerType = ServerTypeConverter.toServerSettingsType(account.incoming.type);
         if (account.outgoing == null && !incomingServerType.equals(Protocols.WEBDAV)) {
@@ -394,15 +400,18 @@ public class SettingsImporter {
              */
             String outgoingServerType = ServerTypeConverter.toServerSettingsType(outgoing.type);
             outgoingPasswordNeeded = AuthType.EXTERNAL != outgoing.authenticationType &&
+                    AuthType.XOAUTH2 != outgoing.authenticationType &&
                     !outgoingServerType.equals(Protocols.WEBDAV) &&
                     outgoing.username != null &&
                     !outgoing.username.isEmpty() &&
                     (outgoing.password == null || outgoing.password.isEmpty());
 
+            authorizationNeeded |= outgoing.authenticationType == AuthType.XOAUTH2;
+
             outgoingServerName = outgoing.host;
         }
 
-        boolean createAccountDisabled = incomingPasswordNeeded || outgoingPasswordNeeded;
+        boolean createAccountDisabled = incomingPasswordNeeded || outgoingPasswordNeeded || authorizationNeeded;
         if (createAccountDisabled) {
             editor.putBoolean(accountKeyPrefix + "enabled", false);
         }
@@ -456,10 +465,15 @@ public class SettingsImporter {
             }
         }
 
-        //TODO: sync folder settings with localstore?
+        // When deleting an account and then restoring it using settings import, the same account UUID will be used.
+        // To avoid reusing a previously existing notification channel ID, we need to make sure to use a unique value
+        // for `messagesNotificationChannelVersion`.
+        Clock clock = DI.get(Clock.class);
+        String messageNotificationChannelVersion = Long.toString(clock.getTime() / 1000);
+        putString(editor, accountKeyPrefix + "messagesNotificationChannelVersion", messageNotificationChannelVersion);
 
         AccountDescription imported = new AccountDescription(accountName, uuid);
-        return new AccountDescriptionPair(original, imported, mergeImportedAccount,
+        return new AccountDescriptionPair(original, imported, mergeImportedAccount, authorizationNeeded,
                 incomingPasswordNeeded, outgoingPasswordNeeded, incomingServerName, outgoingServerName);
     }
 
@@ -1055,11 +1069,12 @@ public class SettingsImporter {
         String type = ServerTypeConverter.toServerSettingsType(importedServer.type);
         int port = convertPort(importedServer.port);
         ConnectionSecurity connectionSecurity = convertConnectionSecurity(importedServer.connectionSecurity);
+        String password = importedServer.authenticationType == AuthType.XOAUTH2 ? "" : importedServer.password;
         Map<String, String> extra = importedServer.extras != null ?
                 unmodifiableMap(importedServer.extras.settings) : emptyMap();
 
         return new ServerSettings(type, importedServer.host, port, connectionSecurity,
-                importedServer.authenticationType, importedServer.username, importedServer.password,
+                importedServer.authenticationType, importedServer.username, password,
                 importedServer.clientCertificateAlias, extra);
     }
 

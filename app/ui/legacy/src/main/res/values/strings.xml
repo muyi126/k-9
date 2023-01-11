@@ -17,6 +17,8 @@
     <string name="app_license">Apache License, Version 2.0</string>
     <string name="about_project_title">Open Source Project</string>
     <string name="about_website_title">Website</string>
+    <string name="user_manual_title">User manual</string>
+    <string name="get_help_title">Get help</string>
     <string name="user_forum_title">User forum</string>
     <string name="about_fediverse_title">Fediverse</string>
     <string name="about_twitter_title">Twitter</string>
@@ -137,6 +139,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="flag_action">Add star</string>
     <string name="unflag_action">Remove star</string>
     <string name="copy_action">Copy</string>
+    <string name="unsubscribe_action">Unsubscribe</string>
     <string name="show_headers_action">Show headers</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Address copied to clipboard</item>
@@ -179,7 +182,7 @@ Please submit bug reports, contribute new features and ask questions at
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> new message</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> new messages</item>
     </plurals>
-    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Unread (<xliff:g id="account">%s</xliff:g>)</string>
+    <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%1$d</xliff:g> Unread (<xliff:g id="account">%2$s</xliff:g>)</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> more on <xliff:g id="account">%2$s</xliff:g></string>
 
     <string name="notification_action_reply">Reply</string>
@@ -197,7 +200,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="notification_authentication_error_title">Authentication failed</string>
     <string name="notification_authentication_error_text">Authentication failed for <xliff:g id="account">%s</xliff:g>. Update your server settings.</string>
 
-    <string name="notification_bg_sync_ticker">Checking mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+    <!-- Title of an error notification that is displayed when creating a notification for a new message has failed -->
+    <string name="notification_notify_error_title">Notification error</string>
+    <!-- Body of an error notification that is displayed when creating a notification for a new message has failed -->
+    <string name="notification_notify_error_text">An error has occurred while trying to create a system notification for a new message. The reason is most likely a missing notification sound.\n\nTap to open notification settings.</string>
+
+    <string name="notification_bg_sync_ticker">Checking mail: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Checking mail</string>
     <string name="notification_bg_send_ticker">Sending mail: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Sending mail</string>
@@ -251,7 +259,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>
     <string name="remove_attachment_action">Remove attachment</string>
 
-    <string name="message_view_from_format">From: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+    <string name="message_view_from_format">From: <xliff:g id="name">%1$s</xliff:g> &lt;<xliff:g id="email">%2$s</xliff:g>&gt;</string>
     <string name="message_to_label">To:</string>
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_bcc_label">Bcc:</string>
@@ -300,6 +308,30 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_confirm_menu_mark_all_read">Mark all messages as read</string>
     <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>
 
+    <!-- Title of the screen to configure swipe actions -->
+    <string name="general_settings_swipe_actions_title">Swipe actions</string>
+    <!-- Name of the setting to configure the right swipe action -->
+    <string name="general_settings_right_swipe_title">Right swipe</string>
+    <!-- Name of the setting to configure the left swipe action -->
+    <string name="general_settings_left_swipe_title">Left swipe</string>
+
+    <!-- The list item users select to not use a swipe action for a particular direction -->
+    <string name="general_settings_swipe_action_none">None</string>
+    <!-- Name of the swipe action to select/deselect a message -->
+    <string name="general_settings_swipe_action_toggle_selection">Toggle selection</string>
+    <!-- Name of the swipe action to mark as message as read/unread -->
+    <string name="general_settings_swipe_action_toggle_read">Mark as read/unread</string>
+    <!-- Name of the swipe action to add/remove a star -->
+    <string name="general_settings_swipe_action_toggle_star">Add/remove star</string>
+    <!-- Name of the swipe action to archive a message -->
+    <string name="general_settings_swipe_action_archive">Archive</string>
+    <!-- Name of the swipe action to delete a message -->
+    <string name="general_settings_swipe_action_delete">Delete</string>
+    <!-- Name of the swipe action to move a message to the spam folder -->
+    <string name="general_settings_swipe_action_spam">Spam</string>
+    <!-- Name of the swipe action to move a message to another folder -->
+    <string name="general_settings_swipe_action_move">Move</string>
+
     <string name="global_settings_privacy_hide_useragent">Hide mail client</string>
     <string name="global_settings_privacy_hide_useragent_detail">Remove K-9 User-Agent from mail headers</string>
     <string name="global_settings_privacy_hide_timezone">Hide timezone</string>
@@ -328,6 +360,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_basics_email_hint">Email address</string>
     <string name="account_setup_basics_password_hint">Password</string>
 
+    <string name="account_setup_oauth_description">To use this email account with K-9 Mail, you need to sign in and grant the app access to your emails.</string>
+    <!-- Displayed below the 'account_setup_oauth_description' text -->
+    <string name="account_setup_oauth_sign_in">Sign in</string>
+    <!-- Displayed below the 'account_setup_oauth_description' text -->
+    <string name="account_setup_oauth_sign_in_with_google">Sign in with Google</string>
+
     <!-- Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app -->
     <string name="account_setup_basics_show_password_need_lock">To view your password here, enable screen lock on this device.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Verify your identity</string>
@@ -355,6 +393,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_auth_type_insecure_password">Password, transmitted insecurely</string>
     <string name="account_setup_auth_type_encrypted_password">Encrypted password</string>
     <string name="account_setup_auth_type_tls_client_certificate">Client certificate</string>
+    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
 
     <string name="account_setup_incoming_title">Incoming server settings</string>
     <string name="account_setup_incoming_username_label">Username</string>
@@ -376,10 +415,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_incoming_delete_policy_delete_label">Delete from server</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Mark as read on server</string>
 
-    <string name="account_setup_incoming_compression_label">Use compression on network:</string>
-    <string name="account_setup_incoming_mobile_label">Mobile</string>
-    <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
-    <string name="account_setup_incoming_other_label">Other</string>
+    <string name="account_setup_incoming_use_compression">Use compression</string>
 
     <string name="account_setup_expunge_policy_label">Erase deleted messages on server</string>
     <string name="account_setup_expunge_policy_immediately">Immediately</string>
@@ -459,6 +495,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_failed_dlg_auth_message_fmt">Username or password incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_certificate_message_fmt">The server presented an invalid SSL certificate. Sometimes, this is because of a server misconfiguration. Sometimes it is because someone is trying to attack you or your mail server. If you\'re not sure what\'s up, click Reject and contact the folks who manage your mail server.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_server_message_fmt">Cannot connect to server.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_oauth_flow_canceled">Authorization canceled</string>
+    <string name="account_setup_failed_dlg_oauth_flow_failed">Authorization failed with the following error: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 is currently not supported with this provider.</string>
+    <string name="account_setup_failed_dlg_browser_not_found">The app couldn\'t find a browser to use for granting access to your account.</string>
     <string name="account_setup_failed_dlg_edit_details_action">Edit details</string>
     <string name="account_setup_failed_dlg_continue_action">Continue</string>
 
@@ -741,9 +781,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
 
-    <string name="message_view_help_key">Del (or D) - Delete\nR - Reply\nA - Reply All\nC - Compose\nF - Forward\nM - Move\nV - Archive\nY - Copy\nZ - Mark (Un)read\nG - Star\nO - Sort type\nI - Sort order\nQ - Return to Folders\nS - Select/deselect\nJ or P - Previous Message\nK or N - Next Message</string>
-    <string name="message_list_help_key">Del (or D) - Delete\nC - Compose\nM - Move\nV - Archive\nY - Copy\nZ - Mark (Un)read\nG - Star\nO - Sort type\nI - Sort order\nQ - Return to Folders\nS - Select/deselect</string>
-
     <string name="folder_list_filter_hint">Folder name contains</string>
 
     <string name="folder_list_display_mode_label">Show folders…</string>
@@ -801,9 +838,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="animations_title">Animation</string>
     <string name="animations_summary">Use gaudy visual effects</string>
 
-    <string name="volume_navigation_title">Volume key navigation</string>
-    <string name="volume_navigation_message">In message views</string>
-    <string name="volume_navigation_list">In list views</string>
+    <string name="volume_navigation_title">Volume key navigation in message view</string>
 
     <string name="show_unified_inbox_title">Show Unified Inbox</string>
     <string name="show_starred_count_title">Show starred count</string>
@@ -824,14 +859,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="font_size_settings_title">Font size</string>
     <string name="font_size_settings_description">Configure font size</string>
-
-    <string name="font_size_account_list">Account list</string>
-    <string name="font_size_account_name">Account name</string>
-    <string name="font_size_account_description">Account description</string>
-
-    <string name="font_size_folder_list">Folder lists</string>
-    <string name="font_size_folder_name">Folder name</string>
-    <string name="font_size_folder_status">Folder status</string>
 
     <string name="font_size_message_list">Message lists</string>
     <string name="font_size_message_list_subject">Subject</string>
@@ -870,8 +897,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="confirm_discard_draft_message_title">Discard message?</string>
     <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>
-
-    <string name="select_text_now">Select text to copy.</string>
 
     <string name="dialog_confirm_clear_local_folder_title">Clear local messages?</string>
     <string name="dialog_confirm_clear_local_folder_message">This will remove all local messages from the folder. No messages will be deleted from the server.</string>
@@ -923,12 +948,23 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_import_pick_document_button">Select file</string>
     <string name="settings_import_button">Import</string>
     <string name="settings_import_success_generic">Settings successfully imported</string>
+
+    <!-- Displayed after importing accounts when one or multiple accounts require entering a password -->
     <string name="settings_import_password_required">Please enter passwords</string>
+
+    <!-- Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow -->
+    <string name="settings_import_authorization_required">Please sign in</string>
+
+    <!-- Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow -->
+    <string name="settings_import_authorization_and_password_required">Please sign in and enter passwords</string>
+
     <string name="settings_import_failure">Failed to import settings</string>
     <string name="settings_import_read_failure">Failed to read settings file</string>
     <string name="settings_import_partial_failure">Failed to import some settings</string>
     <string name="settings_import_status_success">Imported successfully</string>
     <string name="settings_import_status_password_required">Password required</string>
+    <!-- Content description for the icon that is displayed next to an imported account that requires sign-in -->
+    <string name="settings_import_status_log_in_required">Sign-in required</string>
     <string name="settings_import_status_not_imported">Not imported</string>
     <string name="settings_import_status_error">Import failure</string>
     <string name="settings_import_later_button">Later</string>
@@ -1151,20 +1187,15 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto_hide_sign_only_off">All signatures will be displayed</string>
     <string name="error_sign_only_no_encryption">Encryption unavailable in sign-only mode!</string>
     <string name="unsigned_text_divider_label">Unsigned Text</string>
-    <string name="apg_deprecated_title">APG Deprecation Warning</string>
-    <string name="apg_deprecated_1">APG is no longer maintained!</string>
-    <string name="apg_deprecated_2">Because of this, support for APG has been removed from K-9 Mail.</string>
-    <string name="apg_deprecated_bullet_1">Development stopped in early 2014</string>
-    <string name="apg_deprecated_bullet_2">Contains unfixed security issues</string>
-    <string name="apg_learn_more">You can <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">click here</a> to learn more.</string>
-    <string name="apg_deprecated_ok">Got it!</string>
-    <string name="apg">APG</string>
     <string name="crypto_no_provider_title">This email is encrypted</string>
     <string name="crypto_no_provider_message">This email has been encrypted with OpenPGP.\nTo read it, you need to install and configure a compatible OpenPGP App.</string>
     <string name="crypto_no_provider_button">Go to Settings</string>
 
     <string name="mail_list_widget_text">K-9 Message List</string>
-    <string name="mail_list_widget_loading">Loading messages…</string>
+    <!-- Displayed in the the message list widget when the app hasn't had a chance to send content to it yet -->
+    <string name="message_list_widget_initializing">Loading…</string>
+    <!-- Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough -->
+    <string name="message_list_widget_list_item_loading">Loading…</string>
 
     <string name="openpgp_enabled_error_title">Encryption not possible</string>
     <string name="openpgp_enabled_error_msg">Some of the selected recipients don\'t support this feature!</string>
@@ -1182,7 +1213,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="dialog_autocrypt_mutual_title">Autocrypt mutual mode</string>
     <string name="dialog_autocrypt_mutual_description_1">Messages will normally be encrypted by choice, or when replying to an encrypted message.</string>
     <string name="dialog_autocrypt_mutual_description_2">If both sender and recipients enable mutual mode, encryption will be enabled by default.</string>
-    <string name="dialog_autocrypt_mutual_learn_more">You can <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">click here</a> to learn more.</string>
+    <string name="dialog_autocrypt_mutual_learn_more">You can <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">click here</a> to learn more.</string>
 
     <string name="general_settings_title">General settings</string>
 
@@ -1240,4 +1271,33 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="push_info_configure_notification_action">Configure notification</string>
     <string name="push_info_disable_push_text">If you don\'t need instant notifications about new messages, you should disable Push and use Polling. Polling checks for new mail at regular intervals and does not need the notification.</string>
     <string name="push_info_disable_push_action">Disable Push</string>
+
+    <!-- Name of the swipe action to select a message. Try to keep it short. -->
+    <string name="swipe_action_select">Select</string>
+    <!-- Name of the swipe action to deselect a message. Try to keep it short. -->
+    <string name="swipe_action_deselect">Deselect</string>
+    <!-- Name of the swipe action to mark a message as read. Try to keep it short. -->
+    <string name="swipe_action_mark_as_read">Mark read</string>
+    <!-- Name of the swipe action to mark a message as unread. Try to keep it short. -->
+    <string name="swipe_action_mark_as_unread">Mark unread</string>
+    <!-- Name of the swipe action to add the star to a message. Try to keep it short. -->
+    <string name="swipe_action_add_star">Add star</string>
+    <!-- Name of the swipe action to remove the star from a message. Try to keep it short. -->
+    <string name="swipe_action_remove_star">Remove star</string>
+    <!-- Name of the swipe action to archive a message. Try to keep it short. -->
+    <string name="swipe_action_archive">Archive</string>
+    <!-- Name of the swipe action to delete a message. Try to keep it short. -->
+    <string name="swipe_action_delete">Delete</string>
+    <!-- Name of the swipe action to move a message to the Spam folder. Try to keep it short. -->
+    <string name="swipe_action_spam">Spam</string>
+    <!-- Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short. -->
+    <string name="swipe_action_move">Move…</string>
+
+    <!-- Name of setting to configure whether to show a "compose" floating action button on top of the message list -->
+    <string name="general_settings_show_compose_button_title">Show compose button</string>
+
+    <!-- Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists. -->
+    <string name="message_list_error_title">Error</string>
+    <!-- Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut. -->
+    <string name="message_list_error_folder_not_found">Folder not found</string>
 </resources>

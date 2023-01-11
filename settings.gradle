@@ -1,7 +1,17 @@
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
 include ':app:k9mail'
 include ':app:ui:base'
 include ':app:ui:setup'
 include ':app:ui:legacy'
+include ':app:ui:message-list-widget'
 include ':app:core'
 include ':app:storage'
 include ':app:crypto-openpgp'
@@ -11,6 +21,8 @@ include ':app:autodiscovery:providersxml'
 include ':app:autodiscovery:srvrecords'
 include ':app:autodiscovery:thunderbird'
 include ':app:html-cleaner'
+include ':ui-utils:LinearLayoutManager'
+include ':ui-utils:ItemTouchHelper'
 include ':mail:common'
 include ':mail:testing'
 include ':mail:protocols:imap'

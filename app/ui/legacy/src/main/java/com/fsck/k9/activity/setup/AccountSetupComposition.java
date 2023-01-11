@@ -3,12 +3,15 @@ package com.fsck.k9.activity.setup;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+
+import androidx.annotation.NonNull;
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
@@ -43,10 +46,14 @@ public class AccountSetupComposition extends K9Activity {
         super.onCreate(savedInstanceState);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        mAccount = Preferences.getPreferences().getAccount(accountUuid);
 
         setLayout(R.layout.account_setup_composition);
         setTitle(R.string.account_settings_composition_title);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         /*
          * If we're being reloaded we override the original account with the one
@@ -54,7 +61,7 @@ public class AccountSetupComposition extends K9Activity {
          */
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
             accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
-            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+            mAccount = Preferences.getPreferences().getAccount(accountUuid);
         }
 
         mAccountName = findViewById(R.id.account_name);
@@ -101,6 +108,16 @@ public class AccountSetupComposition extends K9Activity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void saveSettings() {
         mAccount.setEmail(mAccountEmail.getText().toString());
         mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
@@ -112,7 +129,7 @@ public class AccountSetupComposition extends K9Activity {
             mAccount.setSignatureBeforeQuotedText(isSignatureBeforeQuotedText);
         }
 
-        Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
+        Preferences.getPreferences().saveAccount(mAccount);
     }
 
     @Override

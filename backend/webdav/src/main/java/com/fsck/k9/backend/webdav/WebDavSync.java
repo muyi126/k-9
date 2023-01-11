@@ -1,22 +1,6 @@
 package com.fsck.k9.backend.webdav;
 
 
-import com.fsck.k9.backend.api.BackendFolder;
-import com.fsck.k9.backend.api.BackendFolder.MoreMessages;
-import com.fsck.k9.backend.api.BackendStorage;
-import com.fsck.k9.backend.api.SyncConfig;
-import com.fsck.k9.backend.api.SyncListener;
-import com.fsck.k9.helper.ExceptionHelper;
-import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessageDownloadState;
-import com.fsck.k9.mail.MessageRetrievalListener;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.webdav.WebDavFolder;
-import com.fsck.k9.mail.store.webdav.WebDavMessage;
-import com.fsck.k9.mail.store.webdav.WebDavStore;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -27,7 +11,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import timber.log.Timber;
+import com.fsck.k9.backend.api.BackendFolder;
+import com.fsck.k9.backend.api.BackendFolder.MoreMessages;
+import com.fsck.k9.backend.api.BackendStorage;
+import com.fsck.k9.backend.api.SyncConfig;
+import com.fsck.k9.backend.api.SyncListener;
+import com.fsck.k9.helper.ExceptionHelper;
+import com.fsck.k9.logging.Timber;
+import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.MessageDownloadState;
+import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.store.webdav.WebDavFolder;
+import com.fsck.k9.mail.store.webdav.WebDavMessage;
+import com.fsck.k9.mail.store.webdav.WebDavStore;
 
 
 class WebDavSync {
@@ -405,7 +404,7 @@ class WebDavSync {
         remoteFolder.fetch(unsyncedMessages, fp,
                 new MessageRetrievalListener<WebDavMessage>() {
                     @Override
-                    public void messageFinished(WebDavMessage message, int number, int ofTotal) {
+                    public void messageFinished(WebDavMessage message) {
                         try {
                             if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
                                 if (message.isSet(Flag.DELETED)) {
@@ -433,16 +432,6 @@ class WebDavSync {
                             Timber.e(e, "Error while storing downloaded message.");
                         }
                     }
-
-                    @Override
-                    public void messageStarted(String uid, int number, int ofTotal) {
-                    }
-
-                    @Override
-                    public void messagesFinished(int total) {
-                        // FIXME this method is almost never invoked by various Stores! Don't rely on it unless fixed!!
-                    }
-
                 },
                 syncConfig.getMaximumAutoDownloadMessageSize());
     }
@@ -463,7 +452,7 @@ class WebDavSync {
         remoteFolder.fetch(smallMessages,
                 fp, new MessageRetrievalListener<WebDavMessage>() {
                     @Override
-                    public void messageFinished(final WebDavMessage message, int number, int ofTotal) {
+                    public void messageFinished(final WebDavMessage message) {
                         try {
 
                             // Store the updated message locally
@@ -487,14 +476,6 @@ class WebDavSync {
                         } catch (Exception e) {
                             Timber.e(e, "SYNC: fetch small messages");
                         }
-                    }
-
-                    @Override
-                    public void messageStarted(String uid, int number, int ofTotal) {
-                    }
-
-                    @Override
-                    public void messagesFinished(int total) {
                     }
                 },
                 -1);
@@ -548,7 +529,7 @@ class WebDavSync {
             WebDavMessage message) throws MessagingException {
         /*
          * The provider was unable to get the structure of the message, so
-         * we'll download a reasonable portion of the messge and mark it as
+         * we'll download a reasonable portion of the message and mark it as
          * incomplete so the entire thing can be downloaded later if the user
          * wishes to download it.
          */

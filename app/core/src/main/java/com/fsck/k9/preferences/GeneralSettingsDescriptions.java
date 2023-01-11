@@ -10,15 +10,16 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import android.content.Context;
-import android.graphics.Color;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.BACKGROUND_OPS;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.SplitViewMode;
+import com.fsck.k9.SwipeAction;
 import com.fsck.k9.core.R;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.ColorSetting;
@@ -51,7 +52,8 @@ public class GeneralSettingsDescriptions {
                 new V(1, new BooleanSetting(false))
         ));
         s.put("backgroundOperations", Settings.versions(
-                new V(1, new EnumSetting<>(K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC))
+                new V(1, new EnumSetting<>(K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC)),
+                new V(83, new EnumSetting<>(K9.BACKGROUND_OPS.class, BACKGROUND_OPS.ALWAYS))
         ));
         s.put("changeRegisteredNameColor", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -73,18 +75,6 @@ public class GeneralSettingsDescriptions {
         ));
         s.put("enableSensitiveLogging", Settings.versions(
                 new V(1, new BooleanSetting(false))
-        ));
-        s.put("fontSizeAccountDescription", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-        ));
-        s.put("fontSizeAccountName", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-        ));
-        s.put("fontSizeFolderName", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
-        ));
-        s.put("fontSizeFolderStatus", Settings.versions(
-                new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
         ));
         s.put("fontSizeMessageComposeInput", Settings.versions(
                 new V(5, new FontSizeSetting(FontSizes.FONT_DEFAULT))
@@ -184,9 +174,6 @@ public class GeneralSettingsDescriptions {
                 new V(16, new LegacyThemeSetting(AppTheme.LIGHT)),
                 new V(24, new SubThemeSetting(SubTheme.USE_GLOBAL))
         ));
-        s.put("useVolumeKeysForListNavigation", Settings.versions(
-                new V(1, new BooleanSetting(false))
-        ));
         s.put("useVolumeKeysForNavigation", Settings.versions(
                 new V(1, new BooleanSetting(false))
         ));
@@ -277,6 +264,15 @@ public class GeneralSettingsDescriptions {
         ));
         s.put("showStarredCount", Settings.versions(
                 new V(75, new BooleanSetting(false))
+        ));
+        s.put("swipeRightAction", Settings.versions(
+                new V(83, new EnumSetting<>(SwipeAction.class, SwipeAction.ToggleSelection))
+        ));
+        s.put("swipeLeftAction", Settings.versions(
+                new V(83, new EnumSetting<>(SwipeAction.class, SwipeAction.ToggleRead))
+        ));
+        s.put("showComposeButtonOnMessageList", Settings.versions(
+            new V(85, new BooleanSetting(true))
         ));
 
         SETTINGS = Collections.unmodifiableMap(s);

@@ -301,6 +301,8 @@ class HtmlSanitizerTest {
         )
     }
 
+    // This test will fail when jsoup updates its list of allowed "protocols" for the a.href attribute.
+    // When that happens, please adjust the removeProtocols("a", "href", …) line in BodyCleaner.
     @Test
     fun shouldKeepUris() {
         val html =
@@ -311,9 +313,9 @@ class HtmlSanitizerTest {
             <a href="https://example.com/default.html">HTTPS</a>
             <a href="mailto:user@example.com">Mailto</a>
             <a href="tel:00442079460111">Telephone</a>
+            <a href="sms:00442079460111">SMS</a>
             <a href="sip:user@example.com">SIP</a>
-            <a href="bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu">Bitcoin</a>
-            <a href="ethereum:0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7">Ethereum</a>
+            <a href="unknown:foobar">Unknown</a>
             <a href="rtsp://example.com/media.mp4">RTSP</a>
             </body>
             </html>
@@ -330,9 +332,9 @@ class HtmlSanitizerTest {
             <a href="https://example.com/default.html">HTTPS</a>
             <a href="mailto:user@example.com">Mailto</a>
             <a href="tel:00442079460111">Telephone</a>
+            <a href="sms:00442079460111">SMS</a>
             <a href="sip:user@example.com">SIP</a>
-            <a href="bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu">Bitcoin</a>
-            <a href="ethereum:0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7">Ethereum</a>
+            <a href="unknown:foobar">Unknown</a>
             <a href="rtsp://example.com/media.mp4">RTSP</a>
             </body>
             </html>
@@ -403,6 +405,79 @@ class HtmlSanitizerTest {
             """
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
             <html><head></head><body>text</body></html>
+            """.trimIndent().trimLineBreaks()
+        )
+    }
+
+    @Test
+    fun `should keep 'align' attribute on 'div' element`() {
+        val html = """<div align="center">text</div>"""
+
+        val result = htmlSanitizer.sanitize(html)
+
+        assertThat(result.toCompactString()).isEqualTo(
+            """
+            <html>
+            <head></head>
+            <body>
+            <div align="center">text</div>
+            </body>
+            </html>
+            """.trimIndent().trimLineBreaks()
+        )
+    }
+
+    @Test
+    fun `should keep 'name' attribute on 'a' element`() {
+        val html = """<a name="something">"""
+
+        val result = htmlSanitizer.sanitize(html)
+
+        assertThat(result.toCompactString()).isEqualTo(
+            """
+            <html>
+            <head></head>
+            <body>
+            <a name="something"></a>
+            </body>
+            </html>
+            """.trimIndent().trimLineBreaks()
+        )
+    }
+
+    @Test
+    fun `should keep 'tt' element`() {
+        assertTagsNotStripped("tt")
+    }
+
+    @Test
+    fun `should keep 'kbd' element`() {
+        assertTagsNotStripped("kbd")
+    }
+
+    @Test
+    fun `should keep 'samp' element`() {
+        assertTagsNotStripped("samp")
+    }
+
+    @Test
+    fun `should keep 'var' element`() {
+        assertTagsNotStripped("var")
+    }
+
+    private fun assertTagsNotStripped(element: String) {
+        val html = """<$element>some text</$element>"""
+
+        val result = htmlSanitizer.sanitize(html)
+
+        assertThat(result.toCompactString()).isEqualTo(
+            """
+            <html>
+            <head></head>
+            <body>
+            <$element>some text</$element>
+            </body>
+            </html>
             """.trimIndent().trimLineBreaks()
         )
     }

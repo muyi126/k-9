@@ -10,6 +10,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.content.getSystemService
+import androidx.core.net.toUri
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
@@ -28,7 +29,7 @@ import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.mailstore.RemoteFolder
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
-import com.fsck.k9.notification.NotificationLightDecoder
+import com.fsck.k9.notification.NotificationSettingsUpdater
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.settings.onClick
@@ -51,7 +52,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val messagingController: MessagingController by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
     private val notificationChannelManager: NotificationChannelManager by inject()
-    private val notificationLightDecoder: NotificationLightDecoder by inject()
+    private val notificationSettingsUpdater: NotificationSettingsUpdater by inject()
 
     private val vibrator by lazy { requireContext().getSystemService<Vibrator>() }
     private lateinit var dataStore: AccountSettingsDataStore
@@ -101,7 +102,16 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         val account = getAccount()
         initializeCryptoSettings(account)
 
-        maybeUpdateNotificationPreferences(account)
+        // Don't update the notification preferences when resuming after the user has selected a new notification sound
+        // via NotificationSoundPreference. Otherwise we race the background thread and might read data from the old
+        // NotificationChannel, overwriting the notification sound with the previous value.
+        notificationSoundPreference?.let { notificationSoundPreference ->
+            if (notificationSoundPreference.receivedActivityResultJustNow) {
+                notificationSoundPreference.receivedActivityResultJustNow = false
+            } else {
+                maybeUpdateNotificationPreferences(account)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -240,27 +250,25 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     @SuppressLint("NewApi")
     private fun updateNotificationPreferences(account: Account) {
-        val notificationConfiguration = notificationChannelManager.getNotificationConfiguration(account)
+        notificationSettingsUpdater.updateNotificationSettings(account)
+        val notificationSettings = account.notificationSettings
 
         notificationSoundPreference?.let { preference ->
-            preference.setNotificationSound(notificationConfiguration.sound)
+            preference.setNotificationSound(notificationSettings.ringtone?.toUri())
             preference.isEnabled = true
         }
 
         notificationLightPreference?.let { preference ->
-            val notificationLightSetting = notificationLightDecoder.decode(
-                isBlinkLightsEnabled = notificationConfiguration.isBlinkLightsEnabled,
-                lightColor = notificationConfiguration.lightColor,
-                accountColor = account.chipColor
-            )
-            preference.value = notificationLightSetting.name
+            preference.value = notificationSettings.light.name
             preference.isEnabled = true
         }
 
         notificationVibrationPreference?.let { preference ->
-            preference.setVibrationFromSystem(
-                isVibrationEnabled = notificationConfiguration.isVibrationEnabled,
-                combinedPattern = notificationConfiguration.vibrationPattern
+            val notificationVibration = notificationSettings.vibration
+            preference.setVibration(
+                isVibrationEnabled = notificationVibration.isEnabled,
+                vibratePattern = notificationVibration.pattern,
+                vibrationTimes = notificationVibration.repeatCount
             )
             preference.isEnabled = true
         }

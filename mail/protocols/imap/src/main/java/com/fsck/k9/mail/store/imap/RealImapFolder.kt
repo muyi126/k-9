@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.store.imap
 
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
@@ -14,17 +15,16 @@ import com.fsck.k9.mail.internet.MimeBodyPart
 import com.fsck.k9.mail.internet.MimeHeader
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.MimeMultipart
+import com.fsck.k9.mail.internet.MimeParameterEncoder.isToken
+import com.fsck.k9.mail.internet.MimeParameterEncoder.quotedUtf8
 import com.fsck.k9.mail.internet.MimeUtility
 import java.io.IOException
 import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.HashMap
-import java.util.LinkedHashSet
 import java.util.Locale
 import kotlin.math.max
 import kotlin.math.min
-import timber.log.Timber
 
 internal class RealImapFolder(
     private val internalImapStore: InternalImapStore,
@@ -502,12 +502,10 @@ internal class RealImapFolder(
         // crazy adding stuff at the top.
         val uids = searchResponse.numbers.sortedDescending()
 
-        val count = uids.size
-        return uids.mapIndexed { index, uidLong ->
+        return uids.map { uidLong ->
             val uid = uidLong.toString()
-            listener?.messageStarted(uid, index, count)
             val message = ImapMessage(uid)
-            listener?.messageFinished(message, index, count)
+            listener?.messageFinished(message)
 
             message
         }
@@ -517,7 +515,7 @@ internal class RealImapFolder(
     override fun fetch(
         messages: List<ImapMessage>,
         fetchProfile: FetchProfile,
-        listener: MessageRetrievalListener<ImapMessage>?,
+        listener: FetchListener?,
         maxDownloadSize: Int
     ) {
         if (messages.isEmpty()) {
@@ -540,7 +538,7 @@ internal class RealImapFolder(
             fetchFields.add("RFC822.SIZE")
             fetchFields.add(
                 "BODY.PEEK[HEADER.FIELDS (date subject from content-type to cc " +
-                    "reply-to message-id references in-reply-to " +
+                    "reply-to message-id references in-reply-to list-unsubscribe " +
                     K9MailLib.IDENTITY_HEADER + " " + K9MailLib.CHAT_HEADER + ")]"
             )
         }
@@ -563,6 +561,7 @@ internal class RealImapFolder(
 
         val spaceSeparatedFetchFields = ImapUtility.join(" ", fetchFields)
         var windowStart = 0
+        val processedUids = mutableSetOf<String>()
         while (windowStart < messages.size) {
             val windowEnd = min(windowStart + FETCH_WINDOW_SIZE, messages.size)
             val uidWindow = uids.subList(windowStart, windowEnd)
@@ -572,7 +571,6 @@ internal class RealImapFolder(
                 val command = String.format("UID FETCH %s (%s)", commaSeparatedUids, spaceSeparatedFetchFields)
                 connection!!.sendCommand(command, false)
 
-                var messageNumber = 0
                 var callback: ImapResponseCallback? = null
                 if (fetchProfile.contains(FetchProfile.Item.BODY) ||
                     fetchProfile.contains(FetchProfile.Item.BODY_SANE)
@@ -596,8 +594,6 @@ internal class RealImapFolder(
                             continue
                         }
 
-                        listener?.messageStarted(uid, messageNumber++, messageMap.size)
-
                         val literal = handleFetchResponse(message, fetchList)
                         if (literal != null) {
                             when (literal) {
@@ -615,7 +611,10 @@ internal class RealImapFolder(
                             }
                         }
 
-                        listener?.messageFinished(message, messageNumber, messageMap.size)
+                        val isFirstResponse = uid !in processedUids
+                        processedUids.add(uid)
+
+                        listener?.onFetchResponse(message, isFirstResponse)
                     } else {
                         handleUntaggedResponse(response)
                     }
@@ -632,7 +631,6 @@ internal class RealImapFolder(
     override fun fetchPart(
         message: ImapMessage,
         part: Part,
-        listener: MessageRetrievalListener<ImapMessage>?,
         bodyFactory: BodyFactory,
         maxDownloadSize: Int
     ) {
@@ -650,7 +648,6 @@ internal class RealImapFolder(
             val command = String.format("UID FETCH %s (UID %s)", message.uid, fetch)
             connection!!.sendCommand(command, false)
 
-            var messageNumber = 0
             val callback: ImapResponseCallback = FetchPartCallback(part, bodyFactory)
 
             var response: ImapResponse
@@ -667,8 +664,6 @@ internal class RealImapFolder(
                         handleUntaggedResponse(response)
                         continue
                     }
-
-                    listener?.messageStarted(uid, messageNumber++, 1)
 
                     val literal = handleFetchResponse(message, fetchList)
                     if (literal != null) {
@@ -691,8 +686,6 @@ internal class RealImapFolder(
                             }
                         }
                     }
-
-                    listener?.messageFinished(message, messageNumber, 1)
                 } else {
                     handleUntaggedResponse(response)
                 }
@@ -896,7 +889,8 @@ internal class RealImapFolder(
                 for (i in bodyParams.indices step 2) {
                     val paramName = bodyParams.getString(i)
                     val paramValue = bodyParams.getString(i + 1)
-                    contentType.append(String.format(";\r\n %s=\"%s\"", paramName, paramValue))
+                    val encodedValue = if (paramValue.isToken()) paramValue else paramValue.quotedUtf8()
+                    contentType.append(String.format(";\r\n %s=%s", paramName, encodedValue))
                 }
             }
 
@@ -922,7 +916,8 @@ internal class RealImapFolder(
                     for (i in bodyDispositionParams.indices step 2) {
                         val paramName = bodyDispositionParams.getString(i).lowercase()
                         val paramValue = bodyDispositionParams.getString(i + 1)
-                        contentDisposition.append(String.format(";\r\n %s=\"%s\"", paramName, paramValue))
+                        val encodedValue = if (paramValue.isToken()) paramValue else paramValue.quotedUtf8()
+                        contentDisposition.append(String.format(";\r\n %s=%s", paramName, encodedValue))
                     }
                 }
             }

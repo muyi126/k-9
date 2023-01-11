@@ -1,7 +1,7 @@
 package com.fsck.k9.notification
 
 import android.content.Context
-import com.fsck.k9.R
+import com.fsck.k9.ui.R
 
 class K9NotificationResourceProvider(private val context: Context) : NotificationResourceProvider {
     override val iconWarning: Int = R.drawable.notification_icon_warning
@@ -35,6 +35,10 @@ class K9NotificationResourceProvider(private val context: Context) : Notificatio
 
     override fun authenticationErrorBody(accountName: String): String =
         context.getString(R.string.notification_authentication_error_text, accountName)
+
+    override fun notifyErrorTitle(): String = context.getString(R.string.notification_notify_error_title)
+
+    override fun notifyErrorText(): String = context.getString(R.string.notification_notify_error_text)
 
     override fun certificateErrorTitle(): String = context.getString(R.string.notification_certificate_error_public)
 
