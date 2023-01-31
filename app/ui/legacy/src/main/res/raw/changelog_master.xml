@@ -5,6 +5,21 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.504" versioncode="35004" date="2023-01-27">
+        <change>POP3: Fixed bug that lead to messages not being deleted from the server</change>
+        <change>Fixed a crash when a message is deleted (remotely) while it is being dragged in the message list</change>
+        <change>Avoid crash when opening drafts from the message list widget</change>
+    </release>
+    <release version="6.503" versioncode="35003" date="2023-01-19">
+        <change>Tweaked theme colors</change>
+        <change>Added support for HTML messages using the &lt;base> tag and relative links</change>
+        <change>Fixed the logic to skip the trash folder when deleting messages, e.g. when deleting spam</change>
+        <change>Fixed bug that could lead to messages not being marked as read on the server when they should have been</change>
+        <change>Internal changes</change>
+    </release>
+    <release version="6.502" versioncode="35002" date="2023-01-16">
+        <change>Fixed crash at app startup</change>
+    </release>
     <release version="6.501" versioncode="35001" date="2023-01-09">
         <change>Delete spam messages immediately without moving them to the trash folder</change>
         <change>Changed the way home screen widgets are disabled when there is no account set up to work around a bug in Android versions prior to 12</change>
